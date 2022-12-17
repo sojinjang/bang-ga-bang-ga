@@ -1,9 +1,15 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
 
-const Celebrate = ({ setShowCelebrate, setShowRegisterProfile }) => {
+const Celebrate = () => {
+  const setShowCelebrate = useSetRecoilState(showCelebrateAtom);
+  const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
   const navigate = useNavigate();
+
+  /**skip버튼 클릭시 모달창을 닫고 홈으로 이동해주는 함수 */
   const onSkipBtn = () => {
     setShowCelebrate(false);
     navigate('/');
@@ -12,6 +18,7 @@ const Celebrate = ({ setShowCelebrate, setShowRegisterProfile }) => {
     setShowCelebrate(false);
     setShowRegisterProfile(true);
   };
+
   return (
     <Modal>
       <div className='text-3xl mt-auto'>

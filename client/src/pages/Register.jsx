@@ -1,22 +1,22 @@
 import React from 'react';
-import { useState } from 'react';
 import tw from 'tailwind-styled-components';
 import Celebrate from '../modals/Celebrate';
 import RegisterProfile from '../modals/RegisterProfile';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
 
 const Register = () => {
-  const navigate = useNavigate();
   const inputDatas = [
-    { name: '이름', placeHolder: '김탈출' },
-    { name: '닉네임', placeHolder: '위기탈출넘버원' },
-    { name: '휴대전화 번호', placeHolder: '010-1234-5678' },
-    { name: '이메일', placeHolder: 'example@escape.elice' },
-    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자' },
-    { name: '비밀번호 확인', placeHolder: '비밀번호를 다시 한번 입력해주세요' },
+    { name: '이름', placeHolder: '김탈출', type: 'text' },
+    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text' },
+    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text' },
+    { name: '이메일', placeHolder: 'example@escape.elice', type: 'text' },
+    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password' },
+    { name: '비밀번호 확인', placeHolder: '비밀번호를 다시 한번 입력해주세요', type: 'password' },
   ];
-  const [showCelebrate, setShowCelebrate] = useState(false);
-  const [showRegisterProfile, setShowRegisterProfile] = useState(false);
+
+  const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
+  const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const onRegisterBtn = () => {
     setShowCelebrate(true);
   };
@@ -25,10 +25,8 @@ const Register = () => {
     <BackGround style={{ backgroundImage: 'url(/images/bg1.png)' }}>
       <Title>회원가입</Title>
       <InputContainer>
-        {showCelebrate ? (
-          <Celebrate setShowCelebrate={setShowCelebrate} setShowRegisterProfile={setShowRegisterProfile} />
-        ) : null}
-        {showRegisterProfile ? <RegisterProfile setShowRegisterProfile={setShowRegisterProfile} /> : null}
+        {showCelebrate && <Celebrate />}
+        {showRegisterProfile && <RegisterProfile />}
         <InnnerContainer>
           {inputDatas.map((inputData) => (
             <InputBox key={inputData.name} inputData={inputData} />
@@ -46,7 +44,7 @@ const InputBox = ({ inputData }) => {
       <div className='mr-auto'>{inputData.name}</div>
       <input
         className='w-full border border-black rounded pl-2 h-10  mb-[3%]'
-        type='text'
+        type={inputData.type}
         placeholder={inputData.placeHolder}
       />
     </div>
