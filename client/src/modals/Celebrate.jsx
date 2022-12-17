@@ -21,16 +21,17 @@ const Celebrate = () => {
 
   return (
     <Modal>
-      <div className='text-3xl mt-auto'>
-        <div>방가네 식구가 되신 것을</div>
-        <div>환영합니다!🎉🎉</div>
+      <div className='text-2xl mt-auto text-center'>
+        <div>방가네 식구가 되신 것을 환영합니다!🎉</div>
+        <br />
+        <div>바로 프로필을 작성하러 가실까요?</div>
       </div>
       <BtnContainer>
         <button className='bg-gray-200  mx-5 p-4 rounded-[10px]' onClick={onSkipBtn}>
-          나중에하기
+          나중에 하기
         </button>
         <button className='bg-[#4A94D7] mx-5 p-4 rounded-[10px]' onClick={onRegisterProfileBtn}>
-          프로필 작성하기
+          지금 작성하기
         </button>
       </BtnContainer>
     </Modal>

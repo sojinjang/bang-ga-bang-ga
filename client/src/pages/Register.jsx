@@ -6,6 +6,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
 
 const Register = () => {
+  /**유저가 입력해야하는 input들에 대한 정보를 담은  */
   const inputDatas = [
     { name: '이름', placeHolder: '김탈출', type: 'text' },
     { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text' },
@@ -17,12 +18,14 @@ const Register = () => {
 
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
+
+  /**ㄷ */
   const onRegisterBtn = () => {
     setShowCelebrate(true);
   };
 
   return (
-    <BackGround style={{ backgroundImage: 'url(/images/bg1.png)' }}>
+    <BackGround style={{ backgroundImage: 'url(/images/backgrounds/bg1.png)' }}>
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}

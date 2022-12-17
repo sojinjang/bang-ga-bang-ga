@@ -98,9 +98,9 @@ const RegisterProfile = () => {
       left-[-2%]
       bg-[#F2F2F2]
   '>
-      <div className='mt-[5%] mx-auto w-[120px] h-[120px] rounded-full bg-[#D9D9D9] flex justify-center items-center'>
-        유저 프로필
-      </div>
+      <div
+        className='mt-[5%] mx-auto w-[120px] h-[120px] rounded-full bg-[#D9D9D9] flex justify-center items-center'
+        style={{ backgroundImage: 'url(/images/user-profile/선아.png)', 'background-size': 'cover' }}></div>
       <div className='mx-auto mt-[1%]'>닉네임</div>
       <div className='mx-auto mt-[1%] w-full text-center'>
         <input className='border rounded-full pl-[5%] w-4/5' type='text' placeholder='한 줄 소개' />
