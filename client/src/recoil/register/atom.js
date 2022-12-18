@@ -8,3 +8,11 @@ export const showRegisterProfileAtom = atom({
   key: 'showRegisterProfile',
   default: false,
 });
+export const showAddProfileIconAtom = atom({
+  key: 'showAddProfileIcon',
+  default: false,
+});
+export const profileImgAtom = atom({
+  key: 'profileImg',
+  default: null,
+});

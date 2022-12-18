@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import tw from 'tailwind-styled-components';
+
+import Modal from 'react-modal';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { showRegisterProfileAtom } from '../recoil/register';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
 const RegisterProfile = () => {
   //변수 모음
   /**radio type input들의 정보를 담은 변수 */
@@ -75,9 +80,10 @@ const RegisterProfile = () => {
     },
   ];
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
-
+  const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
+  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
+  const [tempProfileImg, setTempProfileImg] = useState(null);
   //함수 모음
-
   const navigate = useNavigate();
   /**취소버튼 클릭시 모달창을 닫아주는 함수 */
   const onCancelBtn = () => {
@@ -89,6 +95,34 @@ const RegisterProfile = () => {
     setShowRegisterProfile(false);
     navigate('/');
   };
+
+  const onChangeProfileImg = (e) => {
+    setTempProfileImg(e.target.files[0]);
+  };
+
+  const onSubmitProfileImg = (e) => {
+    e.preventDefault();
+    setProfileImg(tempProfileImg);
+    setShowAddProfileIcon(false);
+  };
+  const onCancelProfileImg = (e) => {
+    e.preventDefault();
+    setShowAddProfileIcon(false);
+  };
+
+  const customStyle = {
+    content: {
+      top: '35%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '20%', // specify desired width
+      height: '60%', // specify desired height
+    },
+  };
+
   return (
     <div
       className='mx-auto h-[90%] w-[104%] 
@@ -98,10 +132,32 @@ const RegisterProfile = () => {
       left-[-2%]
       bg-[#F2F2F2]
   '>
-      <div
-        className='mt-[5%] mx-auto w-[120px] h-[120px] rounded-full bg-[#D9D9D9] flex justify-center items-center'
-        style={{ backgroundImage: 'url(/images/user-profile/선아.png)', 'background-size': 'cover' }}></div>
+      <div className='mt-[5%] mx-auto  flex  relative'>
+        <div className='w-[120px] h-[120px] rounded-full bg-black'>
+          {profileImg && (
+            <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
+          )}
+        </div>
+
+        <div className='absolute w-10 h-10  top-0 left-[90%]'>
+          <button onClick={() => setShowAddProfileIcon(true)}>
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+        </div>
+        <Modal style={customStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
+          <h2>프로필 사진을 업로드하세요</h2>
+          {tempProfileImg && (
+            <img className='rounded-full' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
+          )}
+          <form onSubmit={onSubmitProfileImg}>
+            <input type='file' onChange={onChangeProfileImg} />
+            <button type='submit'>저장하기</button>
+            <button onClick={onCancelProfileImg}>취소하기</button>
+          </form>
+        </Modal>
+      </div>
       <div className='mx-auto mt-[1%]'>닉네임</div>
+
       <div className='mx-auto mt-[1%] w-full text-center'>
         <input className='border rounded-full pl-[5%] w-4/5' type='text' placeholder='한 줄 소개' />
       </div>
