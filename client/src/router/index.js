@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import NotFound from '../pages/NotFound';
+import Register from '../pages/Register';
 
 const Router = () => {
   return (
@@ -18,7 +19,7 @@ const Router = () => {
           <Route path='confirm-pwd' element={<Home />} />
           <Route path='matching-history' element={<Home />} />
         </Route>
-        <Route path='/register' element={<Home />}></Route>
+        <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
 
         <Route path='*' element={<NotFound />} />
