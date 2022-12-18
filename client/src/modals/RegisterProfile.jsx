@@ -132,7 +132,7 @@ const RadioInputBox = ({ inputData }) => (
       {inputData.options.map((option) => (
         <div className='ml-2 text-center' key={inputData.name + option}>
           <label>{option}</label>
-          <input type='radio' />
+          <input type='radio' name={inputData.name} />
         </div>
       ))}
     </div>

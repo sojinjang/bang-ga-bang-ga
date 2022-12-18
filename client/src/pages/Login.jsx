@@ -1,87 +1,61 @@
 import React from 'react';
-import { useState } from 'react';
-import tw from 'tailwind-styled-components';
-import Celebrate from '../modals/Celebrate';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { showForgotAtom } from '../recoil/login';
+import Forgot from '../modals/Forgot';
 
 const Login = () => {
-  const inputDatas = [
-    { name: '이름', placeHolder: '김탈출' },
-    { name: '휴대전화 번호', placeHolder: '010-1234-5678' },
-    { name: '이메일', placeHolder: 'example@escape.elice' },
-    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자' },
-    { name: '비밀번호 확인', placeHolder: '비밀번호를 다시 한번 입력해주세요' },
-  ];
-  const [showModal, setShowModal] = useState(false);
-  const handleClick = () => {
-    setShowModal(true);
+  const navigate = useNavigate();
+  const [showForgot, setShowForgot] = useRecoilState(showForgotAtom);
+  const onForgotBtn = (e) => {
+    e.preventDefault();
+    setShowForgot(true);
   };
-
   return (
-    <BackGround style={{ backgroundImage: 'url(/images/bg1.png)' }}>
-      <Title>로그인</Title>
-      <InputContainer>
-        {showModal ? <Celebrate setShowModal={setShowModal} /> : null}
-
-        <InnnerContainer>
-          {inputDatas.map((inputData) => (
-            <InputBox key={inputData.name} inputData={inputData} />
-          ))}
-          <RegisterBtn onClick={handleClick}>가입하기</RegisterBtn>
-        </InnnerContainer>
-      </InputContainer>
-    </BackGround>
-  );
-};
-
-const InputBox = ({ inputData }) => {
-  return (
-    <div className='w-4/5'>
-      <div className='mr-auto'>{inputData.name}</div>
-      <input
-        className='w-full border border-black rounded pl-2 h-10  mb-[2%]'
-        type='text'
-        placeholder={inputData.placeHolder}
-      />
+    <div
+      className='h-screen flex items-center justify-center'
+      style={{ backgroundImage: 'url(/images/backgrounds/bg1.png)' }}>
+      <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+        <div className='mb-4'>
+          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='email'>
+            이메일
+          </label>
+          <input
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            id='email'
+            type='text'
+            placeholder='example@escape.elice'
+          />
+        </div>
+        <div className='mb-6'>
+          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='password'>
+            암호
+          </label>
+          <input
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline'
+            id='password'
+            type='password'
+            placeholder='******************'
+          />
+        </div>
+        <div className='flex items-center justify-between'>
+          <button className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type='button'>
+            로그인
+          </button>
+        </div>
+        <div className='flex items-center justify-between text-sm text-[#878787]'>
+          <button
+            onClick={() => {
+              () => navigate('/register');
+            }}>
+            회원가입
+          </button>
+          <button onClick={onForgotBtn}>비밀번호 찾기</button>
+        </div>
+      </form>
+      {showForgot && <Forgot />}
     </div>
   );
 };
 
-const BackGround = tw.div`
-  w-screen h-screen flex justify-center items-center flex-col
-`;
-const Title = tw.div`
-  mx-auto 
-  mt-auto 
-  mb-4 
-  text-3xl 
-  bg-[#3F51A2] 
-  text-white 
-  border 
-  border-white 
-  border-[6px] 
-  rounded-[24px]
-  w-[150px]
-  h-[60px]
-  flex
-  justify-center
-  items-center
-`;
-const InputContainer = tw.div`
-  rounded-[80px] w-[30%] h-3/5 mx-auto mb-auto bg-gradient-to-r from-cyan-200 to-blue-300   
-  border 
-  border-[#4497D4] 
-  border-[6px] 
-  relative
-`;
-const InnnerContainer = tw.div`
-  w-[80%] h-[84%] flex flex-col justify-center items-center mx-auto mt-[10%]
-`;
-const RegisterBtn = tw.button`
- bg-white w-1/2 mt-auto rounded-[18px]   
- text-2xl
- text-[#3F51A2]
- border 
- border-[#3F51A2]
- border-[6px] 
-`;
 export default Login;
