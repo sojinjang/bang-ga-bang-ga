@@ -1,7 +1,9 @@
 function isName(name) {
   return /^[가-힣]{2,4}/.test(name);
 }
-
+function isNickName(nickname) {
+  return /^[가-힣a-zA-Z0-9]{3,12}$/.test(nickname);
+}
 function isNum(numStr) {
   return /^[0-9]+$/.test(numStr);
 }
@@ -17,8 +19,8 @@ function isValidEmail(emailiInput) {
 }
 
 function isValidPassword(passwordInput) {
-  const passwordRegExp = /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$/;
+  const passwordRegExp = /(?=.*\d{1,50})(?=.*[~`!@#$%^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$/;
   return passwordRegExp.test(passwordInput);
 }
 
-export { isName, isNum, isPhoneNumber, isValidEmail, isValidPassword };
+export { isName, isNickName, isNum, isPhoneNumber, isValidEmail, isValidPassword };

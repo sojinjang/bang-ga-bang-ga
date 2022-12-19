@@ -1,46 +1,50 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { showForgotAtom } from '../recoil/login';
 
 const Forgot = () => {
   const showForgot = useSetRecoilState(showForgotAtom);
-  const navigate = useNavigate();
 
-  /**skip버튼 클릭시 모달창을 닫고 홈으로 이동해주는 함수 */
   const onCancelBtn = () => {
     showForgot(false);
   };
-  const onConfirmBtn = () => {};
-
+  const onConfirmBtn = (e) => {
+    e.preventDefault();
+    const correct = confirm('입력한 이메일이 정확한가요?');
+    {
+      correct && (confirm('입력하신 이메일로 임시 비밀번호가 발급되었습니다.'), showForgot(false));
+    }
+  };
   return (
     <Modal>
-      <div className='text-2xl mt-auto text-center'>
-        <div>방가네 식구가 되신 것을 환영합니다!🎉</div>
-        <br />
-        <div>바로 프로필을 작성하러 가실까요?</div>
+      <div className='text-2xl text-center mx-auto'>
+        <div className='mt-[20%]'>회원가입한 이메일 정보를 입력해주세요</div>
+        <div>
+          <EmailInput placeholder='이메일을 입력해주세요' type='email' required />
+        </div>
+        <div className='flex justify-right mt-[15%]'>
+          <button className='bg-gray-200 ml-auto px-4 py-2 rounded-[10px]' onClick={onCancelBtn}>
+            취소
+          </button>
+          <button className='bg-[#4A94D7] ml-2 px-4 py-2 rounded-[10px]' onClick={onConfirmBtn}>
+            확인
+          </button>
+        </div>
       </div>
-      <BtnContainer>
-        <button className='bg-gray-200  mx-5 p-4 rounded-[10px]' onClick={onCancelBtn}>
-          취소
-        </button>
-        <button className='bg-[#4A94D7] mx-5 p-4 rounded-[10px]' onClick={onConfirmBtn}>
-          확인
-        </button>
-      </BtnContainer>
     </Modal>
   );
 };
 
-const Modal = tw.div`
-  mx-auto rounded-[60px] h-[40%] w-[110%] border border-[#E24FA9]
-  flex flex-col justify-center items-center
-  absolute top-[10%] left-[-5%]
-  bg-white
+const EmailInput = tw.input`
+w-full border border-black text-lg rounded-lg pl-2 mt-4 h-12
 `;
-const BtnContainer = tw.div`
-  mt-auto mb-[20px] w-full mx-auto flex justify-center
+
+const Modal = tw.div`
+flex
+  mx-auto rounded-[30px] h-[40%] w-[30%] 
+  absolute top-[29%] left-[35%]
+  bg-white
 `;
 
 export default Forgot;
