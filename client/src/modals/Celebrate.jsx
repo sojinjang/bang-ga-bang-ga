@@ -9,7 +9,6 @@ const Celebrate = () => {
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
   const navigate = useNavigate();
 
-  /**skip버튼 클릭시 모달창을 닫고 홈으로 이동해주는 함수 */
   const onSkipBtn = () => {
     setShowCelebrate(false);
     navigate('/');
