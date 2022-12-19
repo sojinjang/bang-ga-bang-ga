@@ -41,6 +41,14 @@ const RecruitList = () => {
           {showRecruitPost && <Modal />}
         </div>
       </MainContainer>
+      <div className='flex justify-center mb-10'>
+        <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
+          1
+        </button>
+        <button className='w-[25px] h-[25px] text-sm text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'>
+          2
+        </button>
+      </div>
     </div>
   );
 };
