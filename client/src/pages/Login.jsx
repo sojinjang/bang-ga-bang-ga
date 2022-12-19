@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { showForgotAtom } from '../recoil/login';
 import Forgot from '../modals/Forgot';
 import { isValidEmail } from '../utils/validator';
+import Background from '../components/common/Background';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -48,9 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div
-      className='h-screen flex items-center justify-center'
-      style={{ backgroundImage: 'url(/images/backgrounds/bg1.png)' }}>
+    <Background img={'bg2'}>
       <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={onSubmit}>
         <label>
           이메일:
@@ -86,7 +85,6 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-
         <br />
         {error && <p className='text-red-500'>{error}</p>}
         <div className='flex items-center justify-between'>
@@ -102,7 +100,7 @@ const Login = () => {
         </div>
       </form>
       {showForgot && <Forgot />}
-    </div>
+    </Background>
   );
 };
 
