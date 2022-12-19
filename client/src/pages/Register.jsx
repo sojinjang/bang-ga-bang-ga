@@ -7,6 +7,7 @@ import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
 import * as validator from '../utils/validator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Background from '../components/common/Background';
 
 const Register = () => {
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -83,7 +84,7 @@ const Register = () => {
   };
 
   return (
-    <BackGround style={{ backgroundImage: 'url(/images/backgrounds/bg1.png)' }}>
+    <Background img={'bg1'}>
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
@@ -101,7 +102,7 @@ const Register = () => {
           </form>
         </InnerContainer>
       </InputContainer>
-    </BackGround>
+    </Background>
   );
 };
 
@@ -122,9 +123,9 @@ const InputBox = ({ inputData }) => {
   );
 };
 
-const BackGround = tw.div`
-  w-screen h-screen flex justify-center items-center flex-col bg-cover
-`;
+// const BackGround = tw.div`
+//   w-screen h-screen flex justify-center items-center flex-col bg-cover
+// `;
 const Title = tw.div`
   mx-auto 
   mt-auto 
