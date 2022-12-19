@@ -3,7 +3,7 @@ import './Buttons.css';
 
 const RegionButton = (props) => {
   return (
-    <button className='purpleButton' role='button'>
+    <button className='purpleButton mx-1' role='button'>
       {props.title}
     </button>
   );
