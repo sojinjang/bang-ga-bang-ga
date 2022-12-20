@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import tw from 'tailwind-styled-components';
+import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+
 import { RegionButton } from '../../components/buttons/Buttons';
 import RecruitTypeIcon from '../../components/recruit/RecruitTypeIcon';
 import userArray from '../../assets/images/user-profile/profile';
-import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
-import { useRecoilState } from 'recoil';
+import completeRibon from '../../assets/images/icon/complete-ribon.png';
+
+import Navigators from '../../components/common/Navigators';
+import Background from '../../components/common/Background';
 
 const RecruitList = () => {
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const REGION_DATA = ['홍대', '강남', '건대'];
 
   return (
-    <div className='px-[10vw]'>
+    <div className='px-[10vw] max-h-screen'>
       <RecruitTypeIcon />
       <ul className='flex flex-row justify-center mx-auto my-5'>
         {REGION_DATA.map((data, index) => (
@@ -33,7 +38,7 @@ const RecruitList = () => {
           <input className='required:border-red-500' type='checkbox' />
           <p className='ml-2'>모집중만 보기</p>
         </div>
-        <div className='grid grid-cols-3 grid-rows-2 gap-y-10 justify-items-center'>
+        <div className='grid grid-cols-3 grid-rows-2 gap-y-10 w-[1000px] mx-auto justify-items-center'>
           <ListItem />
           <ListItem />
           <ListItem />
@@ -56,13 +61,27 @@ const RecruitList = () => {
 };
 
 const Modal = () => {
-  const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
+  const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const [showRecruitModalPage, setShowRecruitModalPage] = useRecoilState(showRecruitModalPageAtom);
   const [firstModalData, setFirstModalData] = useState({
     title: '',
     count: 2,
     date: '',
   });
+  const [secondModalData, setSecondModalData] = useState({
+    region: '',
+    cafeName: '',
+    themeName: '',
+  });
+
+  const [titleRef, countRef, dateRef, regionRef, cafeRef, themeRef] = [
+    useRef(),
+    useRef(),
+    useRef(),
+    useRef(),
+    useRef(),
+    useRef(),
+  ];
 
   const FirstModal = () => {
     return (
@@ -71,6 +90,8 @@ const Modal = () => {
           <div className='flex flex-col mr-[20px]'>
             <span>제목</span>
             <input
+              defaultValue={firstModalData.title}
+              ref={titleRef}
               placeholder='제목을 입력하세요'
               className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
             />
@@ -78,6 +99,8 @@ const Modal = () => {
           <div className='flex flex-col'>
             <span>인원</span>
             <input
+              defaultValue={firstModalData.count}
+              ref={countRef}
               type='number'
               placeholder='2'
               min={2}
@@ -92,7 +115,12 @@ const Modal = () => {
         <div className='flex mt-5'>
           <div className='flex flex-col'>
             <span>접선 시간</span>
-            <input type='datetime-local' className='w-[300px] h-[45px] p-3 border border-solid border-gray-400' />
+            <input
+              defaultValue={firstModalData.date}
+              ref={dateRef}
+              type='datetime-local'
+              className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
+            />
           </div>
         </div>
         <div>
@@ -105,6 +133,11 @@ const Modal = () => {
             className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
             onClick={() => {
               setShowRecruitModalPage(2);
+              setFirstModalData({
+                title: titleRef.current.value,
+                count: countRef.current.value,
+                date: dateRef.current.value,
+              });
             }}>
             다음
           </button>
@@ -120,7 +153,7 @@ const Modal = () => {
           <p>지역</p>
           <ul className='flex justify-between'>
             <li>
-              <input type='radio' value={'홍대'} name='region' className='mr-2' />
+              <input ref={regionRef} type='radio' value={'홍대'} name='region' className='mr-2' />
               <span>홍대</span>
             </li>
             <li>
@@ -135,6 +168,8 @@ const Modal = () => {
           <div className='flex flex-col mt-5'>
             <span>방문 카페명</span>
             <input
+              defaultValue={secondModalData.cafeName}
+              ref={cafeRef}
               type='text'
               placeholder='방문 예정인 카페명을 입력하세요.'
               className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
@@ -143,6 +178,8 @@ const Modal = () => {
           <div className='flex flex-col mt-4'>
             <span>방문 테마명</span>
             <input
+              defaultValue={secondModalData.themeName}
+              ref={themeRef}
               type='text'
               placeholder='방문 예정인 카페의 테마명을 입력하세요.'
               className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
@@ -158,12 +195,27 @@ const Modal = () => {
               className='w-[60px] h-[35px] right-[100px] bottom-6 bg-gray-400/50 drop-shadow-lg rounded-lg align-middle absolute'
               onClick={() => {
                 setShowRecruitModalPage(1);
+                setSecondModalData({
+                  region: regionRef.current.value,
+                  cafeName: cafeRef.current.value,
+                  themeName: themeRef.current.value,
+                });
               }}>
               이전
             </button>
             <button
               className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
-              onClick={() => {}}>
+              onClick={() => {
+                const recruitPostObject = {
+                  title: firstModalData.title,
+                  count: firstModalData.count,
+                  date: firstModalData.date,
+                  region: regionRef.current.value,
+                  cafeName: cafeRef.current.value,
+                  themeName: themeRef.current.value,
+                };
+                console.log(recruitPostObject);
+              }}>
               제출
             </button>
           </div>
@@ -212,9 +264,12 @@ const Modal = () => {
 };
 
 const ListItem = () => {
+  const [isComplete, setIsComplete] = useState(false);
+
   return (
     <ListContainer>
-      <p className='pt-5 text-lg font-semibold h-[70px]'>
+      <CompleteRibon src={completeRibon} className={isComplete ? '' : 'hidden'} />
+      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer' onClick={() => setIsComplete(true)}>
         초고수 환영 공포 쫄보 금지
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
@@ -250,8 +305,10 @@ const ListItem = () => {
         </svg>
         <span className='ml-0.5'>13</span>
       </div>
-      <p className=''>서울 이스케이프룸 홍대점 - 카지노</p>
-      <p className='mb-1'>12월 13일(금) 15:00 예정</p>
+      <div className='cursor-pointer'>
+        <p>서울 이스케이프룸 홍대점 - 카지노</p>
+        <p className='mb-1'>12월 13일(금) 15:00 예정</p>
+      </div>
       <span className='text-2xl ml-[13px]'>👑</span>
       <div className='grid gap-3 grid-cols-4 grid-rows-2'>
         {userArray.map((user, index) => (
@@ -273,6 +330,11 @@ const MainContainer = tw.div`
 mb-12
 `;
 
-const ListContainer = tw.div`z
-  w-[280px] h-[340px] rounded-xl bg-gray-400 text-white p-5 drop-shadow-xl
+const ListContainer = tw.div`
+  w-[280px] h-[340px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500'
+  bg-gray-400 text-white 
+`;
+
+const CompleteRibon = tw.img`
+  absolute w-[71px] h-[84.5px] top-[-6px] right-[-6px]
 `;
