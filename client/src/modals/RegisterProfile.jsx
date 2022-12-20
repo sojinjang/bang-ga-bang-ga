@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import tw from 'tailwind-styled-components';
 import { useImmer } from 'use-immer';
-
+import tw from 'tailwind-styled-components';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
@@ -121,7 +121,7 @@ const RegisterProfile = () => {
   const onSubmitUserInfo = async (e) => {
     try {
       const response = await fetch('/user', {
-        method: 'POST',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userAddInfo),
       });
@@ -146,8 +146,10 @@ const RegisterProfile = () => {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width: '20%', // specify desired width
-      height: '60%', // specify desired height
+      width: '26%',
+      height: '62%',
+      'border-radius': '50px',
+      background: '#D0DBF6',
     },
   };
 
@@ -172,19 +174,23 @@ const RegisterProfile = () => {
           </button>
         </div>
         <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
-          <h2>프로필 사진을 업로드하세요</h2>
-          {tempProfileImg && (
-            <img className='rounded-full' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
-          )}
+          <h2 className='text-center text-xl'>프로필 사진을 업로드하세요</h2>
+          <div className='w-3/4 h-3/4 flex items-center mx-auto'>
+            {tempProfileImg ? (
+              <img
+                className='rounded-full w-full h-3/4'
+                src={URL.createObjectURL(tempProfileImg)}
+                alt='uploaded image'
+              />
+            ) : (
+              <div className='rounded-full bg-gray-400 w-full h-3/4'></div>
+            )}
+          </div>
           <form onSubmit={onSubmitProfileImg}>
             <input type='file' onChange={onChangeProfileImg} />
-            <div className='w-full flex justify-between'>
-              <button className='ml-auto border border-black' type='submit'>
-                저장하기
-              </button>
-              <button className='ml-2 border border-black' onClick={onCancelProfileImg}>
-                취소하기
-              </button>
+            <div className='w-full flex justify-center mt-4'>
+              <EditBtn type='submit'>저장하기</EditBtn>
+              <EditBtn onClick={onCancelProfileImg}>취소하기</EditBtn>
             </div>
           </form>
         </Modal>
@@ -246,4 +252,7 @@ const SelectInputBox = ({ inputData, handleChange }) => (
   </div>
 );
 
+const EditBtn = tw.button`
+  text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
+`;
 export default RegisterProfile;
