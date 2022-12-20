@@ -6,7 +6,7 @@ const Footer = () => {
       className='bg-black 
     w-screen 
     text-[#9668BA] 
-    py-10 
+    py-5 
     flex 
     justify-center 
     absolute 

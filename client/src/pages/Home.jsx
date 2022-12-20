@@ -3,13 +3,13 @@ import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navigators from '../components/common/Navigators';
+import BackgroundScroll from '../components/common/BackgroundScroll';
 
-// border-trbl
 const Home = () => {
   const navigate = useNavigate();
   return (
     <>
-      <BackGround style={{ backgroundImage: 'url(images/backgrounds/bg1.png)' }}>
+      <BackgroundScroll img={'bg1'}>
         <Navigators />
         <HomeIntro>
           <p className="pb-3">방가인이 되어보세요!</p>
@@ -28,9 +28,7 @@ const Home = () => {
             </button>
           </div>
         </HomeIntro>
-      </BackGround>
-
-      <BackGround style={{ backgroundImage: 'url(images/backgrounds/bg1.png)' }}>
+        <div className='h-[400px] w-screen'></div>
         <NoticeDiv>
           <p className='text-4xl font-semibold'>NOTICE</p>
           <p className='mt-[20px] mb-[20px]'>아래 내용으로 3번 이상 신고된 계정은 이용이 제한될 수 있습니다.</p>
@@ -59,15 +57,11 @@ const Home = () => {
           </div>
         </NoticeDiv>
         <Footer />
-      </BackGround>
+      </BackgroundScroll>
     </>
   );
 };
-// w-screen h-screen flex justify-center items-center bg-no-repeat
 
-const BackGround = tw.div`
-  w-screen h-[100vh] flex flex-col justify-center items-center bg-cover relative 
-`;
 const HomeIntro = tw.div`
   mx-auto
   flex
@@ -90,6 +84,7 @@ const NoticeDiv = tw.div`
   justify-center 
   items-center 
 `;
+
 const NoticeCard = tw.div`
   border 
   w-[230px] 
