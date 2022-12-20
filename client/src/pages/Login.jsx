@@ -5,6 +5,7 @@ import { showForgotAtom } from '../recoil/login';
 import Forgot from '../modals/Forgot';
 import { isValidEmail } from '../utils/validator';
 import Background from '../components/common/Background';
+import Navigators from '../components/common/Navigators';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const Login = () => {
 
   return (
     <Background img={'bg2'}>
+      <Navigators />
       <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={onSubmit}>
         <label>
           이메일:
