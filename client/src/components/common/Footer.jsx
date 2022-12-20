@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div
       className='bg-black 
-    w-screen 
+    w-full
     text-[#9668BA] 
     py-5 
     flex 
