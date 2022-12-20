@@ -38,6 +38,7 @@ const Login = () => {
       });
       const result = await response.json();
       if (result.success) {
+        //토근 받아서 세션에 넣는 로직 result.token
         window.location.href = '/';
       } else {
         setError(response.error);
