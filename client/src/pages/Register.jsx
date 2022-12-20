@@ -66,6 +66,7 @@ const Register = () => {
       const response = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        //todo:비밀번호 확인은 서버로 전송 X
         body: JSON.stringify({ userName, userNickname, userPhoneNum, userEmail, userPWD, userPWDConfirm }),
       });
       const result = await response.json();

@@ -12,111 +12,20 @@ import Modal from 'react-modal';
 const EditUserInfo = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
-
-  const modalStyle = {
-    content: {
-      top: '35%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '20%', // specify desired width
-      height: '60%', // specify desired height
+  const USER_BASIC_DATA = [
+    { name: '이름', placeHolder: '김탈출', type: 'text' },
+    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text' },
+    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text' },
+    { name: '이메일', placeHolder: 'example@escape.elice', type: 'email' },
+    { name: '새 비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password' },
+    {
+      name: '비밀번호 확인',
+      placeHolder: '비밀번호를 다시 한번 입력해주세요',
+      type: 'password',
     },
-  };
-  return (
-    <BackgroundScroll img={'bg3'}>
-      <div className='w-full h-[80%] my-auto relative'>
-        {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
-        <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
-          <h2>프로필 사진을 업로드하세요</h2>
-          <img className='rounded-full' alt='uploaded image' />
-          <form>
-            <input type='file' />
-            <div className='w-full flex justify-between'>
-              <button className='ml-auto border border-black' type='submit'>
-                저장하기
-              </button>
-              <button className='ml-2 border border-black'>취소하기</button>
-            </div>
-          </form>
-        </Modal>
-        <div className='h-1/3 items-center flex flex-col'>
-          <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
-        </div>
-        <div className='flex mx-auto justify-center '>
-          <EditBox>
-            <EditTitle>기본정보 수정</EditTitle>
-            <EditBasicInfo setShowWithdraw={setShowWithdraw} />
-          </EditBox>
-          <EditBox>
-            <EditTitle>추가정보 수정</EditTitle>
-            <EditAddInfo />
-          </EditBox>
-        </div>
-      </div>
-    </BackgroundScroll>
-  );
-};
-
-const UserProfile = ({ setShowAddProfileIcon }) => {
-  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
-  return (
-    <>
-      <div className='w-[120px] h-[120px] rounded-full bg-gray-300 relative'>
-        {profileImg && (
-          <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
-        )}
-        <div className='absolute w-10 h-10  top-0 left-[90%]'>
-          <button onClick={() => setShowAddProfileIcon(true)}>
-            <FontAwesomeIcon icon={faPen} />
-          </button>
-        </div>
-      </div>
-
-      <div>유저닉네임</div>
-    </>
-  );
-};
-
-const EditBasicInfo = ({ setShowWithdraw }) => {
-  const EDIT_DATA = [
-    { name: '이름', type: 'text', placeholder: '김탈출' },
-    { name: '닉네임', type: 'text', placeholder: '위기탈출넘버원' },
-    { name: '핸드폰 번호', type: 'text', placeholder: '바꿀 핸드폰 번호를 입력해주세요' },
-    { name: '이메일', type: 'text', placeholder: '바꿀 이메일을 입력해주세요' },
-    { name: '새 비밀번호', type: 'password', placeholder: '새로운 비밀번호를 입력해주세요' },
-    { type: 'password', placeholder: '비밀번호 확인' },
   ];
-  return (
-    <EditInputContainer>
-      <div className='w-4/5 h-[95%] flex flex-col  mx-auto'>
-        <div className='my-auto w-full h-[90%] flex flex-col justify-center'>
-          {EDIT_DATA.map((data) => (
-            <EditInputBox key={data.name} data={data} />
-          ))}
-          <div className='ml-auto'>
-            <button className='text-gray-400 underline hover:text-gray-600' onClick={() => setShowWithdraw(true)}>
-              탈퇴하기
-            </button>
-            <button className='bg-white shadow-md rounded-md px-4 py-1 ml-3 text-gray-500 hover:bg-gray-500 hover:text-white'>
-              변경
-            </button>
-          </div>
-        </div>
-      </div>
-    </EditInputContainer>
-  );
-};
-const EditInputBox = ({ data }) => (
-  <div className='flex mb-4'>
-    <InputName>{data.name}</InputName>
-    <input className='ml-auto w-[75%] rounded-full border pl-2' type={data.type} placeholder={data.placeholder} />
-  </div>
-);
-const EditAddInfo = () => {
-  const USER_INPUT_DATA = [
+  const USER_ADD_DATA = [
+    { name: '한줄소개', placeHolder: '한 줄 소개', type: 'text' },
     { name: '성별', options: ['남자', '여자'], type: 'radio' },
     { name: '나이', options: ['10대', '20대', '30대 이상'], type: 'radio' },
     { name: '선호 지역', options: ['강남', '건대', '홍대'], type: 'radio' },
@@ -184,58 +93,134 @@ const EditAddInfo = () => {
       type: 'select',
     },
   ];
-
   return (
-    <EditInputContainer>
-      {USER_INPUT_DATA.map((inputData) => (
-        <InputBox inputData={inputData} key={inputData.name} />
-      ))}
-      <div className='flex justify-end w-[90%] mt-2'>
-        <button className=' bg-white shadow-md rounded-md px-4 py-1 ml-3 text-gray-500 hover:bg-gray-500 hover:text-white'>
-          변경
-        </button>
+    <BackgroundScroll img={'bg3'} className='relative'>
+      <div className='w-full h-[5%]'></div>
+      <div className='h-[15%] justify-center items-center flex flex-col'>
+        <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
+        <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
       </div>
-    </EditInputContainer>
+      {showWithdraw && <Withdraw setShowWithdraw={setShowWithdraw} />}
+
+      <div className='h-[80%] w-1/2 flex flex-col mx-auto justify-center items-center'>
+        <EditBox title={'기본정보 수정'} data={USER_BASIC_DATA}>
+          <button className='text-gray-500 underline hover:text-black' onClick={() => setShowWithdraw(true)}>
+            탈퇴하기
+          </button>
+          <EditBtn>변경</EditBtn>
+        </EditBox>
+        <EditBox title={'추가정보 수정'} data={USER_ADD_DATA}>
+          <EditBtn>변경</EditBtn>
+        </EditBox>
+      </div>
+    </BackgroundScroll>
   );
 };
-const InputBox = ({ inputData, handleChange }) => (
-  <div className='mx-[5%] w-[90%] h-10 flex'>
-    <InputName>{inputData.name}</InputName>
-    <InputValue>
-      {inputData.type == 'radio' ? (
-        inputData.options.map((option) => (
-          <div className='ml-2 text-center' key={inputData.name + option}>
-            <label value={option}>{option}</label>
-            <input type='radio' name={inputData.name} onChange={handleChange} value={option} />
-          </div>
-        ))
-      ) : (
-        <select className='border border-black' name={inputData.name} onChange={handleChange}>
-          {inputData.options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      )}
-    </InputValue>
-  </div>
-);
 
-const EditBox = tw.div`
-  w-2/5 
-`;
-const EditTitle = tw.div`
-  border-b border-black text-xl w-[90%] mx-auto
-`;
-const EditInputContainer = tw.div`
-  w-4/5 h-full  mx-auto mt-4 rounded-3xl bg-[#f4e3f1] shadow-2xl flex flex-col justify-center
-`;
-const InputName = tw.div`
-  w-1/5 flex items-center
-`;
-const InputValue = tw.div`
-  ml-auto w-4/5 flex items-center text-gray-500
+const UserProfile = ({ setShowAddProfileIcon }) => {
+  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
+  return (
+    <>
+      <div className='w-[160px] h-[160px] rounded-full bg-gray-300 relative'>
+        {profileImg && (
+          <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
+        )}
+        <div className='absolute w-10 h-10  top-0 left-[90%]'>
+          <button onClick={() => setShowAddProfileIcon(true)}>
+            <FontAwesomeIcon icon={faPen} />
+          </button>
+        </div>
+      </div>
+
+      <div>유저닉네임</div>
+    </>
+  );
+};
+const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
+  const modalStyle = {
+    content: {
+      top: '35%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '26%',
+      height: '62%',
+      'border-radius': '50px',
+      background: '#D0DBF6',
+    },
+  };
+  const [tempProfileImg, setTempProfileImg] = useState(false);
+  return (
+    <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
+      <h2 className='text-center text-xl'>프로필 사진을 업로드하세요</h2>
+      <div className='w-3/4 h-3/4 flex items-center mx-auto'>
+        {tempProfileImg ? (
+          <img className='rounded-full w-full h-3/4' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
+        ) : (
+          <div className='rounded-full bg-gray-400 w-full h-3/4'></div>
+        )}
+      </div>
+      <form>
+        <input type='file' onChange={(e) => setTempProfileImg(e.target.files[0])} />
+        <div className='w-full flex justify-center mt-4'>
+          <EditBtn type='submit'>저장하기</EditBtn>
+          <EditBtn>취소하기</EditBtn>
+        </div>
+      </form>
+    </Modal>
+  );
+};
+const EditInput = ({ inputData }) => {
+  return (
+    <div className='w-full h-8 mb-6 flex'>
+      <div className='w-1/5 flex justify-start items-center text-gray-500'>{inputData.name}</div>
+      <div className='w-[80%] flex'>
+        {inputData.options ? (
+          inputData.type === 'radio' ? (
+            inputData.options.map((option) => (
+              <div className='ml-2 text-center' key={inputData.name + option}>
+                <label value={option}>{option}</label>
+                <input type='radio' name={inputData.name} value={option} />
+              </div>
+            ))
+          ) : (
+            <select className='border border-black' name={inputData.name}>
+              {inputData.options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          )
+        ) : (
+          <input
+            className='w-full h-full rounded-full pl-3'
+            type={inputData.type}
+            placeholder={inputData.placeHolder}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+const EditBox = ({ data, children, title }) => {
+  return (
+    <div className='flex flex-col w-full h-1/2 '>
+      <div className='border-b-2 border-black  text-2xl'>{title}</div>
+      <div className='w-4/5 px-[5%] h-3/4 my-auto bg-red-100 mx-auto rounded-3xl flex flex-col justify-center'>
+        {data.map((inputData) => (
+          <EditInput key={inputData.name} inputData={inputData} />
+        ))}
+        <div className='flex justify-end'>{children}</div>
+      </div>
+    </div>
+  );
+};
+
+const EditBtn = tw.button`
+  text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
 `;
 
 export default EditUserInfo;
