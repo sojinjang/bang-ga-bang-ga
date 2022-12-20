@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import tw from 'tailwind-styled-components';
 import { RegionButton } from '../../components/buttons/Buttons';
 import RecruitTypeIcon from '../../components/recruit/RecruitTypeIcon';
 import userArray from '../../assets/images/user-profile/profile';
+import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState } from 'recoil';
 
 const RecruitList = () => {
-  const [showRecruitPost, setShowRecruitPost] = useState(true);
+  const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const REGION_DATA = ['홍대', '강남', '건대'];
 
   return (
@@ -54,9 +56,53 @@ const RecruitList = () => {
 };
 
 const Modal = () => {
+  const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
+  const [showRecruitModalPage, setShowRecruitModalPage] = useRecoilState(showRecruitModalPageAtom);
+
+  const FirstModal = () => {
+    return (
+      <div>
+        <div className='flex justify-between mt-10 mx-[110px]'>
+          <div className='flex flex-col'>
+            <span>제목</span>
+            <input className='w-[300px] h-[50px] p-3 border border-solid border-gray-400' />
+          </div>
+          <div className='flex flex-col'>
+            <span>인원</span>
+            <input
+              type='number'
+              placeholder='2'
+              min={2}
+              max={8}
+              className='w-[60px] h-[50px] p-3 border border-solid border-gray-400'
+            />
+          </div>
+        </div>
+        <div className='flex mt-5'>
+          <div className='flex flex-col mx-[110px]'>
+            <span>접선 시간</span>
+            <input type='date' className='w-[300px] h-[50px] p-3 border border-solid border-gray-400' />
+          </div>
+        </div>
+        <div>
+          <button
+            className='w-[60px] h-[35px] right-[100px] bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
+            onClick={() => setShowRecruitPost(false)}>
+            닫기
+          </button>
+          <button
+            className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
+            onClick={() => setShowRecruitModalPage(2)}>
+            다음
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className='absolute'>
-      <div className='w-[600px] h-[280px] bg-black'>hi</div>
+    <div className='rounded-xl absolute top-[70px] w-[600px] h-[280px] bg-slate-100 drop-shadow-lg'>
+      <FirstModal />
     </div>
   );
 };
