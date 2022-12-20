@@ -11,7 +11,7 @@ const Celebrate = () => {
 
   const onSkipBtn = () => {
     setShowCelebrate(false);
-    navigate('/');
+    navigate('/login');
   };
   const onRegisterProfileBtn = () => {
     setShowCelebrate(false);

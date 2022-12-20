@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import MyPage from '../pages/MyPage';
 import NotFound from '../pages/NotFound';
 import Register from '../pages/Register';
+import EditUserInfo from '../pages/Mypage/EditUserInfo';
 import RecruitList from '../pages/recruit-list/RecruitList';
 
 const Router = () => {
@@ -15,14 +16,10 @@ const Router = () => {
         <Route path='/recruit-list' element={<RecruitList />} />
         <Route path='/recruit-map' element={<Home />} />
         <Route path='/cafeinfo' element={<Home />} />
-        <Route path='/mypage' element={<MyPage />}>
-          <Route path='edit' element={<Home />} />
-          <Route path='confirm-pwd' element={<Home />} />
-          <Route path='matching-history' element={<Home />} />
-        </Route>
+        <Route path='/mypage' element={<MyPage />} />
+        <Route path='/mypage/edit' element={<EditUserInfo />} />
         <Route path='/register' element={<Register />}></Route>
         <Route path='/login' element={<Login />}></Route>
-
         <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
