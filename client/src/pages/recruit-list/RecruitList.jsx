@@ -204,7 +204,7 @@ const Modal = () => {
           <div className='flex flex-col mt-5'>
             <span>방문 카페명</span>
             <input
-              defaultValue={secondModalData.cafeName}
+              defaultValue={recruitPostData.cafeName}
               ref={cafeRef}
               type='text'
               placeholder='방문 예정인 카페명을 입력하세요.'
@@ -214,7 +214,7 @@ const Modal = () => {
           <div className='flex flex-col mt-4'>
             <span>방문 테마명</span>
             <input
-              defaultValue={secondModalData.themeName}
+              defaultValue={recruitPostData.themeName}
               ref={themeRef}
               type='text'
               placeholder='방문 예정인 카페의 테마명을 입력하세요.'
