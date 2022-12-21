@@ -183,22 +183,64 @@ const Modal = () => {
   };
 
   const SecondModal = () => {
+    const checkRegion = (e) => {
+      regionRef.current.forEach((node) => {
+        if (node.checked) {
+          node.defaultChecked = true;
+          const currentValue = e.target.value;
+          setRecruitPostData((prevState) => {
+            return {
+              ...prevState,
+              region: currentValue,
+            };
+          });
+        }
+      });
+    };
+
     return (
       <div className='flex'>
         <div className='mt-10 ml-[40px] mr-[30px]'>
           <p>지역</p>
           <ul className='flex justify-between'>
             <li>
-              <input ref={regionRef} type='radio' value={'홍대'} name='region' className='mr-2' />
-              <span>홍대</span>
+              <label>
+                <input
+                  onClick={(e) => checkRegion(e)}
+                  ref={(el) => (regionRef.current[0] = el)}
+                  type='radio'
+                  value={'홍대'}
+                  name='region'
+                  className='mr-2'
+                />
+                홍대
+              </label>
             </li>
             <li>
-              <input type='radio' value={'강남'} name='region' className='mr-2' />
-              <span>강남</span>
+              <label>
+                <input
+                  onClick={(e) => checkRegion(e)}
+                  ref={(el) => (regionRef.current[1] = el)}
+                  type='radio'
+                  value={'강남'}
+                  name='region'
+                  className='mr-2'
+                />
+                강남
+              </label>
             </li>
             <li>
-              <input type='radio' value={'건대'} name='region' className='mr-2' />
-              <span>건대</span>
+              <label>
+                <input
+                  onClick={(e) => checkRegion(e)}
+                  ref={(el) => (regionRef.current[2] = el)}
+                  type='radio'
+                  value={'건대'}
+                  name='region'
+                  className='mr-2'
+                />
+                건대
+              </label>
             </li>
           </ul>
           <div className='flex flex-col mt-5'>
