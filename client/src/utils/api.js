@@ -1,6 +1,6 @@
 import { getCookieValue } from './cookie.js';
-import { ErrorMessage } from '../constants/ErrorMessage.js';
-import { Keys } from '../constants/Keys.js';
+import { ErrorMessage } from '../constants/ErrorMessages';
+import { Keys } from '../constants/Keys';
 
 async function get(endpoint, params = '') {
   const apiUrl = params === '' ? endpoint : `${endpoint}/${params}`;
