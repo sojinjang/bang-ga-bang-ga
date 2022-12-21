@@ -1,13 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
 import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
-import { RegionButton } from '../../components/buttons/Buttons';
-import RecruitTypeIcon from '../../components/recruit/RecruitTypeIcon';
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibon from '../../assets/images/icon/complete-ribon.png';
 
+import { RegionButton } from '../../components/buttons/Buttons';
 import Navigators from '../../components/common/Navigators';
 import Background from '../../components/common/Background';
 
@@ -16,47 +15,82 @@ const RecruitList = () => {
   const REGION_DATA = ['홍대', '강남', '건대'];
 
   return (
-    <div className='px-[10vw] max-h-screen'>
-      <RecruitTypeIcon />
-      <ul className='flex flex-row justify-center mx-auto my-5'>
-        {REGION_DATA.map((data, index) => (
-          <li key={index}>
-            <RegionButton title={data} />
-          </li>
-        ))}
-      </ul>
-      <MainContainer className='relative'>
-        <div className='flex justify-end drop-shadow-xl'>
-          <button
-            onClick={() => setShowRecruitPost(true)}
-            className='mb-3 border-solid border-[1px] p-1.5 border-gray-500'>
-            글쓰기
-          </button>
-        </div>
-        <hr></hr>
-        <div className='flex justify-end my-3'>
-          <input className='required:border-red-500' type='checkbox' />
-          <p className='ml-2'>모집중만 보기</p>
-        </div>
-        <div className='grid grid-cols-3 grid-rows-2 gap-y-10 w-[1000px] mx-auto justify-items-center'>
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          <ListItem />
-          {showRecruitPost && <Modal />}
-        </div>
-      </MainContainer>
-      <div className='flex justify-center mb-10'>
-        <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
-          1
-        </button>
-        <button className='w-[25px] h-[25px] text-sm text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'>
-          2
-        </button>
+    <Background img={'bg1'}>
+      <Navigators />
+      <div className='px-[10vw] w-screen h-screen'>
+        <MainContainer>
+          <FilterContainer>
+            <label className='flex mb-3 text-gray-100 justify-around'>
+              <input className='required:border-red-500' type='checkbox' />
+              모집중만 보기
+            </label>
+            <div>
+              <select className='w-[110px]' name='filter' id=''>
+                <option value=''>--필터링--</option>
+                <option value=''>난이도순</option>
+                <option value=''>활동성순</option>
+                <option value=''>평점순</option>
+                <option value=''>리뷰많은순</option>
+              </select>
+            </div>
+          </FilterContainer>
+          <div className='flex justify-end mb-5'>
+            <ul className='flex flex-row justify-center mr-[235px]'>
+              {REGION_DATA.map((data, index) => (
+                <li key={index}>
+                  <RegionButton title={data} />
+                </li>
+              ))}
+            </ul>
+            <div className='flex justify-end drop-shadow-xl'>
+              <button
+                onClick={() => setShowRecruitPost(true)}
+                className='mb-3 mr-[75px] border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
+                글쓰기
+              </button>
+            </div>
+          </div>
+          <ListItemContainer>
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            <ListItem />
+            {showRecruitPost && <Modal />}
+            <svg
+              className='absolute top-[320px] -right-[80px]'
+              width='80'
+              height='80'
+              viewBox='0 0 8 14'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'>
+              <path
+                d='M5.17168 6.99999L0.22168 2.04999L1.63568 0.635986L7.99968 6.99999L1.63568 13.364L0.22168 11.95L5.17168 6.99999Z'
+                fill='black'
+              />
+            </svg>
+            <svg
+              className='absolute top-[320px] -left-[80px]'
+              width='80'
+              height='80'
+              viewBox='0 0 8 14'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'>
+              <path
+                d='M2.828 6.99999L7.778 11.95L6.364 13.364L0 6.99999L6.364 0.635986L7.778 2.04999L2.828 6.99999Z'
+                fill='black'
+              />
+            </svg>
+          </ListItemContainer>
+          <PaginationButton>
+            <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
+              1
+            </button>
+          </PaginationButton>
+        </MainContainer>
       </div>
-    </div>
+    </Background>
   );
 };
 
@@ -252,7 +286,7 @@ const Modal = () => {
   };
 
   return (
-    <div className='rounded-xl absolute top-[70px] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
+    <div className='rounded-xl absolute top-[65px] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
       <div className={showRecruitModalPage === 1 ? '' : 'hidden'}>
         <FirstModal />
       </div>
@@ -313,7 +347,7 @@ const ListItem = () => {
       <div className='grid gap-3 grid-cols-4 grid-rows-2'>
         {userArray.map((user, index) => (
           <img
-            className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
+            className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
             src={user['url']}
             alt='유저 프로필'
             key={index}
@@ -327,7 +361,8 @@ const ListItem = () => {
 export default RecruitList;
 
 const MainContainer = tw.div`
-mb-12
+mt-12
+relative
 `;
 
 const ListContainer = tw.div`
@@ -337,4 +372,16 @@ const ListContainer = tw.div`
 
 const CompleteRibon = tw.img`
   absolute w-[71px] h-[84.5px] top-[-6px] right-[-6px]
+`;
+
+const PaginationButton = tw.div`
+  flex justify-center mt-7
+`;
+
+const FilterContainer = tw.div`
+  flex flex-col absolute -right-[80px] top-[65px]
+`;
+
+const ListItemContainer = tw.div`
+  grid grid-cols-3 grid-rows-2 gap-y-10 w-[1000px] mx-auto justify-items-center relative
 `;
