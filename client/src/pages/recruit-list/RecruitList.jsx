@@ -17,7 +17,7 @@ const RecruitList = () => {
   return (
     <Background img={'bg1'}>
       <Navigators />
-      <div className='px-[10vw] w-screen h-screen'>
+      <div className='px-[10vw] w-screen'>
         <MainContainer>
           <FilterContainer>
             <label className='flex mb-3 text-gray-100 justify-around'>
@@ -97,12 +97,10 @@ const RecruitList = () => {
 const Modal = () => {
   const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const [showRecruitModalPage, setShowRecruitModalPage] = useRecoilState(showRecruitModalPageAtom);
-  const [firstModalData, setFirstModalData] = useState({
+  const [recruitPostData, setRecruitPostData] = useState({
     title: '',
     count: 2,
     date: '',
-  });
-  const [secondModalData, setSecondModalData] = useState({
     region: '',
     cafeName: '',
     themeName: '',
@@ -112,7 +110,7 @@ const Modal = () => {
     useRef(),
     useRef(),
     useRef(),
-    useRef(),
+    useRef([]),
     useRef(),
     useRef(),
   ];
@@ -124,7 +122,7 @@ const Modal = () => {
           <div className='flex flex-col mr-[20px]'>
             <span>제목</span>
             <input
-              defaultValue={firstModalData.title}
+              defaultValue={recruitPostData.title}
               ref={titleRef}
               placeholder='제목을 입력하세요'
               className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
@@ -133,7 +131,7 @@ const Modal = () => {
           <div className='flex flex-col'>
             <span>인원</span>
             <input
-              defaultValue={firstModalData.count}
+              defaultValue={recruitPostData.count}
               ref={countRef}
               type='number'
               placeholder='2'
@@ -150,7 +148,7 @@ const Modal = () => {
           <div className='flex flex-col'>
             <span>접선 시간</span>
             <input
-              defaultValue={firstModalData.date}
+              defaultValue={recruitPostData.date}
               ref={dateRef}
               type='datetime-local'
               className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
@@ -167,10 +165,14 @@ const Modal = () => {
             className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
             onClick={() => {
               setShowRecruitModalPage(2);
-              setFirstModalData({
-                title: titleRef.current.value,
-                count: countRef.current.value,
-                date: dateRef.current.value,
+              setRecruitPostData((prevState) => {
+                return {
+                  ...prevState,
+
+                  title: titleRef.current.value,
+                  count: countRef.current.value,
+                  date: dateRef.current.value,
+                };
               });
             }}>
             다음
@@ -229,10 +231,13 @@ const Modal = () => {
               className='w-[60px] h-[35px] right-[100px] bottom-6 bg-gray-400/50 drop-shadow-lg rounded-lg align-middle absolute'
               onClick={() => {
                 setShowRecruitModalPage(1);
-                setSecondModalData({
-                  region: regionRef.current.value,
-                  cafeName: cafeRef.current.value,
-                  themeName: themeRef.current.value,
+                setRecruitPostData((prevState) => {
+                  return {
+                    ...prevState,
+
+                    cafeName: cafeRef.current.value,
+                    themeName: themeRef.current.value,
+                  };
                 });
               }}>
               이전
@@ -240,15 +245,16 @@ const Modal = () => {
             <button
               className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
               onClick={() => {
-                const recruitPostObject = {
-                  title: firstModalData.title,
-                  count: firstModalData.count,
-                  date: firstModalData.date,
-                  region: regionRef.current.value,
-                  cafeName: cafeRef.current.value,
-                  themeName: themeRef.current.value,
-                };
-                console.log(recruitPostObject);
+                const dateValue = recruitPostData.date;
+                const parsedDate = parseInt(dateValue.toString().replace(/[^0-9]/g, ''));
+
+                setRecruitPostData((prevState) => {
+                  return {
+                    ...prevState,
+
+                    date: parsedDate,
+                  };
+                });
               }}>
               제출
             </button>
