@@ -16,9 +16,8 @@ export default Profile;
 
 const Container = tw.div`
   relative
-  w-[330px]
-  h-[330px]
-  mt-[80px]
+  w-[250px]
+  h-[250px]
 `;
 
 const ProfileImg = tw.img`
@@ -34,7 +33,7 @@ const ProfileImg = tw.img`
 `;
 
 const Hat = tw.img`
-  w-[185px]
-  translate-x-[138px]
-  translate-y-[-60px]
+  w-[130px]
+  translate-x-[110px]
+  translate-y-[-45px]
 `;
