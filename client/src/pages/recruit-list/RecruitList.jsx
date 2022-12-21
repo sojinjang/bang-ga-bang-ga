@@ -256,7 +256,7 @@ const Modal = () => {
                   };
                 });
               }}>
-              제출
+              등록
             </button>
           </div>
         </div>
