@@ -97,7 +97,6 @@ const EditUserInfo = () => {
   return (
     <BackgroundScroll img={'bg3'} className='relative'>
       <Navigators />
-      <div className='w-full h-[5%]'></div>
       <div className='h-[15%] justify-center items-center flex flex-col'>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />
         <UserProfile setShowAddProfileIcon={setShowAddProfileIcon} />
