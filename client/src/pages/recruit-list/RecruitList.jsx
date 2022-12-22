@@ -200,18 +200,14 @@ const Modal = () => {
 
   const SecondModal = () => {
     const checkRegion = (e) => {
-      regionRef.current.forEach((node) => {
-        if (node.checked) {
-          node.defaultChecked = true;
-          const currentValue = e.target.value;
-          setRecruitPostData((prevState) => {
-            return {
-              ...prevState,
-              region: currentValue,
-            };
-          });
-        }
-      });
+      if (e.target.checked) {
+        setRecruitPostData((prevState) => {
+          return {
+            ...prevState,
+            region: e.target.value,
+          };
+        });
+      }
     };
 
     return (
@@ -282,7 +278,10 @@ const Modal = () => {
           <div>
             <button
               className='w-[60px] h-[35px] right-[168px] bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
-              onClick={() => setShowRecruitPost(false)}>
+              onClick={() => {
+                setShowRecruitModalPage(1);
+                setShowRecruitPost(false);
+              }}>
               닫기
             </button>
             <button
