@@ -108,7 +108,6 @@ const Home = () => {
       </div>
       <NoticeDiv>
         <div className='flex w-full'>
-          <p className='w-[10%] h-full'></p>
           <p className='text-4xl font-semibold mx-auto'>NOTICE</p>
         </div>
         <p className='mt-[20px] mb-[20px]'>아래 내용으로 3번 이상 신고된 계정은 이용이 제한될 수 있습니다.</p>
