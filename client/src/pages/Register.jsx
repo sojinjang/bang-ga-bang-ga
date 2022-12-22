@@ -6,9 +6,9 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
 import * as validator from '../utils/validator';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
+import { post } from '../utils/api';
 
 const Register = () => {
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -33,10 +33,15 @@ const Register = () => {
       setState: setUserPWDConfirm,
     },
   ];
+  const userData = {
+    user_name: userName,
+    nick_name: userNickname,
+    mobile_number: userPhoneNum,
+    email: userEmail,
+    password: userPWD,
+  };
 
-  const navigate = useNavigate();
-
-  const onSubmitRegisterBtn = async (e) => {
+  const onSubmitRegisterBtn = (e) => {
     e.preventDefault();
 
     if (!validator.isName(userName)) {
@@ -63,26 +68,8 @@ const Register = () => {
       setError('비밀번호가 일치하지 않습니다');
       return;
     }
-    try {
-      const response = await fetch('/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        //todo:비밀번호 확인은 서버로 전송 X
-        body: JSON.stringify({ userName, userNickname, userPhoneNum, userEmail, userPWD, userPWDConfirm }),
-      });
-      const result = await response.json();
-      if (result.success) {
-        //성공했을때 처리
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('회원가입을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
-    }
-
-    //memo: 나중에 성공했을 때만 보여주도록 위치를 바꿔야하는 코드
-    setShowCelebrate(true);
+    const result = post('/api/Users', userData);
+    //result.success? -> setShowCelebrate(true);
   };
 
   return (
@@ -116,7 +103,6 @@ const InputBox = ({ inputData }) => {
         {inputData.name}
         <input
           onChange={(e) => inputData.setState(e.target.value)}
-          // required
           className='w-full border border-black rounded pl-2 h-10  mb-[3%]'
           type={inputData.type}
           placeholder={inputData.placeHolder}
@@ -126,9 +112,6 @@ const InputBox = ({ inputData }) => {
   );
 };
 
-// const BackGround = tw.div`
-//   w-screen h-screen flex justify-center items-center flex-col bg-cover
-// `;
 const Title = tw.div`
   mx-auto 
   mt-auto 

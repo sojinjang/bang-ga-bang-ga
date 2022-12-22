@@ -8,6 +8,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
+import { post } from '../utils/api';
 
 const RegisterProfile = () => {
   const userRadioInputData = [
@@ -82,7 +83,6 @@ const RegisterProfile = () => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
-  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setUserAddInfo((userAddInfo) => {
@@ -96,11 +96,18 @@ const RegisterProfile = () => {
 
   const navigate = useNavigate();
   const onCancelBtn = () => {
-    setShowRegisterProfile(false);
+    const later = confirm('추가정보를 입력하지 않고 가입을 완료하시겠습니까?');
+    if (later) {
+      alert('가입이 완료되었습니다');
+      setShowRegisterProfile(false);
+      navigate('/');
+    }
   };
 
   const onCompleteBtn = () => {
     setShowRegisterProfile(false);
+    post('/api/Users', userAddInfo);
+    alert('추가정보가 정상적으로 입력되었습니다');
     navigate('/login');
   };
 
@@ -116,26 +123,6 @@ const RegisterProfile = () => {
   const onCancelProfileImg = (e) => {
     e.preventDefault();
     setShowAddProfileIcon(false);
-  };
-
-  const onSubmitUserInfo = async (e) => {
-    try {
-      const response = await fetch('/user', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userAddInfo),
-      });
-      const result = await response.json();
-      if (result.success) {
-        alert('추가정보가 성공적으로 입력되었습니다!');
-        //성공시 실행할 코드
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('로그인을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
-    }
   };
 
   const modalStyle = {
@@ -156,7 +143,7 @@ const RegisterProfile = () => {
   return (
     <div
       className='mx-auto h-[90%] w-[104%] 
-      border border-black border-[1px] rounded-[30px]
+      border border-black rounded-[30px]
       flex flex-col 
       absolute 
       left-[-2%]
@@ -197,7 +184,12 @@ const RegisterProfile = () => {
       </div>
       <div className='mx-auto mt-[1%]'>닉네임</div>
       <div className='mx-auto mt-[1%] w-full text-center'>
-        <input className='border rounded-full pl-[5%] w-4/5' type='text' placeholder='한 줄 소개' />
+        <input
+          className='border rounded-full pl-[5%] w-4/5'
+          type='text'
+          placeholder='한 줄 소개'
+          onChange={(e) => setUserAddInfo((userAddInfo) => (userAddInfo.user_intro = e.target.value))}
+        />
       </div>
       <form action='post' onSubmit={() => console.log(userAddInfo)}>
         {userRadioInputData.map((inputData) => (
@@ -206,18 +198,7 @@ const RegisterProfile = () => {
         {userSelectInputData.map((inputData) => (
           <SelectInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
         ))}
-        <div className='BtnBox w-[90%] mx-auto flex'>
-          <div className='ml-auto mt-4'>
-            <Link to='/'>
-              <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
-                취소
-              </button>
-            </Link>
-            <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' onClick={onCompleteBtn} type='submit'>
-              완료
-            </button>
-          </div>
-        </div>
+        <BtnBox onCancelBtn={onCancelBtn} onCompleteBtn={onCompleteBtn} />
       </form>
     </div>
   );
@@ -251,6 +232,20 @@ const SelectInputBox = ({ inputData, handleChange }) => (
     </div>
   </div>
 );
+const BtnBox = ({ onCancelBtn, onCompleteBtn }) => {
+  return (
+    <div className='BtnBox w-[90%] mx-auto flex'>
+      <div className='ml-auto mt-4'>
+        <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
+          취소
+        </button>
+        <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' onClick={onCompleteBtn} type='submit'>
+          완료
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const EditBtn = tw.button`
   text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
