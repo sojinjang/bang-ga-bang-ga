@@ -11,22 +11,22 @@ import emptyHeart from '../assets/images/icon/empty-heart.png';
 import fullKey from '../assets/images/icon/full-key.png';
 import emptyKey from '../assets/images/icon/empty-key.png';
 import tw from 'tailwind-styled-components';
+import { useImmer } from 'use-immer';
 
 const Evaluation = ({ selectedList, setVisible }) => {
   const TEAM_MEMBERS = [
     { nick_name: '프로 탈옥수', profile_image: teamMember1 },
     { nick_name: '햄토리', profile_image: teamMember2 },
     { nick_name: '비둘기', profile_image: teamMember3 },
-    { nick_name: '비둘기', profile_image: teamMember4 },
-    { nick_name: '비둘기', profile_image: teamMember5 },
-    { nick_name: '비둘기', profile_image: teamMember6 },
+    { nick_name: '다람쥐', profile_image: teamMember4 },
+    { nick_name: '몬스터', profile_image: teamMember5 },
+    { nick_name: '김승빈', profile_image: teamMember6 },
   ];
 
   const date = selectedList.date;
   const [YEAR, MONTH, DATE] = date.split('.');
-
-  const [mannerScore, setMannerScore] = useState(1);
-  const [escapeScore, setEscapeScore] = useState(1);
+  const [evalResult, setEvalResult] = useImmer({});
+  const [evalRes, setEvalRes] = useImmer([]);
 
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
@@ -38,85 +38,133 @@ const Evaluation = ({ selectedList, setVisible }) => {
           </button>
         </div>
         <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3>
-        <div>
-          {TEAM_MEMBERS.map((member) => (
-            <form key={member.nick_name} className='flex justify-between mb-[15px]'>
-              <div className='w-[100px]'>
-                <ProfileImg src={member.profile_image} alt='팀원 프로필 사진' />
-                <div className='text-lg text-center'>{member.nick_name}</div>
-              </div>
-              <div className='flex flex-col'>
-                <div className='flex'>
-                  <div>
-                    <span>매너지수</span>
-                    <IconContainer onClick={(e) => setMannerScore(e.target.id)}>
-                      <IconImg id='1' src={fullHeart} alt='꽉 찬 하트' />
-                      {mannerScore >= 2 ? (
-                        <IconImg id='2' src={fullHeart} alt='꽉 찬 하트' />
-                      ) : (
-                        <IconImg id='2' src={emptyHeart} alt='빈 하트' />
-                      )}
-                      {mannerScore >= 3 ? (
-                        <IconImg id='3' src={fullHeart} alt='꽉 찬 하트' />
-                      ) : (
-                        <IconImg id='3' src={emptyHeart} alt='빈 하트' />
-                      )}
-                      {mannerScore >= 4 ? (
-                        <IconImg id='4' src={fullHeart} alt='꽉 찬 하트' />
-                      ) : (
-                        <IconImg id='4' src={emptyHeart} alt='빈 하트' />
-                      )}
-                      {mannerScore >= 5 ? (
-                        <IconImg id='5' src={fullHeart} alt='꽉 찬 하트' />
-                      ) : (
-                        <IconImg id='5' src={emptyHeart} alt='빈 하트' />
-                      )}
-                    </IconContainer>
-                  </div>
-                  <div>
-                    <span>탈출레벨</span>
-                    <IconContainer onClick={(e) => setEscapeScore(e.target.id)}>
-                      <IconImg id='1' src={fullKey} alt='꽉 찬 키' />
-                      {escapeScore >= 2 ? (
-                        <IconImg id='2' src={fullKey} alt='꽉 찬 키' />
-                      ) : (
-                        <IconImg id='2' src={emptyKey} alt='빈 키' />
-                      )}
-                      {escapeScore >= 3 ? (
-                        <IconImg id='3' src={fullKey} alt='꽉 찬 키' />
-                      ) : (
-                        <IconImg id='3' src={emptyKey} alt='빈 키' />
-                      )}
-                      {escapeScore >= 4 ? (
-                        <IconImg id='4' src={fullKey} alt='꽉 찬 키' />
-                      ) : (
-                        <IconImg id='4' src={emptyKey} alt='빈 키' />
-                      )}
-                      {escapeScore >= 5 ? (
-                        <IconImg id='5' src={fullKey} alt='꽉 찬 키' />
-                      ) : (
-                        <IconImg id='5' src={emptyKey} alt='빈 키' />
-                      )}
-                    </IconContainer>
-                  </div>
+        <form action=''>
+          <div>
+            {TEAM_MEMBERS.map((member) => (
+              <div key={member.nick_name} className='flex justify-between mb-[15px]'>
+                <div className='w-[100px]'>
+                  <ProfileImg src={member.profile_image} alt='팀원 프로필 사진' />
+                  <div className='text-lg text-center'>{member.nick_name}</div>
                 </div>
-                <input
-                  className='rounded-[80px] w-[310px] h-[40px] mt-[10px] px-[8px]  bg-gray border  border-[black]  border-[2px] '
-                  type='text'
-                  placeholder='한 줄 평 (선택)'
-                />
+                <div className='flex flex-col'>
+                  <div className='flex'>
+                    <div>
+                      <span>매너지수</span>
+                      <IconContainer>
+                        {[1, 2, 3, 4, 5].map((value, i) => (
+                          <IconImg
+                            src={
+                              // evalResult[member.nick_name]
+                              //   ? evalResult[member.nick_name].manner >= value
+                              //     ? fullHeart
+                              //     : emptyHeart
+                              //   : emptyHeart
+                              evalRes.find((user) => user['nickName'] == member.nick_name)
+                                ? evalRes.find((user) => user['nickName'] == member.nick_name).manner >= value
+                                  ? fullHeart
+                                  : emptyHeart
+                                : emptyHeart
+                            }
+                            key={value}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const nickName = member.nick_name;
+                              const manner = value;
+                              setEvalResult((evalResult) => {
+                                evalResult[nickName] = { ...evalResult[nickName], manner };
+                              });
+                              // console.log(evalResult);
+                              setEvalRes((evalRes) => {
+                                const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
+                                {
+                                  userIndex == -1
+                                    ? evalRes.push({ nickName, manner })
+                                    : (evalRes[userIndex] = { ...evalRes[userIndex], manner });
+                                }
+                              });
+                              console.log(evalRes);
+                            }}
+                          />
+                        ))}
+                      </IconContainer>
+                    </div>
+                    <div>
+                      <span>탈출레벨</span>
+                      <IconContainer>
+                        {[1, 2, 3, 4, 5].map((level) => (
+                          <IconImg
+                            src={
+                              // evalResult[member.nick_name]
+                              //   ? evalResult[member.nick_name].escape >= level
+                              //     ? fullKey
+                              //     : emptyKey
+                              //   : emptyKey
+                              evalRes.find((user) => user['nickName'] == member.nick_name)
+                                ? evalRes.find((user) => user['nickName'] == member.nick_name).level >= level
+                                  ? fullKey
+                                  : emptyKey
+                                : emptyKey
+                            }
+                            key={level}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const nickName = member.nick_name;
+                              const escape = level;
+                              setEvalResult((evalResult) => {
+                                evalResult[nickName] = { ...evalResult[nickName], escape };
+                              });
+                              // console.log(evalResult);
+                              setEvalRes((evalRes) => {
+                                const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
+                                {
+                                  userIndex == -1
+                                    ? evalRes.push({ nickName, level })
+                                    : (evalRes[userIndex] = { ...evalRes[userIndex], level });
+                                }
+                              });
+                              console.log(evalRes);
+                            }}
+                          />
+                        ))}
+                      </IconContainer>
+                    </div>
+                  </div>
+                  <input
+                    className='rounded-[80px] w-[310px] h-[40px] mt-[10px] px-[8px]  bg-gray border-[black]  border-[2px] '
+                    type='text'
+                    placeholder='한 줄 평 (선택)'
+                    onChange={(e) => {
+                      const nickName = member.nick_name;
+                      const review = e.target.value;
+                      setEvalResult((evalResult) => {
+                        evalResult[member.nick_name] = { ...evalResult[member.nick_name], review };
+                      });
+                      setEvalRes((evalRes) => {
+                        const userIndex = evalRes.findIndex((user) => user['nickName'] == member.nick_name);
+                        {
+                          userIndex == -1
+                            ? evalRes.push({ nickName, review })
+                            : (evalRes[userIndex] = { ...evalRes[userIndex], review });
+                        }
+                      });
+                    }}
+                  />
+                </div>
               </div>
-              <div>{mannerScore}</div>
-              <div>{escapeScore}</div>
-            </form>
-          ))}
-        </div>
-        <button
-          onClick={() => {}}
-          type='submit'
-          className='font-semibold text-white border-4 bg-blue-500 shadow-lg shadow-gray-500/50 my-[10px] px-[15px] py-[5px] rounded-lg'>
-          제출하기
-        </button>
+            ))}
+          </div>
+          <button
+            onClick={() => {
+              const finish = confirm('평가를 완료하시겠습니까? 제출된 평가는 다시 수정할 수 없습니다');
+              {
+                finish ? alert('평가가 완료되었습니다') : null;
+              }
+            }}
+            type='submit'
+            className='font-semibold text-white border-4 bg-blue-500 shadow-lg shadow-gray-500/50 my-[10px] px-[15px] py-[5px] rounded-lg'>
+            제출하기
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -141,5 +189,4 @@ const IconContainer = tw.div`
 
 const IconImg = tw.img`
   w-[30px]
-  cursor-pointer
 `;
