@@ -100,7 +100,7 @@ const Login = () => {
           </div>
           <div className='flex items-center justify-between text-sm text-[#878787]'>
             <button onClick={onClickregister}>회원가입</button>
-            <button onClick={onForgotBtn}>비밀번호 찾기</button>
+            <button onClick={onForgotBtn}>비밀번호 분실</button>
           </div>
         </form>
         {showForgot && <Forgot />}
