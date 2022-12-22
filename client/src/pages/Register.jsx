@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { post } from '../utils/api';
+import { useImmer } from 'use-immer';
 
 const Register = () => {
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -20,54 +21,56 @@ const Register = () => {
   const [userPWD, setUserPWD] = useState(null);
   const [userPWDConfirm, setUserPWDConfirm] = useState(null);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useImmer({});
   const USER_INPUT_DATA = [
-    { name: '이름', placeHolder: '김탈출', type: 'text', setState: setUserName },
-    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', setState: setUserNickName },
-    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text', setState: setUserPhoneNum },
-    { name: '이메일', placeHolder: 'example@escape.elice', type: 'email', setState: setUserEmail },
-    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password', setState: setUserPWD },
+    { name: '이름', placeHolder: '김탈출', type: 'text', info: 'userName' },
+    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', info: 'nickName' },
+    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text', info: 'mobileNumber' },
+    { name: '이메일', placeHolder: 'example@escape.elice', type: 'email', info: 'email' },
+    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password', info: 'password' },
     {
       name: '비밀번호 확인',
       placeHolder: '비밀번호를 다시 한번 입력해주세요',
       type: 'password',
-      setState: setUserPWDConfirm,
+      info: 'pwdConfirm',
     },
   ];
-  const userData = {
-    user_name: userName,
-    nick_name: userNickname,
-    mobile_number: userPhoneNum,
-    email: userEmail,
-    password: userPWD,
-  };
+  // const userData = {
+  //   user_name: userName,
+  //   nick_name: userNickname,
+  //   mobile_number: userPhoneNum,
+  //   email: userEmail,
+  //   password: userPWD,
+  // };
 
   const onSubmitRegisterBtn = (e) => {
     e.preventDefault();
-
-    if (!validator.isName(userName)) {
+    console.log(userData);
+    if (!validator.isName(userData.userName)) {
       setError('이름은 2~4글자의 한글로 작성해주세요');
       return;
     }
-    if (!validator.isNickName(userNickname)) {
+    if (!validator.isNickName(userData.nickName)) {
       setError('닉네임은 3~12자리로 작성해주세요');
       return;
     }
-    if (!validator.isPhoneNumber(userPhoneNum)) {
+    if (!validator.isPhoneNumber(userData.mobileNumber)) {
       setError('올바른 핸드폰 번호를 입력해주세요');
       return;
     }
-    if (!validator.isValidEmail(userEmail)) {
+    if (!validator.isValidEmail(userData.email)) {
       setError('올바른 이메일 형식을 입력해주세요');
       return;
     }
-    if (!validator.isValidPassword(userPWD)) {
+    if (!validator.isValidPassword(userData.password)) {
       setError('올바른 비밀번호 형식이 아닙니다.');
       return;
     }
-    if (userPWD !== userPWDConfirm) {
+    if (userData.password !== userData.pwdConfirm) {
       setError('비밀번호가 일치하지 않습니다');
       return;
     }
+    setError('');
     const result = post('/api/Users', userData);
     //result.success? -> setShowCelebrate(true);
   };
@@ -82,7 +85,7 @@ const Register = () => {
         <InnerContainer>
           <form onSubmit={onSubmitRegisterBtn}>
             {USER_INPUT_DATA.map((inputData) => (
-              <InputBox key={inputData.name} inputData={inputData} setState={inputData.setState} />
+              <InputBox key={inputData.name} inputData={inputData} setUserData={setUserData} />
             ))}
             {error && <p className='text-red-500'>{error}</p>}
             <RegisterBtn type='submit'>가입하기</RegisterBtn>
@@ -96,13 +99,17 @@ const Register = () => {
   );
 };
 
-const InputBox = ({ inputData }) => {
+const InputBox = ({ inputData, setUserData }) => {
   return (
     <div className='w-full'>
       <label className='mr-auto'>
         {inputData.name}
         <input
-          onChange={(e) => inputData.setState(e.target.value)}
+          onChange={(e) =>
+            setUserData((userData) => {
+              userData[inputData.info] = e.target.value;
+            })
+          }
           className='w-full border border-black rounded pl-2 h-10  mb-[3%]'
           type={inputData.type}
           placeholder={inputData.placeHolder}
