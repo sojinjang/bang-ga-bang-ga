@@ -9,6 +9,7 @@ import completeRibon from '../../assets/images/icon/complete-ribon.png';
 const RecuitPostContainer = () => {
   const [isComplete, setIsComplete] = useState(false);
   const screenLevel = useRecoilValue(screenLevelAtom);
+  const [showTeamModal, setShowTeamModal] = useState(false);
 
   const UserProfileContainer = () => {
     return (
@@ -81,8 +82,7 @@ const RecuitPostContainer = () => {
         <div className='flex mt-7 justify-end gap-3 relative'>
           <button
             onClick={() => {
-              const [memberModal, setMemberModal] = useState(false);
-              setMemberModal((e) => !e);
+              setShowTeamModal(!showTeamModal);
             }}
             className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             팀원보기
@@ -90,9 +90,11 @@ const RecuitPostContainer = () => {
           <button className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             참여하기
           </button>
-          <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-            <UserProfileContainer />
-          </div>
+          {showTeamModal && (
+            <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+              <UserProfileContainer />
+            </div>
+          )}
         </div>
       )}
     </div>
