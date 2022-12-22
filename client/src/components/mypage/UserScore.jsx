@@ -4,17 +4,22 @@ import tw from 'tailwind-styled-components';
 const UserScore = () => {
   return (
     <>
-      <h3>매너점수💖</h3>
-      <Wrapper>
-        <MannerProgress>70점😊</MannerProgress>
-      </Wrapper>
-      <MannerScore>70점</MannerScore>
+      <section>
+        <h3>매너점수💖</h3>
+        <Wrapper>
+          <MannerProgress>70점😊</MannerProgress>
+        </Wrapper>
+        {/* translate 계산: Wrapper width * Progress width - 15 = 700 * 0.7 - 15 = 475px */}
+        <div className='translate-x-[475px]'>70점</div>
+      </section>
 
-      <h3>탈출레벨🔑</h3>
-      <Wrapper>
-        <EscapeProgress>gold🥇</EscapeProgress>
-      </Wrapper>
-      <EscapeScore>55점</EscapeScore>
+      <section>
+        <h3>탈출레벨🔑</h3>
+        <Wrapper>
+          <EscapeProgress>gold🥇</EscapeProgress>
+        </Wrapper>
+        <div className='translate-x-[370px]'>55점</div>
+      </section>
     </>
   );
 };
@@ -41,11 +46,6 @@ const MannerProgress = tw.div`
   shadow-pink-500/50
 `;
 
-// translate 계산: Wrapper width * Progress width - 15 = 700 * 0.7 - 15 = 335px
-const MannerScore = tw.div`
-  translate-x-[475px]
-`;
-
 const EscapeProgress = tw.div`
   w-[55%]
   bg-blue-500
@@ -58,8 +58,4 @@ const EscapeProgress = tw.div`
   rounded-[20px]
   shadow-lg
   shadow-blue-500/50
-`;
-
-const EscapeScore = tw.div`
-  translate-x-[370px]
 `;
