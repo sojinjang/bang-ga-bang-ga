@@ -10,4 +10,9 @@ const showRecruitModalPageAtom = atom({
   default: 1,
 });
 
-export { showRecruitPostAtom, showRecruitModalPageAtom };
+const screenLevelAtom = atom({
+  key: 'screenLevel',
+  default: 0,
+});
+
+export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom };
