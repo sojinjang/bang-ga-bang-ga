@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import teamMember1 from '../assets/images/user-profile/동하.png';
-import teamMember2 from '../assets/images/user-profile/동현.JPG';
+import teamMember2 from '../assets/images/user-profile/동현.jpg';
 import teamMember3 from '../assets/images/user-profile/선아.png';
 import teamMember4 from '../assets/images/user-profile/소진.jpg';
 import teamMember5 from '../assets/images/user-profile/승빈.png';
