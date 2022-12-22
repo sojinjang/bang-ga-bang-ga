@@ -80,7 +80,7 @@ const RecruitList = () => {
           </div>
           <ListItemContainer>
             {postData.map((post, index) => (
-              <RecuitPostContainer data={post} key={index} />
+              <RecuitPostContainer postData={post} key={index} />
             ))}
             {showRecruitPost && <Modal />}
           </ListItemContainer>
