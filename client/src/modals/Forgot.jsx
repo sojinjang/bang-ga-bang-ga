@@ -42,8 +42,8 @@ w-full border border-black text-lg rounded-lg pl-2 mt-4 h-12
 
 const Modal = tw.div`
 flex
-  mx-auto rounded-[30px] h-[40%] w-[30%] 
-  absolute top-[29%] left-[35%]
+  rounded-[30px] h-[40%] w-[30%] 
+  absolute top-[24%] left-[35%]
   bg-white
 `;
 
