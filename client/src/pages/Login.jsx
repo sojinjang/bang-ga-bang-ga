@@ -6,6 +6,7 @@ import Forgot from '../modals/Forgot';
 import { isValidEmail } from '../utils/validator';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
+import { post } from '../utils/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,32 +23,13 @@ const Login = () => {
     navigate('/register');
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if (!isValidEmail(email)) {
       setError('이메일 형식이 올바른지 확인해주세요');
       return;
     }
-
-    setError('');
-
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const result = await response.json();
-      if (result.success) {
-        //토근 받아서 세션에 넣는 로직 result.token
-        window.location.href = '/';
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('로그인을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
-    }
+    post('/api/Users/login', { email, password });
   };
 
   return (
@@ -71,7 +53,6 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </label>
-
           <br />
           <label>
             비밀번호:
@@ -100,7 +81,7 @@ const Login = () => {
           </div>
           <div className='flex items-center justify-between text-sm text-[#878787]'>
             <button onClick={onClickregister}>회원가입</button>
-            <button onClick={onForgotBtn}>비밀번호 찾기</button>
+            <button onClick={onForgotBtn}>비밀번호 분실</button>
           </div>
         </form>
         {showForgot && <Forgot />}
