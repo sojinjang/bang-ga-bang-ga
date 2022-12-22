@@ -6,10 +6,20 @@ import { screenLevelAtom } from '../../recoil/recruit-list/index';
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibon from '../../assets/images/icon/complete-ribon.png';
 
-const RecuitPostContainer = () => {
-  const [isComplete, setIsComplete] = useState(false);
+const RecuitPostContainer = ({ postData }) => {
   const screenLevel = useRecoilValue(screenLevelAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const { title, content, view, matchingTime, count, matchStatus, matchingLocation, createdAt, userId } = postData;
+
+  const parseDateFunc = (date) => {
+    const stringifiedDate = date.toString();
+    const year = stringifiedDate.slice(0, 2);
+    const month = stringifiedDate.slice(2, 4);
+    const day = stringifiedDate.slice(4, 6);
+    const hour = stringifiedDate.slice(6, 8);
+    const minute = stringifiedDate.slice(8, 10);
+    return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
+  };
 
   const UserProfileContainer = () => {
     return (
@@ -34,9 +44,9 @@ const RecuitPostContainer = () => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibon src={completeRibon} className={isComplete ? '' : 'hidden'} />
-      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer' onClick={() => setIsComplete(true)}>
-        초고수 환영 공포 쫄보 금지
+      <CompleteRibon src={completeRibon} className={matchStatus ? '' : 'hidden'} />
+      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer'>
+        {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
       <div className='flex flex-row'>
@@ -54,7 +64,7 @@ const RecuitPostContainer = () => {
             fill='white'
           />
         </svg>
-        <span className='ml-0.5'>130</span>
+        <span className='ml-0.5'>{view}</span>
         <span className='mx-1.5'>・</span>
         <svg width='12' height='24' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <g clipPath='url(#clip0_203_554)'>
@@ -69,11 +79,11 @@ const RecuitPostContainer = () => {
             </clipPath>
           </defs>
         </svg>
-        <span className='ml-0.5'>13</span>
+        <span className='ml-0.5'>0</span>
       </div>
       <div className='cursor-pointer'>
-        <p>서울 이스케이프룸 홍대점 - 카지노</p>
-        <p className='mb-1'>12월 13일(금) 15:00 예정</p>
+        <p>{content}</p>
+        <p className='mb-1'>{parseDateFunc(matchingTime)}</p>
       </div>
 
       {screenLevel === 1 ? (
