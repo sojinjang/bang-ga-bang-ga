@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
 import { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-
-import userArray from '../../assets/images/user-profile/profile';
-import completeRibon from '../../assets/images/icon/complete-ribon.png';
+import { get } from '../../utils/api';
+import RecuitPostContainer from '../../components/recruit/RecruitPostContainer';
 
 import { RegionButton } from '../../components/buttons/Buttons';
 import Navigators from '../../components/common/Navigators';
