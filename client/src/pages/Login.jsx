@@ -53,11 +53,12 @@ const Login = () => {
   return (
     <Background img={'bg2'}>
       <Navigators />
-      <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={onSubmit}>
-        <label>
-          이메일:
-          <input
-            className='
+      <div className='w-full flex h-[70%] justify-center items-center'>
+        <form className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4' onSubmit={onSubmit}>
+          <label>
+            이메일:
+            <input
+              className='
             shadow
             border
             rounded
@@ -66,16 +67,16 @@ const Login = () => {
             px-3
             text-gray-700
             '
-            type='email'
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </label>
+              type='email'
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
 
-        <br />
-        <label>
-          비밀번호:
-          <input
-            className='
+          <br />
+          <label>
+            비밀번호:
+            <input
+              className='
             shadow
             border
             rounded
@@ -84,25 +85,26 @@ const Login = () => {
             px-3
             text-gray-700
             '
-            type='password'
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-        <br />
-        {error && <p className='text-red-500'>{error}</p>}
-        <div className='flex items-center justify-between'>
-          <button
-            className='mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-            type='submit'>
-            로그인
-          </button>
-        </div>
-        <div className='flex items-center justify-between text-sm text-[#878787]'>
-          <button onClick={onClickregister}>회원가입</button>
-          <button onClick={onForgotBtn}>비밀번호 찾기</button>
-        </div>
-      </form>
-      {showForgot && <Forgot />}
+              type='password'
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <br />
+          {error && <p className='text-red-500'>{error}</p>}
+          <div className='flex items-center justify-between'>
+            <button
+              className='mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              type='submit'>
+              로그인
+            </button>
+          </div>
+          <div className='flex items-center justify-between text-sm text-[#878787]'>
+            <button onClick={onClickregister}>회원가입</button>
+            <button onClick={onForgotBtn}>비밀번호 찾기</button>
+          </div>
+        </form>
+        {showForgot && <Forgot />}
+      </div>
     </Background>
   );
 };
