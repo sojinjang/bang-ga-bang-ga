@@ -35,7 +35,7 @@ export default function DropdownMenu() {
             </Menu.Item>
             <Menu.Item>
               <div className='text-sm px-4 py-2 w-full h-full text-gray-700 hover:bg-gray-100 hover:text-black hover:font-semibold'>
-                <Link to='/mypage'>매칭이력</Link>
+                <Link to='/matching-list'>매칭이력</Link>
               </div>
             </Menu.Item>
             <Menu.Item>
