@@ -14,7 +14,7 @@ async function get(endpoint, params = '') {
 
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(ErrorMessage[error.errorCode]);
+    throw new Error(error.reason);
   }
 
   const result = await res.json();
@@ -35,7 +35,7 @@ async function post(endpoint, data) {
 
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(ErrorMessage[error.errorCode]);
+    throw new Error(error.reason);
   }
 
   const result = await res.json();
@@ -51,7 +51,7 @@ async function postImg(endpoint, data) {
 
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(ErrorMessage[error.errorCode]);
+    throw new Error(error.reason);
   }
 
   const result = await res.json();
@@ -72,7 +72,7 @@ async function patch(endpoint, params = '', data) {
 
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(ErrorMessage[error.errorCode]);
+    throw new Error(error.reason);
   }
 
   const result = await res.json();
@@ -94,7 +94,7 @@ async function del(endpoint, params = '', data = {}) {
 
   if (!res.ok) {
     const error = await res.json();
-    throw new Error(ErrorMessage[error.errorCode]);
+    throw new Error(error.reason);
   }
 
   const result = await res.json();
