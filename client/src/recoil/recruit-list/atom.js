@@ -15,4 +15,9 @@ const screenLevelAtom = atom({
   default: 0,
 });
 
-export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom };
+const showUserProfileModalAtom = atom({
+  key: 'showUserProfileModal',
+  default: false,
+});
+
+export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom, showUserProfileModalAtom };

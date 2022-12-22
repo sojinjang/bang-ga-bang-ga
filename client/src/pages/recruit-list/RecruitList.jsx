@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
-import { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom } from '../../recoil/recruit-list/index';
+import {
+  showRecruitPostAtom,
+  showRecruitModalPageAtom,
+  screenLevelAtom,
+  showUserProfileModalAtom,
+} from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 import { get } from '../../utils/api';
 import RecuitPostContainer from '../../components/recruit/RecruitPostContainer';
@@ -14,6 +19,7 @@ const RecruitList = () => {
 
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const setScreenLevel = useSetRecoilState(screenLevelAtom);
+  const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
   const REGION_DATA = ['홍대', '강남', '건대'];
 
   const [postData, setPostData] = useState([]);
@@ -82,6 +88,9 @@ const RecruitList = () => {
             {postData.map((post, index) => (
               <RecuitPostContainer postData={post} key={index} />
             ))}
+            {showUserProfileModal && (
+              <div className='w-[450px] h-[600px] absolute bg-white top-[50%] left-[50%] translate-x-[-50%] translate-y-[-70%]'></div>
+            )}
             {showRecruitPost && <Modal />}
           </ListItemContainer>
           <PaginationButton>

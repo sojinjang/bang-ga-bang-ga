@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import tw from 'tailwind-styled-components';
-import { useRecoilValue } from 'recoil';
-import { screenLevelAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibon from '../../assets/images/icon/complete-ribon.png';
 
 const RecuitPostContainer = ({ postData }) => {
   const screenLevel = useRecoilValue(screenLevelAtom);
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState('');
   const { title, content, view, matchingTime, count, matchStatus, matchingLocation, createdAt, userId } = postData;
 
   const parseDateFunc = (date) => {
@@ -23,11 +25,12 @@ const RecuitPostContainer = ({ postData }) => {
 
   const UserProfileContainer = () => {
     return (
-      <>
+      <div>
         <span className='text-2xl ml-[13px]'>👑</span>
         <div className='grid gap-3 grid-cols-4 grid-rows-2'>
           {userArray.map((user, index) => (
             <img
+              onClick={() => setShowUserProfileModal(!showUserProfileModal)}
               className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
               src={user['url']}
               alt='유저 프로필'
@@ -35,7 +38,7 @@ const RecuitPostContainer = ({ postData }) => {
             />
           ))}
         </div>
-      </>
+      </div>
     );
   };
 
