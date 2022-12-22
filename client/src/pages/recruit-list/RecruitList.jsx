@@ -140,19 +140,13 @@ const Modal = () => {
     title: '',
     count: 2,
     date: '',
-    region: '',
-    cafeName: '',
-    themeName: '',
+    matchingLocation: '',
+    cafeId: '',
+    operationInformationId: '',
+    userId: '',
   });
 
-  const [titleRef, countRef, dateRef, regionRef, cafeRef, themeRef] = [
-    useRef(),
-    useRef(),
-    useRef(),
-    useRef([]),
-    useRef(),
-    useRef(),
-  ];
+  const [titleRef, countRef, dateRef, cafeRef, themeRef] = [useRef(), useRef(), useRef(), useRef(), useRef()];
 
   const FirstModal = () => {
     return (
@@ -223,14 +217,12 @@ const Modal = () => {
 
   const SecondModal = () => {
     const checkRegion = (e) => {
-      if (e.target.checked) {
-        setRecruitPostData((prevState) => {
-          return {
-            ...prevState,
-            region: e.target.value,
-          };
-        });
-      }
+      setRecruitPostData((prevState) => {
+        return {
+          ...prevState,
+          matchingLocation: e.target.value,
+        };
+      });
     };
 
     return (
@@ -242,11 +234,11 @@ const Modal = () => {
               <label>
                 <input
                   onClick={(e) => checkRegion(e)}
-                  ref={(el) => (regionRef.current[0] = el)}
                   type='radio'
                   value={'홍대'}
                   name='region'
                   className='mr-2'
+                  defaultChecked={recruitPostData.matchingLocation === '홍대' ? true : false}
                 />
                 홍대
               </label>
@@ -255,11 +247,11 @@ const Modal = () => {
               <label>
                 <input
                   onClick={(e) => checkRegion(e)}
-                  ref={(el) => (regionRef.current[1] = el)}
                   type='radio'
                   value={'강남'}
                   name='region'
                   className='mr-2'
+                  defaultChecked={recruitPostData.matchingLocation === '강남' ? true : false}
                 />
                 강남
               </label>
@@ -268,11 +260,11 @@ const Modal = () => {
               <label>
                 <input
                   onClick={(e) => checkRegion(e)}
-                  ref={(el) => (regionRef.current[2] = el)}
                   type='radio'
                   value={'건대'}
                   name='region'
                   className='mr-2'
+                  defaultChecked={recruitPostData.matchingLocation === '건대' ? true : false}
                 />
                 건대
               </label>
@@ -281,7 +273,7 @@ const Modal = () => {
           <div className='flex flex-col mt-5'>
             <span>방문 카페명</span>
             <input
-              defaultValue={recruitPostData.cafeName}
+              defaultValue={recruitPostData.cafeId}
               ref={cafeRef}
               type='text'
               placeholder='방문 예정인 카페명을 입력하세요.'
@@ -291,7 +283,7 @@ const Modal = () => {
           <div className='flex flex-col mt-4'>
             <span>방문 테마명</span>
             <input
-              defaultValue={recruitPostData.themeName}
+              defaultValue={recruitPostData.operationInformationId}
               ref={themeRef}
               type='text'
               placeholder='방문 예정인 카페의 테마명을 입력하세요.'
@@ -315,8 +307,8 @@ const Modal = () => {
                   return {
                     ...prevState,
 
-                    cafeName: cafeRef.current.value,
-                    themeName: themeRef.current.value,
+                    cafeId: cafeRef.current.value,
+                    operationInformationId: themeRef.current.value,
                   };
                 });
               }}>
@@ -332,6 +324,8 @@ const Modal = () => {
                   return {
                     ...prevState,
 
+                    cafeId: cafeRef.current.value,
+                    operationInformationId: themeRef.current.value,
                     date: parsedDate,
                   };
                 });
