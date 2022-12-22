@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
-import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibon from '../../assets/images/icon/complete-ribon.png';
@@ -11,8 +11,24 @@ import Navigators from '../../components/common/Navigators';
 import Background from '../../components/common/Background';
 
 const RecruitList = () => {
+  document.title = '방가방가 모집글 리스트';
+
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
+  const setScreenLevel = useSetRecoilState(screenLevelAtom);
   const REGION_DATA = ['홍대', '강남', '건대'];
+
+  const handleResize = () => {
+    window.innerHeight < 985 ? setScreenLevel(2) : setScreenLevel(1);
+  };
+
+  useEffect(() => {
+    window.addEventListener('load', handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('load', handleResize);
+      window.removeEventListener('resize', handleResize);
+    };
+  });
 
   return (
     <Background img={'bg1'}>
@@ -347,9 +363,14 @@ const Modal = () => {
 
 const ListItem = () => {
   const [isComplete, setIsComplete] = useState(false);
+  const screenLevel = useRecoilValue(screenLevelAtom);
 
   return (
-    <ListContainer>
+    <div
+      className={`${
+        screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'
+      }w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
+  bg-gray-400 text-white`}>
       <CompleteRibon src={completeRibon} className={isComplete ? '' : 'hidden'} />
       <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer' onClick={() => setIsComplete(true)}>
         초고수 환영 공포 쫄보 금지
@@ -391,31 +412,59 @@ const ListItem = () => {
         <p>서울 이스케이프룸 홍대점 - 카지노</p>
         <p className='mb-1'>12월 13일(금) 15:00 예정</p>
       </div>
-      <span className='text-2xl ml-[13px]'>👑</span>
-      <div className='grid gap-3 grid-cols-4 grid-rows-2'>
-        {userArray.map((user, index) => (
-          <img
-            className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-            src={user['url']}
-            alt='유저 프로필'
-            key={index}
-          />
-        ))}
-      </div>
-    </ListContainer>
+
+      {screenLevel === 1 ? (
+        <>
+          <span className='text-2xl ml-[13px]'>👑</span>
+          <div className='grid gap-3 grid-cols-4 grid-rows-2'>
+            {userArray.map((user, index) => (
+              <img
+                className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
+                src={user['url']}
+                alt='유저 프로필'
+                key={index}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className='flex mt-7 justify-end gap-3 relative'>
+          {console.log('hi')}
+          <button
+            onClick={() => {
+              const [memberModal, setMemberModal] = useState(false);
+              setMemberModal((e) => !e);
+            }}
+            className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
+            팀원보기
+          </button>
+          <button className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
+            참여하기
+          </button>
+          <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+            <span className='text-2xl ml-[13px]'>👑</span>
+            <div className='grid gap-3 grid-cols-4 grid-rows-2'>
+              {userArray.map((user, index) => (
+                <img
+                  className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
+                  src={user['url']}
+                  alt='유저 프로필'
+                  key={index}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
 export default RecruitList;
 
 const MainContainer = tw.div`
-mt-12
+mt-10
 relative
-`;
-
-const ListContainer = tw.div`
-  w-[280px] h-[340px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500'
-  bg-gray-400 text-white 
 `;
 
 const CompleteRibon = tw.img`
