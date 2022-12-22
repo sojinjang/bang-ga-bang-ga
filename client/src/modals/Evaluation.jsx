@@ -51,20 +51,52 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     <span>매너지수</span>
                     <IconContainer onClick={(e) => setMannerScore(e.target.id)}>
                       <IconImg id='1' src={fullHeart} alt='꽉 찬 하트' />
-                      <IconImg id='2' src={emptyHeart} alt='빈 하트' />
-                      <IconImg id='3' src={emptyHeart} alt='빈 하트' />
-                      <IconImg id='4' src={emptyHeart} alt='빈 하트' />
-                      <IconImg id='5' src={emptyHeart} alt='빈 하트' />
+                      {mannerScore >= 2 ? (
+                        <IconImg id='2' src={fullHeart} alt='꽉 찬 하트' />
+                      ) : (
+                        <IconImg id='2' src={emptyHeart} alt='빈 하트' />
+                      )}
+                      {mannerScore >= 3 ? (
+                        <IconImg id='3' src={fullHeart} alt='꽉 찬 하트' />
+                      ) : (
+                        <IconImg id='3' src={emptyHeart} alt='빈 하트' />
+                      )}
+                      {mannerScore >= 4 ? (
+                        <IconImg id='4' src={fullHeart} alt='꽉 찬 하트' />
+                      ) : (
+                        <IconImg id='4' src={emptyHeart} alt='빈 하트' />
+                      )}
+                      {mannerScore >= 5 ? (
+                        <IconImg id='5' src={fullHeart} alt='꽉 찬 하트' />
+                      ) : (
+                        <IconImg id='5' src={emptyHeart} alt='빈 하트' />
+                      )}
                     </IconContainer>
                   </div>
                   <div>
                     <span>탈출레벨</span>
                     <IconContainer onClick={(e) => setEscapeScore(e.target.id)}>
                       <IconImg id='1' src={fullKey} alt='꽉 찬 키' />
-                      <IconImg id='2' src={emptyKey} alt='빈 키' />
-                      <IconImg id='3' src={emptyKey} alt='빈 키' />
-                      <IconImg id='4' src={emptyKey} alt='빈 키' />
-                      <IconImg id='5' src={emptyKey} alt='빈 키' />
+                      {escapeScore >= 2 ? (
+                        <IconImg id='2' src={fullKey} alt='꽉 찬 키' />
+                      ) : (
+                        <IconImg id='2' src={emptyKey} alt='빈 키' />
+                      )}
+                      {escapeScore >= 3 ? (
+                        <IconImg id='3' src={fullKey} alt='꽉 찬 키' />
+                      ) : (
+                        <IconImg id='3' src={emptyKey} alt='빈 키' />
+                      )}
+                      {escapeScore >= 4 ? (
+                        <IconImg id='4' src={fullKey} alt='꽉 찬 키' />
+                      ) : (
+                        <IconImg id='4' src={emptyKey} alt='빈 키' />
+                      )}
+                      {escapeScore >= 5 ? (
+                        <IconImg id='5' src={fullKey} alt='꽉 찬 키' />
+                      ) : (
+                        <IconImg id='5' src={emptyKey} alt='빈 키' />
+                      )}
                     </IconContainer>
                   </div>
                 </div>
@@ -74,8 +106,8 @@ const Evaluation = ({ selectedList, setVisible }) => {
                   placeholder='한 줄 평 (선택)'
                 />
               </div>
-              {/* <div>{mannerScore}</div>
-              <div>{escapeScore}</div> */}
+              <div>{mannerScore}</div>
+              <div>{escapeScore}</div>
             </form>
           ))}
         </div>
