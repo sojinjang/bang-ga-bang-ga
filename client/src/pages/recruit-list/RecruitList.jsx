@@ -35,19 +35,6 @@ const RecruitList = () => {
     fetchRecruitData(pageNumber);
   }, [pageNumber]);
 
-  const handleResize = () => {
-    window.innerHeight < 985 ? setScreenLevel(2) : setScreenLevel(1);
-  };
-
-  useEffect(() => {
-    window.addEventListener('load', handleResize);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('load', handleResize);
-      window.removeEventListener('resize', handleResize);
-    };
-  });
-
   return (
     <Background img={'bg1'}>
       <Navigators />
