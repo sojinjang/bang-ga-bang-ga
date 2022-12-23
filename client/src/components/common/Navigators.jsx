@@ -16,7 +16,7 @@ const Navigators = () => {
           <span className='bg-black w-4/5 h-9 pl-2 relative rounded-full flex justify-center items-center'>
             <span className='text-white text-xl font-extrabold'>silver</span>
             <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
-              <img src='images/icon/gold-medal.png' className='w-full h-full' alt='' />
+              <img src={`${process.env.PUBLIC_URL}/images/icon/gold-medal.png`} className='w-full h-full' alt='' />
             </span>
           </span>
         </div>
