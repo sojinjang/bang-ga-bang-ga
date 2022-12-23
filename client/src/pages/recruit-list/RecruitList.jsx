@@ -110,9 +110,11 @@ relative
 
 const PaginationButton = tw.div`
   flex justify-center mt-4
+  flex justify-center mt-4
 `;
 
 const FilterContainer = tw.div`
+  flex flex-col
   flex flex-col
 `;
 
