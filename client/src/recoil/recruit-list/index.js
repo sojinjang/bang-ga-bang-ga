@@ -1,1 +1,7 @@
-export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom, showUserProfileModalAtom } from './atom';
+export {
+  showRecruitPostAtom,
+  showRecruitModalPageAtom,
+  screenLevelAtom,
+  showUserProfileModalAtom,
+  currentPageAtom,
+} from './atom';
