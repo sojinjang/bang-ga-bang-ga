@@ -8,14 +8,13 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "latest",
     "@headlessui/react": "^1.7.7",
+    "@heroicons/react": "^2.0.13",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "autoprefixer": "^10.4.13",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
-    "gitmoji": "^1.1.1",
-    "gitmoji-cli": "^7.0.3",
     "global": "^4.4.0",
     "immer": "^9.0.16",
     "nodemon": "^2.0.20",
@@ -23,6 +22,7 @@
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
     "react-dom": "^18.2.0",
+    "react-js-pagination": "^3.0.3",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.4.4",
     "react-scripts": "5.0.1",
@@ -62,5 +62,6 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "proxy": "http://localhost:3008"
 }
