@@ -10,6 +10,7 @@ import Register from '../pages/Register';
 import EditUserInfo from '../pages/Mypage/EditUserInfo';
 import CafeList from '../pages/CafeList';
 import RecruitList from '../pages/recruit-list/RecruitList';
+import RecruitDetail from '../pages/RecruitDetail';
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path='/' element={<Home />} />
         <Route path='/recruit-list' element={<RecruitList />} />
         <Route path='/recruit-map' element={<RecruitMap />} />
+        <Route path='/recruit-detail' element={<RecruitDetail />} />
         <Route path='/cafelist' element={<CafeList />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/matching-list' element={<MatchingList />} />

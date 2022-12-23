@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { get } from '../utils/api';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import UserProfile from '../components/mypage/UserProfile';
@@ -7,17 +8,29 @@ import UserScore from '../components/mypage/UserScore';
 import UserInfo from '../components/mypage/UserInfo';
 
 const MyPage = () => {
+  const [userData, setUserData] = useState({});
+
+  const fetchData = async () => {
+    const data = await get('http://localhost:3008/api/users/user');
+    setUserData(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(userData);
   return (
     <Background img={'bg3'} className='relative'>
       <Navigators />
       <div className='mx-auto flex justify-between items-center mb-[20px] w-[1000px]'>
-        <UserProfile />
+        <UserProfile userData={userData} />
         <div>
-          <UserBanner />
-          <UserScore />
+          <UserBanner userData={userData} />
+          <UserScore userData={userData} />
         </div>
       </div>
-      <UserInfo />
+      <UserInfo userData={userData} />
     </Background>
   );
 };

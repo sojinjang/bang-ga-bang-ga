@@ -7,7 +7,7 @@ import teamMember4 from '../../assets/images/user-profile/소진.jpg';
 import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
-const UserBanner = () => {
+const UserBanner = ({ userData }) => {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const UserBanner = () => {
       <Container>
         <Wrapper onClick={() => navigate('/matching-list')}>
           <Title>매칭 횟수</Title>
-          <Count>3회</Count>
+          <Count>{userData.matchingCount}회</Count>
         </Wrapper>
         <div className='border-l-[1px] border-l-slate-800 h-[80%]'></div>
         <Wrapper onClick={() => setVisible(!visible)}>
