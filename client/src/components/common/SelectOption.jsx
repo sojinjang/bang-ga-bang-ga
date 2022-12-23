@@ -2,12 +2,14 @@ import { React, Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-function classNames(...classes) {
+// const optionsArray = [{optionName:'평점순',optionHandler:sortByStarRate()}];
+
+const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 }
 
 const SelectOption = ({ optionsArray, defaultOption, width }) => {
-  const [selected, setSelected] = useState({ defaultOption });
+  const [selected, setSelected] = useState( defaultOption );
 
   return (
     <Listbox value={selected} onChange={setSelected}>
@@ -39,13 +41,15 @@ const SelectOption = ({ optionsArray, defaultOption, width }) => {
                         'relative cursor-default select-none py-2 pl-3 pr-9',
                       )
                     }
-                    value={option}>
+                    value={option.optionName} onclick={()=>{
+                      // Object.values({...optionsArray})[index].optionHandler
+                    }}>
                     {({ selected, active }) => (
                       <>
                         <div className='flex items-center'>
                           <span
                             className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}>
-                            {option}
+                            {option.optionName}
                           </span>
                         </div>
 
