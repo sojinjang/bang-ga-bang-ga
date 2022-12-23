@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { showRecruitPostAtom, showRecruitModalPageAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
@@ -93,6 +93,8 @@ const PostModal = () => {
         };
       });
     };
+
+    const postFunc = useMemo(() => console.log(recruitPostData), [recruitPostData]);
 
     return (
       <div className='flex'>
@@ -198,6 +200,8 @@ const PostModal = () => {
                     date: parsedDate,
                   };
                 });
+
+                postFunc;
               }}>
               등록
             </button>
