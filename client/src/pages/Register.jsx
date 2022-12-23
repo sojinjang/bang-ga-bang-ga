@@ -1,6 +1,7 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import Celebrate from '../modals/Celebrate';
+import { useNavigate } from 'react-router-dom';
 import RegisterProfile from '../modals/RegisterProfile';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
@@ -10,16 +11,13 @@ import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { post } from '../utils/api';
 import { useImmer } from 'use-immer';
+import { Keys } from '../constants/Keys';
+import { getCookieValue } from '../utils/cookie';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
-  const [userName, setUserName] = useState(null);
-  const [userNickname, setUserNickName] = useState('');
-  const [userPhoneNum, setUserPhoneNum] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
-  const [userPWD, setUserPWD] = useState(null);
-  const [userPWDConfirm, setUserPWDConfirm] = useState(null);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
   const USER_INPUT_DATA = [
@@ -35,15 +33,8 @@ const Register = () => {
       info: 'pwdConfirm',
     },
   ];
-  // const userData = {
-  //   user_name: userName,
-  //   nick_name: userNickname,
-  //   mobile_number: userPhoneNum,
-  //   email: userEmail,
-  //   password: userPWD,
-  // };
 
-  const onSubmitRegisterBtn = (e) => {
+  const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
     console.log(userData);
     if (!validator.isName(userData.userName)) {
@@ -71,7 +62,24 @@ const Register = () => {
       return;
     }
     setError('');
-    const result = post('/api/Users', userData);
+    // const result = post('http://localhost:3008/api/users', userData);
+    // console.log(result);
+    const res = await fetch('http://localhost:3008/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
+      },
+      body: JSON.stringify(userData),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.reason);
+    } else {
+      const result = await res.json();
+      console.log(result);
+      setShowCelebrate(true);
+    }
     //result.success? -> setShowCelebrate(true);
   };
 
