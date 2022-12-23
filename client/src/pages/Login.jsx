@@ -3,16 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { showForgotAtom } from '../recoil/login';
 import Forgot from '../modals/Forgot';
-import { isValidEmail } from '../utils/validator';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import { post } from '../utils/api';
+import { Keys } from '../constants/Keys';
+import { getCookieValue } from '../utils/cookie';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const [showForgot, setShowForgot] = useRecoilState(showForgotAtom);
   const onForgotBtn = (e) => {
     e.preventDefault();
@@ -23,13 +22,27 @@ const Login = () => {
     navigate('/register');
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (!isValidEmail(email)) {
-      setError('이메일 형식이 올바른지 확인해주세요');
-      return;
+
+    const res = await fetch('http://localhost:3008/api/Users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.reason);
+    } else {
+      const result = await res.json();
+      const accessToken = result.accessToken;
+      // const refreshToken = result.refreshToken;
+      sessionStorage.setItem('accessToken', accessToken);
+      navigate('/');
     }
-    post('/api/Users/login', { email, password });
   };
 
   return (
@@ -71,7 +84,6 @@ const Login = () => {
             />
           </label>
           <br />
-          {error && <p className='text-red-500'>{error}</p>}
           <div className='flex items-center justify-between'>
             <button
               className='mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
