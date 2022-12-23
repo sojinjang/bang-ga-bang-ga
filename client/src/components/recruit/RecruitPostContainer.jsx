@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import tw from 'tailwind-styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
@@ -11,7 +11,7 @@ const RecuitPostContainer = ({ postData }) => {
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
-  const { title, content, view, matchingTime, count, matchStatus, matchingLocation, createdAt, userId } = postData;
+  const { title, content, view, matchingTime, matchStatus, matchingLocation, createdAt, userId } = postData;
 
   const parseDateFunc = (date) => {
     const stringifiedDate = date.toString();
@@ -21,6 +21,25 @@ const RecuitPostContainer = ({ postData }) => {
     const hour = stringifiedDate.slice(6, 8);
     const minute = stringifiedDate.slice(8, 10);
     return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
+  };
+
+  const changeDate = () => {
+    const postedDate = new Date(createdAt);
+    const today = new Date();
+    console.log(today.toISOString());
+    const relativeFormatter = new Intl.RelativeTimeFormat('ko', {
+      numeric: 'always',
+    });
+
+    let timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
+
+    if (timeDiff === 0) {
+      timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
+
+      return relativeFormatter.format(timeDiff, 'minute');
+    }
+
+    return relativeFormatter.format(timeDiff, 'hour');
   };
 
   const UserProfileContainer = () => {
@@ -48,12 +67,12 @@ const RecuitPostContainer = ({ postData }) => {
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
       <CompleteRibon src={completeRibon} className={matchStatus ? '' : 'hidden'} />
-      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer'>
+      <p className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'>
         {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
       <div className='flex flex-row'>
-        <span className='mb-2'>1시간 전</span>
+        <span className='mb-2'>{changeDate()}</span>
         <span className='mx-1.5'>・</span>
         <svg
           className='align-middle'
