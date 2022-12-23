@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
 import userArray from '../../assets/images/user-profile/profile';
-import completeRibon from '../../assets/images/icon/complete-ribon.png';
+import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
 
 const RecuitPostContainer = ({ postData }) => {
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
@@ -78,7 +78,7 @@ const RecuitPostContainer = ({ postData }) => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibon src={completeRibon} className={matchStatus ? '' : 'hidden'} />
+      <CompleteRibbon src={completeRibbon} className={matchStatus ? '' : 'hidden'} />
       <p className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'>
         {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
@@ -131,9 +131,6 @@ const RecuitPostContainer = ({ postData }) => {
             className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             팀원보기
           </button>
-          <button className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
-            참여하기
-          </button>
           {showTeamModal && (
             <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
               <UserProfileContainer />
@@ -145,7 +142,7 @@ const RecuitPostContainer = ({ postData }) => {
   );
 };
 
-const CompleteRibon = tw.img`
+const CompleteRibbon = tw.img`
   absolute w-[71px] h-[84.5px] top-[-6px] right-[-6px]
 `;
 
