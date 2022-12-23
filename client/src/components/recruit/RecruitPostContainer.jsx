@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import tw from 'tailwind-styled-components';
-import { useRecoilValue } from 'recoil';
-import { screenLevelAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibon from '../../assets/images/icon/complete-ribon.png';
 
-const RecuitPostContainer = () => {
-  const [isComplete, setIsComplete] = useState(false);
+const RecuitPostContainer = ({ postData }) => {
   const screenLevel = useRecoilValue(screenLevelAtom);
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
+  const [showTeamModal, setShowTeamModal] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState('');
+  const { title, content, view, matchingTime, count, matchStatus, matchingLocation, createdAt, userId } = postData;
+
+  const parseDateFunc = (date) => {
+    const stringifiedDate = date.toString();
+    const year = stringifiedDate.slice(0, 2);
+    const month = stringifiedDate.slice(2, 4);
+    const day = stringifiedDate.slice(4, 6);
+    const hour = stringifiedDate.slice(6, 8);
+    const minute = stringifiedDate.slice(8, 10);
+    return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
+  };
 
   const UserProfileContainer = () => {
     return (
-      <>
+      <div>
         <span className='text-2xl ml-[13px]'>👑</span>
         <div className='grid gap-3 grid-cols-4 grid-rows-2'>
           {userArray.map((user, index) => (
             <img
+              onClick={() => setShowUserProfileModal(!showUserProfileModal)}
               className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
               src={user['url']}
               alt='유저 프로필'
@@ -24,7 +38,7 @@ const RecuitPostContainer = () => {
             />
           ))}
         </div>
-      </>
+      </div>
     );
   };
 
@@ -33,9 +47,9 @@ const RecuitPostContainer = () => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibon src={completeRibon} className={isComplete ? '' : 'hidden'} />
-      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer' onClick={() => setIsComplete(true)}>
-        초고수 환영 공포 쫄보 금지
+      <CompleteRibon src={completeRibon} className={matchStatus ? '' : 'hidden'} />
+      <p className='pt-5 text-lg font-semibold h-[70px] cursor-pointer'>
+        {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
       <div className='flex flex-row'>
@@ -53,7 +67,7 @@ const RecuitPostContainer = () => {
             fill='white'
           />
         </svg>
-        <span className='ml-0.5'>130</span>
+        <span className='ml-0.5'>{view}</span>
         <span className='mx-1.5'>・</span>
         <svg width='12' height='24' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'>
           <g clipPath='url(#clip0_203_554)'>
@@ -68,11 +82,11 @@ const RecuitPostContainer = () => {
             </clipPath>
           </defs>
         </svg>
-        <span className='ml-0.5'>13</span>
+        <span className='ml-0.5'>0</span>
       </div>
       <div className='cursor-pointer'>
-        <p>서울 이스케이프룸 홍대점 - 카지노</p>
-        <p className='mb-1'>12월 13일(금) 15:00 예정</p>
+        <p>{content}</p>
+        <p className='mb-1'>{parseDateFunc(matchingTime)}</p>
       </div>
 
       {screenLevel === 1 ? (
@@ -81,8 +95,7 @@ const RecuitPostContainer = () => {
         <div className='flex mt-7 justify-end gap-3 relative'>
           <button
             onClick={() => {
-              const [memberModal, setMemberModal] = useState(false);
-              setMemberModal((e) => !e);
+              setShowTeamModal(!showTeamModal);
             }}
             className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             팀원보기
@@ -90,9 +103,11 @@ const RecuitPostContainer = () => {
           <button className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
             참여하기
           </button>
-          <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-            <UserProfileContainer />
-          </div>
+          {showTeamModal && (
+            <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+              <UserProfileContainer />
+            </div>
+          )}
         </div>
       )}
     </div>
