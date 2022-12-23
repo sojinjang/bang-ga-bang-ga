@@ -1,13 +1,13 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
 import userArray from '../../assets/images/user-profile/profile';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
 
 const RecuitPostContainer = ({ postData }) => {
-  const screenLevel = useRecoilValue(screenLevelAtom);
+  const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
@@ -26,21 +26,33 @@ const RecuitPostContainer = ({ postData }) => {
   const changeDate = () => {
     const postedDate = new Date(createdAt);
     const today = new Date();
-    console.log(today.toISOString());
+    // [221224] memo 재웅:
+    // today 상수를 console.log를 통해 확인해보면 총 16개의 로그가 뜬다.
+    // 과한 리렌더링을 거친다. 리소스의 낭비가 매우 심한 거 같아 원인을 찾고있다.
+
     const relativeFormatter = new Intl.RelativeTimeFormat('ko', {
       numeric: 'always',
     });
 
     let timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
-
     if (timeDiff === 0) {
       timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
-
       return relativeFormatter.format(timeDiff, 'minute');
     }
-
     return relativeFormatter.format(timeDiff, 'hour');
   };
+
+  const handleResize = () => {
+    window.innerHeight < 985 ? setScreenLevel(2) : setScreenLevel(1);
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const UserProfileContainer = () => {
     return (
