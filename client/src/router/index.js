@@ -9,7 +9,7 @@ import RecruitMap from '../pages/RecruitMap';
 import Register from '../pages/Register';
 import MypageEdit from '../pages/MypageEdit';
 import CafeList from '../pages/CafeList';
-import RecruitList from '../pages/recruit-list/RecruitList';
+import RecruitList from '../pages/RecruitList';
 import RecruitDetail from '../pages/RecruitDetail';
 
 const Router = () => {
