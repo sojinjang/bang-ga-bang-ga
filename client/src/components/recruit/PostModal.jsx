@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import tw from 'tailwind-styled-components';
 import { showRecruitPostAtom, showRecruitModalPageAtom, recruitPostDataAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 
@@ -89,14 +90,33 @@ const SecondModal = () => {
   const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const setShowRecruitModalPage = useSetRecoilState(showRecruitModalPageAtom);
   const [recruitPostData, setRecruitPostData] = useRecoilState(recruitPostDataAtom);
-  const [localCafeData, setLocalCafeData] = useState('');
+  const [showCafeSelection, setShowCafeSelection] = useState('disabled');
+  const [showThemeSelection, setShowThemeSelection] = useState('disabled');
+  const [currentCafeDataArray, setCurrentCafeDataArray] = useState([]);
+  const [currentThemeDataArray, setCurrentThemeDataArray] = useState([]);
+  const [currentThemeData, setCurrentThemeData] = useState({});
+  const [submitStatus, setSubmitStatus] = useState(false);
 
   const REGION_DATA = ['홍대', '강남', '건대'];
 
   const getCafeData = async () => {
-    const cafeData = await get(ApiUrl.CAFE_DETAIL_INFO, recruitPostData.matchingLocation);
+    try {
+      const cafeData = await get(ApiUrl.MATCHING_POST_CAFE_INFO, recruitPostData.matchingLocation);
+      setCurrentCafeDataArray(cafeData);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
-    setLocalCafeData(cafeData);
+  const getThemeData = async (cafeId) => {
+    try {
+      const themeData = await get(ApiUrl.MATCHING_POST_THEME_INFO, cafeId);
+      setCurrentThemeDataArray(themeData);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   };
 
   const postFunc = useMemo(() => console.log(recruitPostData), [recruitPostData]);
@@ -119,7 +139,9 @@ const SecondModal = () => {
                         };
                       });
 
+                      setShowCafeSelection('');
                       getCafeData();
+                      setSubmitStatus(false);
                     }}
                     type='radio'
                     value={region}
@@ -133,35 +155,84 @@ const SecondModal = () => {
             );
           })}
         </ul>
-        <div className='flex flex-col mt-5'>
+        <PostSelection>
           <span>방문 카페명</span>
-          <select className='w-[110px]' name='filter' id=''>
-            <option value=''>--필터링--</option>
-            <option value=''>난이도순</option>
-            <option value=''>활동성순</option>
-            <option value=''>평점순</option>
-            <option value=''>리뷰많은순</option>
+          <select
+            className='w-[300px] h-[45px] p-2 border border-solid border-gray-400'
+            onChange={(e) => {
+              getThemeData(e.target.value);
+              setShowThemeSelection('');
+              setSubmitStatus(false);
+
+              setRecruitPostData((prevState) => {
+                return {
+                  ...prevState,
+
+                  cafeId: parseInt(e.target.value),
+                };
+              });
+            }}
+            disabled={showCafeSelection}
+            name='filter'
+            id=''>
+            <option value=''>
+              {showCafeSelection === '' ? '---방문 예정인 카페명을 선택해주세요!' : '---방문 지역을 먼저 선택해주세요.'}
+            </option>
+            {currentCafeDataArray.map((cafe, index) => (
+              <option value={cafe.cafeId} key={index}>
+                {cafe.cafeName}
+              </option>
+            ))}
           </select>
-          <input
-            type='text'
-            placeholder='방문 예정인 카페명을 입력하세요.'
-            className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
-          />
-        </div>
-        <div className='flex flex-col mt-4'>
+        </PostSelection>
+        <PostSelection className='mt-4'>
           <span>방문 테마명</span>
-          <input
-            type='text'
-            placeholder='방문 예정인 카페의 테마명을 입력하세요.'
-            className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
-          />
-        </div>
+          <select
+            onChange={(e) => {
+              const themeId = parseInt(e.target.value) + 1;
+              setCurrentThemeData(currentThemeDataArray[themeId]);
+              setSubmitStatus(true);
+
+              setRecruitPostData((prevState) => {
+                return {
+                  ...prevState,
+
+                  themeName: e.target[themeId].text,
+                };
+              });
+            }}
+            className='w-[300px] h-[45px] p-2 border border-solid border-gray-400'
+            disabled={showThemeSelection}
+            name='filter'
+            id=''>
+            <option value=''>
+              {showThemeSelection === ''
+                ? '---방문 예정인 카페의 테마명을 선택해주세요!'
+                : '---방문 예정인 카페를 먼저 선택해주세요.'}
+            </option>
+            {currentThemeDataArray.map((theme, index) => (
+              <option title={theme.theme} value={index} key={index}>
+                {theme.theme}
+              </option>
+            ))}
+          </select>
+        </PostSelection>
         <div>
           <button
             className='w-[60px] h-[35px] right-[168px] bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
             onClick={() => {
               setShowRecruitModalPage(1);
               setShowRecruitPost(false);
+              setRecruitPostData({
+                title: '',
+                peopleNum: 2,
+                themeName: '',
+                matchingStatus: false,
+                matchingTime: 0,
+                matchingLocation: '',
+                cafeId: 0,
+                userId: 0,
+              });
             }}>
             닫기
           </button>
@@ -180,18 +251,20 @@ const SecondModal = () => {
           <button
             className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
             onClick={() => {
-              const dateValue = recruitPostData.date;
-              const parsedDate = parseInt(dateValue.toString().replace(/[^0-9]/g, ''));
+              if (submitStatus) {
+                const dateValue = recruitPostData.matchingTime;
+                const parsedDate = parseInt(dateValue.toString().replace(/[^0-9]/g, ''));
 
-              setRecruitPostData((prevState) => {
-                return {
-                  ...prevState,
+                setRecruitPostData((prevState) => {
+                  return {
+                    ...prevState,
 
-                  date: parsedDate,
-                };
-              });
+                    matchingTime: parsedDate,
+                  };
+                });
 
-              postFunc;
+                postFunc;
+              }
             }}>
             등록
           </button>
