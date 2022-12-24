@@ -25,4 +25,25 @@ const currentPageAtom = atom({
   default: 1,
 });
 
-export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom, showUserProfileModalAtom, currentPageAtom };
+const recruitPostDataAtom = atom({
+  key: 'recruitPostData',
+  default: {
+    title: '',
+    peopleNum: 2,
+    themeName: '',
+    matchingStatus: false,
+    matchingTime: 0,
+    matchingLocation: '',
+    cafeId: 0,
+    userId: 0,
+  },
+});
+
+export {
+  showRecruitPostAtom,
+  showRecruitModalPageAtom,
+  screenLevelAtom,
+  showUserProfileModalAtom,
+  currentPageAtom,
+  recruitPostDataAtom,
+};

@@ -4,4 +4,5 @@ export {
   screenLevelAtom,
   showUserProfileModalAtom,
   currentPageAtom,
+  recruitPostDataAtom,
 } from './atom';
