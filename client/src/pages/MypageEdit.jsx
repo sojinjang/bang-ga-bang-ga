@@ -1,16 +1,16 @@
 import React from 'react';
-import BackgroundScroll from '../../components/common/BackgroundScroll';
+import BackgroundScroll from '../components/common/BackgroundScroll';
 import tw from 'tailwind-styled-components';
-import Withdraw from '../../modals/Withdraw';
+import Withdraw from '../modals/Withdraw';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { profileImgAtom } from '../../recoil/register';
+import { profileImgAtom } from '../recoil/register';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
-import Navigators from '../../components/common/Navigators';
+import Navigators from '../components/common/Navigators';
 
-const EditUserInfo = () => {
+const MypageEdit = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
   const USER_BASIC_DATA = [
@@ -224,4 +224,4 @@ const EditBtn = tw.button`
   text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
 `;
 
-export default EditUserInfo;
+export default MypageEdit;

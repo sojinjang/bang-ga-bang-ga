@@ -20,6 +20,8 @@ const Register = () => {
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
+  const [userId, setUserId] = useState('');
+
   const USER_INPUT_DATA = [
     { name: '이름', placeHolder: '김탈출', type: 'text', info: 'userName' },
     { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', info: 'nickName' },
@@ -77,7 +79,8 @@ const Register = () => {
       alert(error.reason);
     } else {
       const result = await res.json();
-      console.log(result);
+      console.log(result.userId);
+      setUserId(result.userId);
       setShowCelebrate(true);
     }
     //result.success? -> setShowCelebrate(true);
@@ -89,7 +92,7 @@ const Register = () => {
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
-        {showRegisterProfile && <RegisterProfile />}
+        {showRegisterProfile && <RegisterProfile userId={userId} />}
         <InnerContainer>
           <form onSubmit={onSubmitRegisterBtn}>
             {USER_INPUT_DATA.map((inputData) => (
