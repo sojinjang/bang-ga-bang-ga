@@ -9,16 +9,17 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
 import { post } from '../utils/api';
-
-const RegisterProfile = () => {
+import { Keys } from '../constants/Keys';
+import { getCookieValue } from '../utils/cookie';
+const RegisterProfile = ({ userId }) => {
   const userRadioInputData = [
-    { name: '성별', options: ['남자', '여자'] },
-    { name: '나이', options: ['10대', '20대', '30대 이상'] },
-    { name: '선호 지역', options: ['강남', '건대', '홍대'] },
+    { name: 'gender', options: ['남자', '여자'] },
+    { name: 'age', options: ['10대', '20대', '30대 이상'] },
+    { name: 'preferenceLocation', options: ['강남', '건대', '홍대'] },
   ];
   const userSelectInputData = [
     {
-      name: 'MBTI',
+      name: 'mbti',
       options: [
         '선택',
         'ISTJ',
@@ -40,7 +41,7 @@ const RegisterProfile = () => {
       ],
     },
     {
-      name: '선호 테마',
+      name: 'preferenceTheme',
       options: [
         '없음',
         '추리',
@@ -59,7 +60,7 @@ const RegisterProfile = () => {
       ],
     },
     {
-      name: '비선호 테마',
+      name: 'nonPreferenceTheme',
       options: [
         '없음',
         '추리',
@@ -90,25 +91,36 @@ const RegisterProfile = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(userAddInfo);
-  }, [userAddInfo]);
-
   const navigate = useNavigate();
   const onCancelBtn = () => {
     const later = confirm('추가정보를 입력하지 않고 가입을 완료하시겠습니까?');
     if (later) {
       alert('가입이 완료되었습니다');
       setShowRegisterProfile(false);
-      navigate('/');
+      navigate('/login');
     }
   };
 
-  const onCompleteBtn = () => {
+  const onSubmitAddData = async () => {
     setShowRegisterProfile(false);
-    post('/api/Users', userAddInfo);
-    alert('추가정보가 정상적으로 입력되었습니다');
-    navigate('/login');
+    console.log(userAddInfo);
+    const res = await fetch(`http://localhost:3008/api/users/${userId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
+      },
+      body: JSON.stringify(userAddInfo),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      alert(error.reason);
+    } else {
+      const result = await res.json();
+      console.log(result);
+      alert('추가정보가 정상적으로 입력되었습니다');
+      navigate('/login');
+    }
   };
 
   const onChangeProfileImg = (e) => {
@@ -183,22 +195,27 @@ const RegisterProfile = () => {
         </Modal>
       </div>
       <div className='mx-auto mt-[1%]'>닉네임</div>
-      <div className='mx-auto mt-[1%] w-full text-center'>
-        <input
-          className='border rounded-full pl-[5%] w-4/5'
-          type='text'
-          placeholder='한 줄 소개'
-          onChange={(e) => setUserAddInfo((userAddInfo) => (userAddInfo.user_intro = e.target.value))}
-        />
-      </div>
-      <form action='post' onSubmit={() => console.log(userAddInfo)}>
+
+      <form action='post' onSubmit={onSubmitAddData}>
+        <div className='mx-auto mt-[1%] w-full text-center'>
+          <input
+            className='border rounded-full pl-[5%] w-4/5'
+            type='text'
+            placeholder='한 줄 소개'
+            onChange={(e) =>
+              setUserAddInfo((userAddInfo) => {
+                userAddInfo.userIntro = e.target.value;
+              })
+            }
+          />
+        </div>
         {userRadioInputData.map((inputData) => (
           <RadioInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
         ))}
         {userSelectInputData.map((inputData) => (
           <SelectInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
         ))}
-        <BtnBox onCancelBtn={onCancelBtn} onCompleteBtn={onCompleteBtn} />
+        <BtnBox onCancelBtn={onCancelBtn} />
       </form>
     </div>
   );
@@ -232,14 +249,14 @@ const SelectInputBox = ({ inputData, handleChange }) => (
     </div>
   </div>
 );
-const BtnBox = ({ onCancelBtn, onCompleteBtn }) => {
+const BtnBox = ({ onCancelBtn }) => {
   return (
     <div className='BtnBox w-[90%] mx-auto flex'>
       <div className='ml-auto mt-4'>
         <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
           취소
         </button>
-        <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' onClick={onCompleteBtn} type='submit'>
+        <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' type='submit'>
           완료
         </button>
       </div>
