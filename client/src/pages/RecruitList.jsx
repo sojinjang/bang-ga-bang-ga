@@ -2,58 +2,78 @@ import React, { useState, useEffect } from 'react';
 import tw from 'tailwind-styled-components';
 import {
   showRecruitPostAtom,
-  screenLevelAtom,
+  maxPageNumAtom,
   showUserProfileModalAtom,
   currentPageAtom,
-} from '../../recoil/recruit-list/index';
+  currentRegionAtom,
+} from '../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { get } from '../../utils/api';
+import { get } from '../utils/api';
 
-import RecuitPostContainer from '../../components/recruit/RecruitPostContainer';
-import PostModal from '../../components/recruit/PostModal';
-import PaginationButton from '../../components/recruit/PageinationButton';
-import UserProfileModal from '../../components/recruit/UserProfileModal';
-import { RegionButton } from '../../components/buttons/Buttons';
-import Navigators from '../../components/common/Navigators';
-import Background from '../../components/common/Background';
+import RecuitPostContainer from '../components/recruit/RecruitPostContainer';
+import PostModal from '../components/recruit/PostModal';
+import PaginationButton from '../components/recruit/PageinationButton';
+import UserProfileModal from '../components/recruit/UserProfileModal';
+import { ListRegionButton } from '../components/buttons/Buttons';
+import Navigators from '../components/common/Navigators';
+import Background from '../components/common/Background';
+import { ApiUrl } from '../constants/ApiUrl';
 
 const RecruitList = () => {
   document.title = '방가방가 모집글 리스트';
 
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
+  const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
+  const setMaxPageNum = useSetRecoilState(maxPageNumAtom);
   const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
   const currentPage = useRecoilValue(currentPageAtom);
   const REGION_DATA = ['전체', '홍대', '강남', '건대'];
 
   const [fetchedData, setFetchedData] = useState([]);
-  const [currentRegion, setCurrentRegion] = useState('');
   const [checkRecruitingPost, setCheckRecruitingPost] = useState(false);
-  const [slicedData, setSlicedData] = useState([]);
+  const [slicedDataArray, setSlicedDataArray] = useState([]);
   const [currentPageData, setCurrentPageData] = useState([]);
 
   useEffect(() => {
-    const fetchRecruitData = async () => {
-      const data = await get('http://localhost:3008/api/matching-posts');
+    if (currentRegion === '전체') {
+      const fetchRecruitData = (async () => {
+        const data = await get(ApiUrl.MATCHING_POSTS);
 
-      setFetchedData(data);
-    };
+        setFetchedData(data);
+      })();
+    } else {
+      const fetchRecruitData = (async () => {
+        const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
 
-    fetchRecruitData();
-  }, []);
+        setFetchedData(data);
+      })();
+    }
+  }, [currentRegion]);
 
   useEffect(() => {
+    const dataLength = fetchedData.length;
     let dataArray = [];
 
-    for (let i = 0; i < fetchedData.length; i += 6) {
-      dataArray.push(fetchedData.slice(i, i + 6));
+    if (dataLength > 6) {
+      for (let i = 0; i < dataLength; i += 6) {
+        dataArray.push(fetchedData.slice(i, i + 6));
+      }
+    } else {
+      dataArray = fetchedData;
     }
 
-    setSlicedData(dataArray);
+    if (dataArray.length > 0) {
+      setSlicedDataArray(dataArray);
+      setMaxPageNum(dataArray.length - 1);
+      console.log(dataArray);
+    }
   }, [fetchedData]);
 
   useEffect(() => {
-    setCurrentPageData(slicedData[currentPage]);
-  }, [slicedData]);
+    if (slicedDataArray.length > 0) {
+      setCurrentPageData(slicedDataArray[currentPage]);
+    }
+  }, [currentPage]);
 
   return (
     <Background img={'bg1'}>
@@ -64,12 +84,9 @@ const RecruitList = () => {
             <ul className='flex flex-row justify-center mx-auto'>
               {REGION_DATA.map((data, index) => (
                 <li key={index}>
-                  <RegionButton
-                    title={data}
-                    onClick={() => {
-                      setCurrentRegion(data);
-                    }}
-                  />
+                  <button className='purpleButton mx-1' onClick={() => setCurrentRegion(data)} title={data}>
+                    {data}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -103,14 +120,7 @@ const RecruitList = () => {
             </button>
           </div>
           <ListItemContainer>
-            {/* 
-              memo 재웅: 오류 발생(이슈 참조)으로 현재 주석처리한 코드입니다.
-              currentPageData: fetchedData를 활용하여 페이지네이션을 구현한 변수
-            */}
-            {/* {currentPageData.map((post, index) => (
-              <RecuitPostContainer postData={post} key={index} />
-            ))} */}
-            {fetchedData.map((post, index) => (
+            {currentPageData.map((post, index) => (
               <RecuitPostContainer postData={post} key={index} />
             ))}
             {showUserProfileModal && <UserProfileModal />}

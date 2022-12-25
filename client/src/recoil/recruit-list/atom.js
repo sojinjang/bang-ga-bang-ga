@@ -22,6 +22,11 @@ const showUserProfileModalAtom = atom({
 
 const currentPageAtom = atom({
   key: 'currentPage',
+  default: 0,
+});
+
+const maxPageNumAtom = atom({
+  key: 'maxPageNum',
   default: 1,
 });
 
@@ -39,11 +44,18 @@ const recruitPostDataAtom = atom({
   },
 });
 
+const currentRegionAtom = atom({
+  key: 'currentRegion',
+  default: '전체',
+});
+
 export {
   showRecruitPostAtom,
   showRecruitModalPageAtom,
   screenLevelAtom,
   showUserProfileModalAtom,
   currentPageAtom,
+  maxPageNumAtom,
   recruitPostDataAtom,
+  currentRegionAtom,
 };
