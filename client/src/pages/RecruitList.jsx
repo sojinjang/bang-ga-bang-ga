@@ -54,20 +54,23 @@ const RecruitList = () => {
     const dataLength = fetchedData.length;
     let dataArray = [];
 
-    if (dataLength > 6) {
-      for (let i = 0; i < dataLength; i += 6) {
-        dataArray.push(fetchedData.slice(i, i + 6));
-      }
-    } else {
-      dataArray = fetchedData;
+    for (let i = 0; i < dataLength; i += 6) {
+      dataArray.push(fetchedData.slice(i, i + 6));
     }
 
     if (dataArray.length > 0) {
       setSlicedDataArray(dataArray);
       setMaxPageNum(dataArray.length - 1);
-      console.log(dataArray);
     }
   }, [fetchedData]);
+
+  useEffect(() => {
+    if (slicedDataArray.length > 1) {
+      setCurrentPageData(slicedDataArray[currentPage]);
+    } else if (slicedDataArray.length === 1) {
+      setCurrentPageData(slicedDataArray[0]);
+    }
+  }, [slicedDataArray]);
 
   useEffect(() => {
     if (slicedDataArray.length > 0) {
