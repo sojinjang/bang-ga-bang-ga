@@ -14,25 +14,25 @@ import RecuitPostContainer from '../components/recruit/RecruitPostContainer';
 import PostModal from '../components/recruit/PostModal';
 import PaginationButton from '../components/recruit/PageinationButton';
 import UserProfileModal from '../components/recruit/UserProfileModal';
-import { ListRegionButton } from '../components/buttons/Buttons';
 import Navigators from '../components/common/Navigators';
 import Background from '../components/common/Background';
 import { ApiUrl } from '../constants/ApiUrl';
 
-const RecruitList = () => {
-  document.title = '방가방가 모집글 리스트';
+document.title = '방가방가 모집글 리스트';
 
+const RecruitList = () => {
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
   const setMaxPageNum = useSetRecoilState(maxPageNumAtom);
   const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
-  const currentPage = useRecoilValue(currentPageAtom);
-  const REGION_DATA = ['전체', '홍대', '강남', '건대'];
 
   const [fetchedData, setFetchedData] = useState([]);
   const [checkRecruitingPost, setCheckRecruitingPost] = useState(false);
   const [slicedDataArray, setSlicedDataArray] = useState([]);
   const [currentPageData, setCurrentPageData] = useState([]);
+
+  const REGION_DATA = ['전체', '홍대', '강남', '건대'];
 
   useEffect(() => {
     if (currentRegion === '전체') {
@@ -58,10 +58,9 @@ const RecruitList = () => {
       dataArray.push(fetchedData.slice(i, i + 6));
     }
 
-    if (dataArray.length > 0) {
-      setSlicedDataArray(dataArray);
-      setMaxPageNum(dataArray.length - 1);
-    }
+    setCurrentPage(0);
+    setSlicedDataArray(dataArray);
+    setMaxPageNum(dataArray.length - 1);
   }, [fetchedData]);
 
   useEffect(() => {
