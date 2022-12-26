@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { currentPageAtom, maxPageNumAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
