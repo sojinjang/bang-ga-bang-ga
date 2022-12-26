@@ -2,19 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'ONE-Mobile-POP';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'S-CoreDream-3Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://webfontworld.github.io/onestore/OneMobilePop.css');
+@import url('https://webfontworld.github.io/SCoreDream/SCoreDream.css');
 
 *{
-  font-family: 'S-CoreDream-3Light';
+  font-family: 'SCoreDream';
 }
