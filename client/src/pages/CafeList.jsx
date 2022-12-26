@@ -77,7 +77,7 @@ const CafeList = () => {
       <div className='flex flex-row justify-center mx-auto my-5'>
         {detailRegion.map((region, index) => (
           <button
-            className='purpleButton mx-1'
+            className='purpleButton mx-1 font-custum_heading'
             role='button'
             key={index}
             name={region}

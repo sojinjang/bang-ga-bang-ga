@@ -15,6 +15,10 @@ module.exports = {
         'skyblue-1': '#64C0DF',
         'skyblue-2': '#AAE1E6',
       },
+      fontFamily: {
+        custum_heading: ['OneMobilePop', 'sans-serif'],
+        custum_body:['SCoreDream', 'sans-serif'],
+      },
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
