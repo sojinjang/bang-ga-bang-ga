@@ -1,24 +1,24 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 
-const UserScore = () => {
+const UserScore = ({ userData }) => {
   return (
     <>
       <section>
         <h3>매너점수💖</h3>
         <Wrapper>
-          <MannerProgress>70점😊</MannerProgress>
+          <MannerProgress>{userData.mannerScore}점😊</MannerProgress>
         </Wrapper>
         {/* translate 계산: Wrapper width * Progress width - 15 = 700 * 0.7 - 15 = 475px */}
-        <div className='translate-x-[475px]'>70점</div>
+        <div className='translate-x-[475px]'>{userData.mannerScore}점</div>
       </section>
 
       <section>
         <h3>탈출레벨🔑</h3>
         <Wrapper>
-          <EscapeProgress>gold🥇</EscapeProgress>
+          <EscapeProgress>{userData.tier}🥇</EscapeProgress>
         </Wrapper>
-        <div className='translate-x-[370px]'>55점</div>
+        <div className='translate-x-[370px]'>{userData.escapeScore}점</div>
       </section>
     </>
   );

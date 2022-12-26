@@ -11,10 +11,11 @@ module.exports = {
         'blue-1': '#3F51A2',
         'blue-2': '#2D5C91',
         'blue-3': '#4497D4',
+        'blue-4': '#016DFF',
         'skyblue-1': '#64C0DF',
         'skyblue-2': '#AAE1E6',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar-hide')],
 };

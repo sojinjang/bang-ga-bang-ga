@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
+  const loginToken = sessionStorage.getItem('accessToken');
   const navigate = useNavigate();
   const onScrollDown = () => {
     window.scrollTo({
@@ -74,19 +75,25 @@ const Home = () => {
               }}>
               <MatchingBtn
                 onClick={() => {
-                  navigate('/login');
+                  navigate('/recruit-map');
                 }}>
-                <div className='absolute top-[-110px] left-[60px]'>매칭 리스트 보기!</div>
+                <div className='absolute top-[-110px] left-[60px]'>모집 리스트 보기!</div>
               </MatchingBtn>
             </MatchingBtnBorder>
           </div>
           <div className='w-full h-2/5 flex justify-center items-center'>
-            <Link to='/login'>
-              <LoginBtn>로그인</LoginBtn>
-            </Link>
-            <Link to='/register'>
-              <RegisterBtn>회원가입</RegisterBtn>
-            </Link>
+            {loginToken ? (
+              <LoginBtn onClick={() => (sessionStorage.clear(), window.location.reload())}>로그아웃</LoginBtn>
+            ) : (
+              <Link to='/login'>
+                <LoginBtn>로그인</LoginBtn>
+              </Link>
+            )}
+            {!loginToken && (
+              <Link to='/register'>
+                <RegisterBtn>회원가입</RegisterBtn>
+              </Link>
+            )}
           </div>
           <div className='w-[90%] mx-auto h-[10%] flex justify-end'>
             <audio ref={audioRef} src='/sounds/LetsHuntAliens.mp3'></audio>

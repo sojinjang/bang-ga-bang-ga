@@ -1,35 +1,53 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 
-const UserInfo = () => {
+const UserInfo = ({ userData }) => {
+  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation } = userData;
+  const USER_INFO = [
+    ['성별', gender],
+    ['나이', age],
+    ['MBTI', mbti],
+    ['선호 테마', preferenceTheme],
+    ['비선호 테마', nonPreferenceTheme],
+    ['선호 지역', preferenceLocation],
+  ];
+
   return (
     <div className='w-[900px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
-      <Container>
-        {/* DB에서 받을 정보 */}
+      {/* <Container>
         <Information>
           <Title>성별</Title>
-          <Body>남성</Body>
+          <Body>{userData.gender}</Body>
         </Information>
         <Information>
           <Title>나이</Title>
-          <Body>20대</Body>
+          <Body>{userData.age}</Body>
         </Information>
         <Information>
           <Title>MBTI</Title>
-          <Body>ESFJ</Body>
+          <Body>{userData.mbti}</Body>
         </Information>
         <Information>
           <Title>선호 테마</Title>
-          <Body>판타지</Body>
+          <Body>{userData.preferenceTheme}</Body>
         </Information>
         <Information>
           <Title>비선호 테마</Title>
-          <Body>공포</Body>
+          <Body>{userData.nonPreferenceTheme}</Body>
         </Information>
         <Information>
           <Title>선호 지역</Title>
           <Body>홍대</Body>
         </Information>
+      </Container> */}
+
+      <Container>
+        {USER_INFO.map((info) => (
+          <Information key={info[0]}>
+            <Title>{info[0]}</Title>
+            <Body>{info[1]}</Body>
+          </Information>
+        ))}
       </Container>
     </div>
   );
