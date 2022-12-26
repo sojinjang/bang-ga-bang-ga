@@ -7,11 +7,15 @@ import userArray from '../../assets/images/user-profile/profile';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
 
 const RecuitPostContainer = ({ postData }) => {
+  const navigate = useNavigate();
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
-  const { title, content, view, matchingTime, matchStatus, matchingLocation, createdAt, userId } = postData;
+  const moveToDetailPage = async (e) => {
+    await get('/api/matching-posts/read-post', e.currentTarget.id);
+    navigate('/recruit-detail');
+  };
 
   const parseDateFunc = (date) => {
     const stringifiedDate = date.toString();
@@ -78,8 +82,9 @@ const RecuitPostContainer = ({ postData }) => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
-      <CompleteRibbon src={completeRibbon} className={matchStatus ? '' : 'hidden'} />
-      <p className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'>
+      <p
+        onClick={(e) => moveToDetailPage(e)}
+        className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'
         {title}
         <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
       </p>
