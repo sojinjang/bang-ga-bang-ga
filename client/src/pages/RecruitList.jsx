@@ -28,8 +28,9 @@ const RecruitList = () => {
   const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
 
   const [fetchedData, setFetchedData] = useState([]);
-  const [checkRecruitingPost, setCheckRecruitingPost] = useState(false);
-  const [slicedDataArray, setSlicedDataArray] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [nowRecruiting, setNowRecruiting] = useState(false);
+  const [slicedData, setSlicedData] = useState([]);
   const [currentPageData, setCurrentPageData] = useState([]);
 
   const REGION_DATA = ['전체', '홍대', '강남', '건대'];
@@ -37,45 +38,53 @@ const RecruitList = () => {
   useEffect(() => {
     if (currentRegion === '전체') {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS);
+        const data = await get('/api/matching-posts');
+        const asendedData = data.reverse();
 
-        setFetchedData(data);
+        setFetchedData(asendedData);
       })();
     } else {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
+        const data = await get('http://34.64.127.117' + ApiUrl.MATCHING_POSTS, currentRegion);
+        const asendedData = data.reverse();
 
-        setFetchedData(data);
+        setFetchedData(asendedData);
       })();
     }
   }, [currentRegion]);
 
   useEffect(() => {
-    const dataLength = fetchedData.length;
+    if (nowRecruiting) {
+      const nowRecruitingData = fetchedData.filter((data) => {
+        return data.matchStatus === 0;
+      });
+
+      setFilteredData(nowRecruitingData);
+    } else {
+      setFilteredData(fetchedData);
+    }
+  }, [fetchedData, nowRecruiting]);
+
+  useEffect(() => {
+    const dataLength = filteredData.length;
     let dataArray = [];
 
     for (let i = 0; i < dataLength; i += 6) {
-      dataArray.push(fetchedData.slice(i, i + 6));
+      dataArray.push(filteredData.slice(i, i + 6));
     }
 
     setCurrentPage(0);
-    setSlicedDataArray(dataArray);
+    setSlicedData(dataArray);
     setMaxPageNum(dataArray.length - 1);
-  }, [fetchedData]);
+  }, [filteredData]);
 
   useEffect(() => {
-    if (slicedDataArray.length > 1) {
-      setCurrentPageData(slicedDataArray[currentPage]);
-    } else if (slicedDataArray.length === 1) {
-      setCurrentPageData(slicedDataArray[0]);
+    if (slicedData.length > 0) {
+      setCurrentPageData(slicedData[currentPage]);
+    } else if (slicedData.length === 1) {
+      setCurrentPageData(slicedData[0]);
     }
-  }, [slicedDataArray]);
-
-  useEffect(() => {
-    if (slicedDataArray.length > 0) {
-      setCurrentPageData(slicedDataArray[currentPage]);
-    }
-  }, [currentPage]);
+  }, [slicedData, currentPage]);
 
   return (
     <Background img={'bg1'}>
@@ -99,21 +108,12 @@ const RecruitList = () => {
                 <input
                   className='required:border-red-500'
                   onClick={() => {
-                    setCheckRecruitingPost(!checkRecruitingPost);
+                    setNowRecruiting(!nowRecruiting);
                   }}
                   type='checkbox'
                 />
                 모집중만 보기
               </label>
-              <div>
-                <select className='w-[110px]' name='filter' id=''>
-                  <option value=''>--필터링--</option>
-                  <option value=''>난이도순</option>
-                  <option value=''>활동성순</option>
-                  <option value=''>평점순</option>
-                  <option value=''>리뷰많은순</option>
-                </select>
-              </div>
             </FilterContainer>
             <button
               onClick={() => setShowRecruitPost(true)}
