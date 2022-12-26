@@ -1,13 +1,12 @@
 import { React, Fragment, useState } from 'react';
-// import tw from 'tailwind-styled-components';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-// import { RegionButton } from '../components/buttons/Buttons';
-// import Pagination from '../components/common/Pagination';
 import * as Api from '../utils/api';
 import { useEffect } from 'react';
+import Pagination from 'react-js-pagination';
+import './CafeList.css';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -15,11 +14,25 @@ function classNames(...classes) {
 
 const CafeList = () => {
   const detailRegion = ['전체', '홍대', '강남', '건대'];
+
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const [list, setList] = useState([]);
+  const [pagePerList, setPagePerList] = useState([]);
+  const slicedList = () => {
+    setPagePerList(list.slice(9 * (page - 1), page * 9));
+  };
+  useEffect(() => {
+    slicedList();
+  }, [page, list]);
+
   const getAllCafeData = async () => {
     try {
-      //'/api/cafe-infos/cafeDetail/홍대'
-      const data = await Api.get('/api/cafe-infos/All');
+      const data = await Api.get('/api/cafe-infos/cafeAll');
       console.log(data);
       setList(data);
     } catch (e) {
@@ -63,7 +76,16 @@ const CafeList = () => {
       <Navigators />
       <div className='flex flex-row justify-center mx-auto my-5'>
         {detailRegion.map((region, index) => (
-          <button className='purpleButton mx-1' role='button' key={index} name={region} onClick={() => getRegionCafeData(region)}>
+          <button
+            className='purpleButton mx-1'
+            role='button'
+            key={index}
+            name={region}
+            onClick={() => {
+              getRegionCafeData(region);
+              setPage(1);
+              setSelected('정렬기준')
+            }}>
             {region}
           </button>
         ))}
@@ -92,7 +114,6 @@ const CafeList = () => {
                     leaveTo='opacity-0'>
                     <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
                       <Listbox.Option
-                        // key={index}
                         className={({ active }) =>
                           classNames(
                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
@@ -128,7 +149,6 @@ const CafeList = () => {
                         )}
                       </Listbox.Option>
                       <Listbox.Option
-                        // key={index}
                         className={({ active }) =>
                           classNames(
                             active ? 'text-white bg-indigo-600' : 'text-gray-900',
@@ -172,17 +192,17 @@ const CafeList = () => {
         </div>
 
         <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
-          {list.map((data, idx) => {
+          {pagePerList.map(({cafeId, cafeName, address, homePage, starRate, reviewsSum}) => {
             return (
-              <div className='border flex px-[27px] items-center' key={idx}>
+              <div className='border flex px-[27px] items-center' key={cafeId}>
                 <div className='border w-[100px] h-[100px]'>
                   <img></img>
                 </div>
                 <div className='ml-3'>
                   <p className='flex w-full justify-start align-center'>
-                    <div>{data.cafeName}</div>
+                    <div>{cafeName}</div>
                     <a
-                      href={`https://search.naver.com/search.naver?&query=${data.cafeName}`}
+                      href={`https://search.naver.com/search.naver?&query=${cafeName}`}
                       target='_blank'
                       rel='noopener noreferrer nofollow'>
                       <img
@@ -191,25 +211,30 @@ const CafeList = () => {
                       />
                     </a>
                   </p>
-                  <p>{data.address}</p>
-                  <p>{data.homePage}</p>
+                  <p>{address}</p>
+                  <p>{homePage}</p>
                   <p>
-                    평점 {data.starRate}/10 | 리뷰 {data.reviewsSum}개
+                    평점 {starRate}/10 | 리뷰 {reviewsSum}개
                   </p>
                 </div>
               </div>
             );
           })}
         </div>
-        <div className='border w-[1200px] h-[50px] flex justify-center items-center'>
+        {/* <div className='border w-[1200px] h-[50px] flex justify-center items-center'>
           <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
             1
           </button>
-          <button className='w-[25px] h-[25px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
-            2
-          </button>
-        </div>
-        {/* <Pagination/> */}
+        </div> */}
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={9}
+          totalItemsCount={list.length}
+          pageRangeDisplayed={5}
+          prevPageText={'‹'}
+          nextPageText={'›'}
+          onChange={handlePageChange}
+        />
       </div>
     </Background>
   );
