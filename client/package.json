@@ -65,5 +65,5 @@
   "msw": {
     "workerDirectory": "public"
   },
-  "proxy": "http://localhost:3008"
+  "proxy": " http://34.64.127.117/"
 }
