@@ -36,11 +36,11 @@ const recruitPostDataAtom = atom({
     title: '',
     peopleNum: 2,
     themeName: '',
-    matchingStatus: false,
+    matchStatus: false,
     matchingTime: 0,
     matchingLocation: '',
     cafeId: 0,
-    userId: 0,
+    userId: 1,
   },
 });
 
