@@ -11,7 +11,7 @@ const MyPage = () => {
   const [userData, setUserData] = useState({});
 
   const fetchData = async () => {
-    const data = await get('http://localhost:3008/api/users/user');
+    const data = await get('/api/user');
     setUserData(data);
   };
 
@@ -19,7 +19,6 @@ const MyPage = () => {
     fetchData();
   }, []);
 
-  console.log(userData);
   return (
     <Background img={'bg3'} className='relative'>
       <Navigators />
