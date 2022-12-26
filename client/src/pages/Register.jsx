@@ -1,7 +1,6 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import Celebrate from '../modals/Celebrate';
-import { useNavigate } from 'react-router-dom';
 import RegisterProfile from '../modals/RegisterProfile';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { showCelebrateAtom, showRegisterProfileAtom } from '../recoil/register';
@@ -11,31 +10,24 @@ import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import { post } from '../utils/api';
 import { useImmer } from 'use-immer';
-import { Keys } from '../constants/Keys';
-import { getCookieValue } from '../utils/cookie';
+import { USER_INPUT_DATA } from '../constants/registerUserInputData';
 
 const Register = () => {
-  const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
   const [userId, setUserId] = useState('');
 
-  const USER_INPUT_DATA = [
-    { name: '이름', placeHolder: '김탈출', type: 'text', info: 'userName' },
-    { name: '닉네임', placeHolder: '위기탈출넘버원', type: 'text', info: 'nickName' },
-    { name: '휴대전화 번호', placeHolder: '010-1234-5678', type: 'text', info: 'mobileNumber' },
-    { name: '이메일', placeHolder: 'example@escape.elice', type: 'email', info: 'email' },
-    { name: '비밀번호', placeHolder: '영문, 숫자, 특수문자 조합 최소 8자', type: 'password', info: 'password' },
-    {
-      name: '비밀번호 확인',
-      placeHolder: '비밀번호를 다시 한번 입력해주세요',
-      type: 'password',
-      info: 'pwdConfirm',
-    },
-  ];
-
+  const registerUser = async () => {
+    try {
+      const result = await post('/api/user', userData);
+      setUserId(result.userId);
+      setShowCelebrate(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
     console.log(userData);
@@ -64,26 +56,7 @@ const Register = () => {
       return;
     }
     setError('');
-    // const result = post('http://localhost:3008/api/users', userData);
-    // console.log(result);
-    const res = await fetch('http://localhost:3008/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
-      },
-      body: JSON.stringify(userData),
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      alert(error.reason);
-    } else {
-      const result = await res.json();
-      console.log(result.userId);
-      setUserId(result.userId);
-      setShowCelebrate(true);
-    }
-    //result.success? -> setShowCelebrate(true);
+    registerUser();
   };
 
   return (
@@ -115,15 +88,14 @@ const InputBox = ({ inputData, setUserData }) => {
     <div className='w-full'>
       <label className='mr-auto'>
         {inputData.name}
-        <input
+        <RegisterInput
+          type={inputData.type}
+          placeholder={inputData.placeHolder}
           onChange={(e) =>
             setUserData((userData) => {
               userData[inputData.info] = e.target.value;
             })
           }
-          className='w-full border border-black rounded pl-2 h-10  mb-[3%]'
-          type={inputData.type}
-          placeholder={inputData.placeHolder}
         />
       </label>
     </div>
@@ -164,5 +136,8 @@ const RegisterBtn = tw.button`
  border 
  border-[#3F51A2]
  border-[6px] 
+`;
+const RegisterInput = tw.input`
+  w-full border border-black rounded pl-2 h-10  mb-[3%]
 `;
 export default Register;

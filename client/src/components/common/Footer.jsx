@@ -5,9 +5,10 @@ const Footer = () => {
     <div
       className='bg-black 
     w-full
+    h-[8%]
     text-[#9668BA] 
-    py-5 
-    flex 
+    flex
+    items-center
     justify-center 
     absolute 
     inset-x-0 

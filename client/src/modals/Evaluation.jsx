@@ -40,11 +40,11 @@ const Evaluation = ({ selectedList, setVisible }) => {
         <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3>
         <form action=''>
           <div>
-            {TEAM_MEMBERS.map((member) => (
-              <div key={member.nick_name} className='flex justify-between mb-[15px]'>
+            {TEAM_MEMBERS.map(({ nick_name, profile_image }) => (
+              <div key={nick_name} className='flex justify-between mb-[15px]'>
                 <div className='w-[100px]'>
-                  <ProfileImg src={member.profile_image} alt='팀원 프로필 사진' />
-                  <div className='text-lg text-center'>{member.nick_name}</div>
+                  <ProfileImg src={profile_image} alt='팀원 프로필 사진' />
+                  <div className='text-lg text-center'>{nick_name}</div>
                 </div>
                 <div className='flex flex-col'>
                   <div className='flex'>
@@ -54,13 +54,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((value, i) => (
                           <IconImg
                             src={
-                              // evalResult[member.nick_name]
-                              //   ? evalResult[member.nick_name].manner >= value
+                              // evalResult[nick_name]
+                              //   ? evalResult[nick_name].manner >= value
                               //     ? fullHeart
                               //     : emptyHeart
                               //   : emptyHeart
-                              evalRes.find((user) => user['nickName'] == member.nick_name)
-                                ? evalRes.find((user) => user['nickName'] == member.nick_name).manner >= value
+                              evalRes.find((user) => user['nickName'] == nick_name)
+                                ? evalRes.find((user) => user['nickName'] == nick_name).manner >= value
                                   ? fullHeart
                                   : emptyHeart
                                 : emptyHeart
@@ -68,7 +68,7 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             key={value}
                             onClick={(e) => {
                               e.preventDefault();
-                              const nickName = member.nick_name;
+                              const nickName = nick_name;
                               const manner = value;
                               setEvalResult((evalResult) => {
                                 evalResult[nickName] = { ...evalResult[nickName], manner };
@@ -94,13 +94,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((level) => (
                           <IconImg
                             src={
-                              // evalResult[member.nick_name]
-                              //   ? evalResult[member.nick_name].escape >= level
+                              // evalResult[nick_name]
+                              //   ? evalResult[nick_name].escape >= level
                               //     ? fullKey
                               //     : emptyKey
                               //   : emptyKey
-                              evalRes.find((user) => user['nickName'] == member.nick_name)
-                                ? evalRes.find((user) => user['nickName'] == member.nick_name).level >= level
+                              evalRes.find((user) => user['nickName'] == nick_name)
+                                ? evalRes.find((user) => user['nickName'] == nick_name).level >= level
                                   ? fullKey
                                   : emptyKey
                                 : emptyKey
@@ -108,7 +108,7 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             key={level}
                             onClick={(e) => {
                               e.preventDefault();
-                              const nickName = member.nick_name;
+                              const nickName = nick_name;
                               const escape = level;
                               setEvalResult((evalResult) => {
                                 evalResult[nickName] = { ...evalResult[nickName], escape };
@@ -134,13 +134,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     type='text'
                     placeholder='한 줄 평 (선택)'
                     onChange={(e) => {
-                      const nickName = member.nick_name;
+                      const nickName = nick_name;
                       const review = e.target.value;
                       setEvalResult((evalResult) => {
-                        evalResult[member.nick_name] = { ...evalResult[member.nick_name], review };
+                        evalResult[nick_name] = { ...evalResult[nick_name], review };
                       });
                       setEvalRes((evalRes) => {
-                        const userIndex = evalRes.findIndex((user) => user['nickName'] == member.nick_name);
+                        const userIndex = evalRes.findIndex((user) => user['nickName'] == nick_name);
                         {
                           userIndex == -1
                             ? evalRes.push({ nickName, review })
