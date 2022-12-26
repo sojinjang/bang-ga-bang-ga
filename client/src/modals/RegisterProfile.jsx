@@ -8,7 +8,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate, Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
-import { post } from '../utils/api';
+import { patch, post } from '../utils/api';
 import { Keys } from '../constants/Keys';
 import { getCookieValue } from '../utils/cookie';
 const RegisterProfile = ({ userId }) => {
@@ -100,6 +100,15 @@ const RegisterProfile = ({ userId }) => {
       navigate('/login');
     }
   };
+  const addUserAddInfo = async () => {
+    try {
+      const res = await patch('/api/users', userId, userAddInfo);
+      alert('추가정보가 정상적으로 입력되었습니다');
+      navigate('/login');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const onSubmitAddData = async () => {
     setShowRegisterProfile(false);
@@ -121,6 +130,7 @@ const RegisterProfile = ({ userId }) => {
       alert('추가정보가 정상적으로 입력되었습니다');
       navigate('/login');
     }
+    // addUserAddInfo()
   };
 
   const onChangeProfileImg = (e) => {

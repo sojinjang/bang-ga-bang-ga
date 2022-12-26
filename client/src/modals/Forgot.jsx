@@ -28,7 +28,7 @@ const Forgot = () => {
             취소
           </button>
           <button className='bg-[#4A94D7] ml-2 px-4 py-2 rounded-[10px]' onClick={onConfirmBtn}>
-            확인
+            임시비밀번호 발급
           </button>
         </div>
       </div>
