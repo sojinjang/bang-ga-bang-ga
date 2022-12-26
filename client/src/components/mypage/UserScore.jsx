@@ -2,23 +2,27 @@ import React from 'react';
 import tw from 'tailwind-styled-components';
 
 const UserScore = ({ userData }) => {
+  const mannerScore = userData.mannerScore;
+  const escapeScore = userData.escapeScore;
+  const mannerProgressWith = 700 * (mannerScore / 100);
+  const escapeProgressWith = 700 * (escapeScore / 100);
+
   return (
     <>
       <section>
         <h3>매너점수💖</h3>
-        <Wrapper>
-          <MannerProgress>{userData.mannerScore}점😊</MannerProgress>
+        <Wrapper style={{ whiteSpace: 'nowrap' }}>
+          <MannerProgress style={{ width: mannerProgressWith }}>{mannerScore}점😊</MannerProgress>
         </Wrapper>
-        {/* translate 계산: Wrapper width * Progress width - 15 = 700 * 0.7 - 15 = 475px */}
-        <div className='translate-x-[475px]'>{userData.mannerScore}점</div>
+        <div style={{ paddingLeft: mannerProgressWith - 15 }}>{mannerScore}점</div>
       </section>
 
       <section>
         <h3>탈출레벨🔑</h3>
-        <Wrapper>
-          <EscapeProgress>{userData.tier}🥇</EscapeProgress>
+        <Wrapper style={{ whiteSpace: 'nowrap' }}>
+          <EscapeProgress style={{ width: escapeProgressWith }}>{userData.tier}🥇</EscapeProgress>
         </Wrapper>
-        <div className='translate-x-[370px]'>{userData.escapeScore}점</div>
+        <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
       </section>
     </>
   );
@@ -33,7 +37,7 @@ const Wrapper = tw.div`
 `;
 
 const MannerProgress = tw.div`
-  w-[70%]
+  w-[490px]
   bg-pink-400
   font-medium
   text-lg
@@ -47,7 +51,6 @@ const MannerProgress = tw.div`
 `;
 
 const EscapeProgress = tw.div`
-  w-[55%]
   bg-blue-500
   font-medium
   text-lg
