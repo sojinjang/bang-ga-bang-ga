@@ -3,7 +3,7 @@ import tw from 'tailwind-styled-components';
 import { showRecruitPostAtom, showRecruitModalPageAtom, recruitPostDataAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 
-import { get } from '../../utils/api.js';
+import { get, post } from '../../utils/api.js';
 import { ApiUrl } from '../../constants/ApiUrl';
 
 const FirstModal = () => {
@@ -92,6 +92,7 @@ const SecondModal = () => {
   const [recruitPostData, setRecruitPostData] = useRecoilState(recruitPostDataAtom);
   const [showCafeSelection, setShowCafeSelection] = useState('disabled');
   const [showThemeSelection, setShowThemeSelection] = useState('disabled');
+  const [currentRegion, setCurrentRegion] = useState('');
   const [currentCafeDataArray, setCurrentCafeDataArray] = useState([]);
   const [currentThemeDataArray, setCurrentThemeDataArray] = useState([]);
   const [currentThemeData, setCurrentThemeData] = useState({});
@@ -99,27 +100,47 @@ const SecondModal = () => {
 
   const REGION_DATA = ['홍대', '강남', '건대'];
 
-  const getCafeData = async () => {
-    try {
-      const cafeData = await get(ApiUrl.MATCHING_POST_CAFE_INFO, recruitPostData.matchingLocation);
-      setCurrentCafeDataArray(cafeData);
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  useEffect(() => {
+    const getCafeData = (async () => {
+      try {
+        const cafeData = await get(ApiUrl.MATCHING_POST_CAFE_INFO, recruitPostData.matchingLocation);
+
+        setCurrentCafeDataArray(cafeData);
+      } catch (err) {
+        alert(err.message);
+      }
+    })();
+  }, [currentRegion]);
 
   const getThemeData = async (cafeId) => {
     try {
       const themeData = await get(ApiUrl.MATCHING_POST_THEME_INFO, cafeId);
+
       setCurrentThemeDataArray(themeData);
     } catch (err) {
       alert(err.message);
     }
   };
 
+  const calcDifficulty = (num) => {
+    const difficultArray = ['신입 전용', '쉬움', '보통', '어려움', '프로탈출러 전용'];
+
+    return difficultArray[parseInt(num / 2)];
   };
 
-  const postFunc = useMemo(() => console.log(recruitPostData), [recruitPostData]);
+  const calcRecommendedNum = (recommendedRange) => {
+    const recommendedNum = parseInt(recommendedRange.toString().split('~')[1]);
+    let emojiArray = [];
+    for (let i = 0; i < recommendedNum; i++) {
+      emojiArray.push('👤 ');
+    }
+    return emojiArray;
+  };
+
+  const postFunc = async () => {
+    console.log(recruitPostData);
+    await post('http://34.64.127.117/api/matching-posts', recruitPostData);
+  };
 
   return (
     <div className='flex'>
@@ -140,14 +161,14 @@ const SecondModal = () => {
                       });
 
                       setShowCafeSelection('');
-                      getCafeData();
+                      setCurrentRegion(e.target.value);
                       setSubmitStatus(false);
                     }}
                     type='radio'
                     value={region}
                     name='region'
                     className='mr-2'
-                    defaultChecked={recruitPostData.matchingLocation === region ? true : false}
+                    defaultChecked={recruitPostData.matchingLocation === region}
                   />
                   {region}
                 </label>
@@ -227,11 +248,11 @@ const SecondModal = () => {
                 title: '',
                 peopleNum: 2,
                 themeName: '',
-                matchingStatus: false,
+                matchStatus: false,
                 matchingTime: 0,
                 matchingLocation: '',
                 cafeId: 0,
-                userId: 0,
+                userId: 1,
               });
             }}>
             닫기
@@ -263,7 +284,7 @@ const SecondModal = () => {
                   };
                 });
 
-                postFunc;
+                postFunc();
               }
             }}>
             등록
@@ -275,26 +296,23 @@ const SecondModal = () => {
           <span>장르</span>
           <span>난이도</span>
           <span>활동성</span>
-          <span>추천인원</span>
+          <span>추천 인원</span>
           <span>플레이타임</span>
         </div>
       </div>
       <div className='ml-3 mt-[126px]'>
         <div className='flex flex-col text-sm pl-3 border-l border-solid border-gray-500/20'>
-          <span className='text-blue-500 font-bold'>추리 / 스릴러</span>
-          <span className='text-blue-500 font-bold'>어려움</span>
+          <span className='text-blue-500 font-bold'>{currentThemeData.genre}</span>
+          <p>
+            <span className='text-blue-500 font-bold'>{calcDifficulty(currentThemeData.difficulty)}</span>
+          </p>
           <ul className='flex gap-2'>
-            <li>적음</li>
-            <li>보통</li>
-            <li className='text-blue-500 font-bold'>많음</li>
+            <li className='text-blue-500 font-bold'>{currentThemeData.activity}</li>
           </ul>
           <ul className='flex gap-1'>
-            <li>2인</li>
-            <li>3인</li>
-            <li className='text-blue-500 font-bold'>4인</li>
-            <li>5인 이상</li>
+            <li className='text-blue-500 font-bold'>{calcRecommendedNum(currentThemeData)}</li>
           </ul>
-          <span className='text-blue-500 font-bold'>50분</span>
+          <span className='text-blue-500 font-bold'>{currentThemeData.time}분 이내</span>
         </div>
       </div>
     </div>
@@ -315,5 +333,9 @@ const PostModal = () => {
     </div>
   );
 };
+
+const PostSelection = tw.div`
+  flex flex-col mt-5
+`;
 
 export default PostModal;
