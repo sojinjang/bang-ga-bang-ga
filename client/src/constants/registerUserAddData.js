@@ -1,4 +1,4 @@
-export const USER_ADD_DATA = [
+export const REGISTER_USER_ADD_DATA = [
   { name: '한줄소개', placeHolder: '한 줄 소개', type: 'text', dataName: 'userIntro' },
   { name: '성별', options: ['남자', '여자'], type: 'radio', dataName: 'gender' },
   { name: '나이', options: ['10대', '20대', '30대 이상'], type: 'radio', dataName: 'age' },
@@ -68,11 +68,5 @@ export const USER_ADD_DATA = [
     ],
     type: 'select',
     dataName: 'nonPreferenceTheme',
-  },
-  {
-    name: '현재 비밀번호',
-    placeHolder: '확인을 위해 현재 비밀번호를 입력해주세요',
-    type: 'password',
-    dataName: 'checkPassword',
   },
 ];

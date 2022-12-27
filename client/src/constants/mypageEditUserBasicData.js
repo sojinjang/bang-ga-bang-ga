@@ -11,7 +11,7 @@ export const USER_BASIC_DATA = [
   },
   {
     name: '현재 비밀번호',
-    placeHolder: '비밀번호를 다시 한번 입력해주세요',
+    placeHolder: '확인을 위해 현재 비밀번호를 다시 입력해주세요',
     type: 'password',
     dataName: 'checkPassword',
   },
