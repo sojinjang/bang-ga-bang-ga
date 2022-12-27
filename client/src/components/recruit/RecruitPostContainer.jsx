@@ -7,8 +7,6 @@ import { screenLevelAtom } from '../../recoil/recruit-list/index';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
-import { get } from '../../utils/api';
-import { ApiUrl } from '../../constants/ApiUrl';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
 import UserProfileContainer from './UserProfileContainer';
 
@@ -126,7 +124,6 @@ const RecuitPostContainer = ({ postData }) => {
       </div>
 
       {screenLevel === 1 ? (
-        <UserProfileContainer postId={matchingPostsId} />
         <UserProfileContainer postId={matchingPostsId} />
       ) : (
         <div className='flex mt-7 justify-end gap-3 relative'>
