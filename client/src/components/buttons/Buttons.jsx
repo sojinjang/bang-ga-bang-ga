@@ -3,16 +3,16 @@ import { useSetRecoilState } from 'recoil';
 import { regionAtom } from '../../recoil/recruit-map/index';
 import './Buttons.css';
 
-const RegionButton = (props) => {
+const RegionButton = ({ title }) => {
   const setRegion = useSetRecoilState(regionAtom);
   return (
     <button
       className='purpleButton mx-1'
       role='button'
       onClick={() => {
-        setRegion(props.title);
+        setRegion(title);
       }}>
-      {props.title}
+      {title}
     </button>
   );
 };
