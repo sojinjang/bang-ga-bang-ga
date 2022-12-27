@@ -117,6 +117,7 @@ const SecondModal = () => {
       const themeData = await get(ApiUrl.MATCHING_POST_THEME_INFO, cafeId);
 
       setCurrentThemeDataArray(themeData);
+      console.log(themeData);
     } catch (err) {
       alert(err.message);
     }
@@ -128,18 +129,9 @@ const SecondModal = () => {
     return difficultArray[parseInt(num / 2)];
   };
 
-  const calcRecommendedNum = (recommendedRange) => {
-    const recommendedNum = parseInt(recommendedRange.toString().split('~')[1]);
-    let emojiArray = [];
-    for (let i = 0; i < recommendedNum; i++) {
-      emojiArray.push('👤 ');
-    }
-    return emojiArray;
-  };
-
   const postFunc = async () => {
     console.log(recruitPostData);
-    await post('http://34.64.127.117/api/matching-posts', recruitPostData);
+    await post('/api/matching-posts', recruitPostData);
   };
 
   return (
@@ -310,7 +302,7 @@ const SecondModal = () => {
             <li className='text-blue-500 font-bold'>{currentThemeData.activity}</li>
           </ul>
           <ul className='flex gap-1'>
-            <li className='text-blue-500 font-bold'>{calcRecommendedNum(currentThemeData)}</li>
+            <li className='text-blue-500 font-bold'>{currentThemeData.recommendedNum}</li>
           </ul>
           <span className='text-blue-500 font-bold'>{currentThemeData.time}분 이내</span>
         </div>
