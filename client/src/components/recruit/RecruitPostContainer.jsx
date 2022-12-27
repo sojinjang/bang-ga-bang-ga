@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
-import { useRecoilState } from 'recoil';
-import { screenLevelAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { screenLevelAtom, currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -15,6 +15,8 @@ const RecuitPostContainer = ({ postData }) => {
   const { title, view, matchingTime, matchStatus, matchingPostsId, peopleNum, createdAt, themeName } = postData;
 
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
+  const currentRegion = useRecoilValue(currentRegionAtom);
+  const currentPage = useRecoilValue(currentPageAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [matchingPostInfo, setMatchingPostInfo] = useState([]);
 
@@ -24,8 +26,8 @@ const RecuitPostContainer = ({ postData }) => {
   };
 
   useEffect(() => {
-    getMatchingPostInfo();
-  }, []);
+    setShowTeamModal(false);
+  }, [currentRegion, currentPage]);
 
   const moveToDetailPage = async (e) => {
     await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
