@@ -4,4 +4,6 @@ export const ApiUrl = Object.freeze({
   MATCHING_POSTS: '/api/matching-posts',
   MATCHING_POST_CAFE_INFO: '/api/matching-posts/cafe-list',
   MATCHING_POST_THEME_INFO: '/api/matching-posts/cafe-infomation',
+  MATCHING_POST_READ_POST: '/api/matching-posts/read-post',
+  MATCHING_POST_INFO: '/api/matching-situation/post',
 });
