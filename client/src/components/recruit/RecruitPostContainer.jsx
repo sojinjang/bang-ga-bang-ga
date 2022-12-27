@@ -135,8 +135,28 @@ const RecuitPostContainer = ({ postData }) => {
             팀원보기
           </button>
           {showTeamModal && (
-            <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-              <UserProfileContainer postId={matchingPostsId} />
+            <div className='w-[285px] h-[265px] -right-[26px] -bottom-3 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+              <svg
+                onClick={() => setShowTeamModal(false)}
+                className='absolute right-2 top-2 cursor-pointer'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'>
+                <g clipPath='url(#clip0_16_1336)'>
+                  <path
+                    d='M11.9997 10.586L16.9497 5.63599L18.3637 7.04999L13.4137 12L18.3637 16.95L16.9497 18.364L11.9997 13.414L7.04974 18.364L5.63574 16.95L10.5857 12L5.63574 7.04999L7.04974 5.63599L11.9997 10.586Z'
+                    fill='black'
+                  />
+                </g>
+                <defs>
+                  <clipPath id='clip0_16_1336'>
+                    <rect width='24' height='24' fill='white' />
+                  </clipPath>
+                </defs>
+              </svg>
+
               <UserProfileContainer postId={matchingPostsId} />
             </div>
           )}
