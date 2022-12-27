@@ -18,12 +18,6 @@ const RecuitPostContainer = ({ postData }) => {
   const currentRegion = useRecoilValue(currentRegionAtom);
   const currentPage = useRecoilValue(currentPageAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
-  const [matchingPostInfo, setMatchingPostInfo] = useState([]);
-
-  const getMatchingPostInfo = async () => {
-    const data = await get(ApiUrl.MATCHING_POST_INFO, matchingPostsId);
-    setMatchingPostInfo(data);
-  };
 
   useEffect(() => {
     setShowTeamModal(false);
