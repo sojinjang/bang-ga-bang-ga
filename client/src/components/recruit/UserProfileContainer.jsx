@@ -4,6 +4,8 @@ import { useRecoilState } from 'recoil';
 import { showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 import { get } from '../../utils/api';
 
+import crown from '../../assets/images/icon/crown.png';
+
 const UserProfileContainer = ({ postId }) => {
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
 
@@ -20,17 +22,7 @@ const UserProfileContainer = ({ postId }) => {
 
   return (
     <div>
-      <span className='text-2xl ml-[13px]'>👑</span>
-      <div className='grid gap-3 grid-cols-4 grid-rows-2'>
-        {/* {userArray.map((user, index) => (
-          <img
-            onClick={() => setShowUserProfileModal(!showUserProfileModal)}
-            className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-            src={user['url']}
-            alt='유저 프로필'
-            key={index}
-          />
-        ))} */}
+      <img className='absolute w-[30px] top-2 left-[40px]' src={crown} alt='' />
       </div>
     </div>
   );
