@@ -22,7 +22,40 @@ const showUserProfileModalAtom = atom({
 
 const currentPageAtom = atom({
   key: 'currentPage',
+  default: 0,
+});
+
+const maxPageNumAtom = atom({
+  key: 'maxPageNum',
   default: 1,
 });
 
-export { showRecruitPostAtom, showRecruitModalPageAtom, screenLevelAtom, showUserProfileModalAtom, currentPageAtom };
+const recruitPostDataAtom = atom({
+  key: 'recruitPostData',
+  default: {
+    title: '',
+    peopleNum: 2,
+    themeName: '',
+    matchStatus: false,
+    matchingTime: 0,
+    matchingLocation: '',
+    cafeId: 0,
+    userId: 1,
+  },
+});
+
+const currentRegionAtom = atom({
+  key: 'currentRegion',
+  default: '전체',
+});
+
+export {
+  showRecruitPostAtom,
+  showRecruitModalPageAtom,
+  screenLevelAtom,
+  showUserProfileModalAtom,
+  currentPageAtom,
+  maxPageNumAtom,
+  recruitPostDataAtom,
+  currentRegionAtom,
+};
