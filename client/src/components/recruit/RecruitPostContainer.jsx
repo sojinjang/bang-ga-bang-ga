@@ -29,7 +29,7 @@ const RecuitPostContainer = ({ postData }) => {
 
   const moveToDetailPage = async (e) => {
     await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
-    navigate(`/recruit-detail/?postId=${matchingPostsId}`);
+    navigate(`/recruit-detail/${matchingPostsId}`);
   };
 
   const convertDate = () => {
