@@ -1,17 +1,47 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { showUserProfileModalAtom } from '../../recoil/recruit-list/index';
-import { useSetRecoilState } from 'recoil';
-import userArray from '../../assets/images/user-profile/profile';
+import React, { useState, useEffect } from 'react';
+import tw from 'tailwind-styled-components';
+import { showUserProfileModalAtom, currentPostIdAtom, currentUserIndexAtom } from '../../recoil/recruit-list/index';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
-import UserScore from '../mypage/UserScore';
 import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileModal = () => {
   const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
+  const currentPostId = useRecoilValue(currentPostIdAtom);
+  const currentUserIndex = useRecoilValue(currentUserIndexAtom);
+  const [usersData, setUsersData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useState([]);
 
-  const fetchPostInfo = async () => {
-    const data = await get('api/matching-situation/post/1');
-  };
+  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation } = currentUserData;
+  const mannerScore = currentUserData.mannerScore;
+  const escapeScore = currentUserData.escapeScore;
+  const mannerProgressWith = 360 * (mannerScore / 100);
+  const escapeProgressWith = 360 * (escapeScore / 100);
+
+  const USER_INFO = [
+    { name: '성별', value: gender },
+    { name: '나이', value: age },
+    { name: 'MBTI', value: mbti },
+    { name: '선호 테마', value: preferenceTheme },
+    { name: '비선호 테마', value: nonPreferenceTheme },
+    { name: '선호 지역', value: preferenceLocation },
+  ];
+
+  useEffect(() => {
+    const fetchPostInfo = async () => {
+      const data = await get(ApiUrl.MATCHING_POST_INFO, currentPostId);
+      setUsersData(data);
+    };
+
+    fetchPostInfo();
+  }, []);
+
+  useEffect(() => {
+    if (usersData.length > 0) {
+      setCurrentUserData(usersData[currentUserIndex]);
+    }
+  }, [usersData]);
 
   return (
     <div className='flex p-12 w-[750px] h-[600px] absolute bg-slate-100 rounded-2xl top-[13%] left-[50%] translate-x-[-50%] translate-y-[-30%]'>
