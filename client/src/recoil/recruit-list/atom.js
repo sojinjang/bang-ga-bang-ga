@@ -25,6 +25,16 @@ const currentPageAtom = atom({
   default: 0,
 });
 
+const currentPostIdAtom = atom({
+  key: 'currentPostId',
+  default: 0,
+});
+
+const currentUserIndexAtom = atom({
+  key: 'currentUserIndex',
+  default: 0,
+});
+
 const maxPageNumAtom = atom({
   key: 'maxPageNum',
   default: 1,
@@ -58,4 +68,6 @@ export {
   maxPageNumAtom,
   recruitPostDataAtom,
   currentRegionAtom,
+  currentPostIdAtom,
+  currentUserIndexAtom,
 };
