@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { currentPageAtom } from '../../recoil/recruit-list/index';
-import { useRecoilState } from 'recoil';
+import React from 'react';
+import { currentPageAtom, maxPageNumAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 const PaginationButton = () => {
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const maxPageNum = useRecoilValue(maxPageNumAtom);
 
   return (
     <div className='flex justify-center mt-4'>
       <button
         className='w-[30px] h-[30px] text-sm mx-1 text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'
         onClick={() => {
-          currentPage > 1 ? setCurrentPage((prevNumber) => prevNumber - 1) : false;
+          currentPage > 0 && setCurrentPage(currentPage - 1);
         }}>
         <svg
           className='mx-auto'
@@ -26,11 +27,13 @@ const PaginationButton = () => {
         </svg>
       </button>
       <button className='w-[30px] h-[30px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
-        {currentPage}
+        {currentPage + 1}
       </button>
       <button
         className=' w-[30px] h-[30px] text-sm mx-1 text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'
-        onClick={() => setCurrentPage((prevNumber) => prevNumber + 1)}>
+        onClick={() => {
+          currentPage < maxPageNum && setCurrentPage(currentPage + 1);
+        }}>
         <svg
           className='mx-auto'
           width='7'

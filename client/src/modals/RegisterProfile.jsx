@@ -1,95 +1,21 @@
-import React, { useState, useEffect } from 'react';
-// import tw from 'tailwind-styled-components';
+import React, { useState } from 'react';
 import { useImmer } from 'use-immer';
 import tw from 'tailwind-styled-components';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
-import { patch, post } from '../utils/api';
-import { Keys } from '../constants/Keys';
-import { getCookieValue } from '../utils/cookie';
-const RegisterProfile = ({ userId }) => {
-  const userRadioInputData = [
-    { name: 'gender', options: ['남자', '여자'] },
-    { name: 'age', options: ['10대', '20대', '30대 이상'] },
-    { name: 'preferenceLocation', options: ['강남', '건대', '홍대'] },
-  ];
-  const userSelectInputData = [
-    {
-      name: 'mbti',
-      options: [
-        '선택',
-        'ISTJ',
-        'ISFJ',
-        'INFJ',
-        'INTJ',
-        'ISTP',
-        'ISFP',
-        'INFP',
-        'INTP',
-        'ESTP',
-        'ESFP',
-        'ENFP',
-        'ENTP',
-        'ESTJ',
-        'ESFJ',
-        'ENFJ',
-        'ENTJ',
-      ],
-    },
-    {
-      name: 'preferenceTheme',
-      options: [
-        '없음',
-        '추리',
-        '미스테리',
-        '공포',
-        '판타지',
-        'SF',
-        '모험',
-        '로맨스',
-        '드라마',
-        '감성',
-        '범죄',
-        '스릴러',
-        '액션',
-        '19금',
-      ],
-    },
-    {
-      name: 'nonPreferenceTheme',
-      options: [
-        '없음',
-        '추리',
-        '미스테리',
-        '공포',
-        '판타지',
-        'SF',
-        '모험',
-        '로맨스',
-        '드라마',
-        '감성',
-        '범죄',
-        '스릴러',
-        '액션',
-        '19금',
-      ],
-    },
-  ];
+import { patch } from '../utils/api';
+import { REGISTER_USER_ADD_DATA } from '../constants/registerUserAddData';
+
+const RegisterProfile = ({ userId, userPWD }) => {
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
   const [tempProfileImg, setTempProfileImg] = useState(null);
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
-
-  const handleChange = (e) => {
-    setUserAddInfo((userAddInfo) => {
-      userAddInfo[e.target.name] = e.target.value;
-    });
-  };
 
   const navigate = useNavigate();
   const onCancelBtn = () => {
@@ -102,35 +28,19 @@ const RegisterProfile = ({ userId }) => {
   };
   const addUserAddInfo = async () => {
     try {
-      const res = await patch('/api/users', userId, userAddInfo);
+      const res = await patch('/api/user', userId, { ...userAddInfo, checkPassword: userPWD });
+      console.log(res);
       alert('추가정보가 정상적으로 입력되었습니다');
-      navigate('/login');
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
   };
 
   const onSubmitAddData = async () => {
-    setShowRegisterProfile(false);
     console.log(userAddInfo);
-    const res = await fetch(`http://localhost:3008/api/users/${userId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookieValue(Keys.LOGIN_TOKEN)}`,
-      },
-      body: JSON.stringify(userAddInfo),
-    });
-    if (!res.ok) {
-      const error = await res.json();
-      alert(error.reason);
-    } else {
-      const result = await res.json();
-      console.log(result);
-      alert('추가정보가 정상적으로 입력되었습니다');
-      navigate('/login');
-    }
-    // addUserAddInfo()
+    setShowRegisterProfile(false);
+    addUserAddInfo();
   };
 
   const onChangeProfileImg = (e) => {
@@ -163,16 +73,9 @@ const RegisterProfile = ({ userId }) => {
   };
 
   return (
-    <div
-      className='mx-auto h-[90%] w-[104%] 
-      border border-black rounded-[30px]
-      flex flex-col 
-      absolute 
-      left-[-2%]
-      bg-[#F2F2F2]
-  '>
-      <div className='mt-[5%] mx-auto  flex  relative'>
-        <div className='w-[120px] h-[120px] rounded-full bg-gray-300'>
+    <ModalBox>
+      <div className='mt-[5%] m-auto h-1/4 flex relative'>
+        <div className='w-[120px] h-[120px] rounded-full bg-white'>
           {profileImg && (
             <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
           )}
@@ -204,64 +107,42 @@ const RegisterProfile = ({ userId }) => {
           </form>
         </Modal>
       </div>
-      <div className='mx-auto mt-[1%]'>닉네임</div>
-
-      <form action='post' onSubmit={onSubmitAddData}>
-        <div className='mx-auto mt-[1%] w-full text-center'>
-          <input
-            className='border rounded-full pl-[5%] w-4/5'
-            type='text'
-            placeholder='한 줄 소개'
-            onChange={(e) =>
-              setUserAddInfo((userAddInfo) => {
-                userAddInfo.userIntro = e.target.value;
-              })
-            }
-          />
-        </div>
-        {userRadioInputData.map((inputData) => (
-          <RadioInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
-        ))}
-        {userSelectInputData.map((inputData) => (
-          <SelectInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
+      <form className='h-3/4' action='post' onSubmit={onSubmitAddData}>
+        {REGISTER_USER_ADD_DATA.map((data) => (
+          <EditInputDiv key={data.name}>
+            <EditInputName>{data.name}</EditInputName>
+            <EditInput>
+              {data.options ? (
+                data.type === 'radio' ? (
+                  data.options.map((option) => (
+                    <RadioInput key={data.name + option} data={data} setData={setUserAddInfo} option={option} />
+                  ))
+                ) : (
+                  <SelectInput data={data} setData={setUserAddInfo} />
+                )
+              ) : (
+                <TextInput
+                  type={data.type}
+                  placeholder={data.placeHolder}
+                  onChange={(e) => {
+                    setUserAddInfo((userData) => {
+                      userData[data.dataName] = e.target.value;
+                    });
+                  }}
+                />
+              )}
+            </EditInput>
+          </EditInputDiv>
         ))}
         <BtnBox onCancelBtn={onCancelBtn} />
       </form>
-    </div>
+    </ModalBox>
   );
 };
 
-const RadioInputBox = ({ inputData, handleChange }) => (
-  <div className='mx-[5%] w-[90%] h-10 border-b border-black flex'>
-    <div className='w-1/5 flex items-center'>{inputData.name}</div>
-    <div className='ml-auto w-4/5 flex items-center'>
-      {inputData.options.map((option) => (
-        <div className='ml-2 text-center' key={inputData.name + option}>
-          <label value={option}>{option}</label>
-          <input type='radio' name={inputData.name} onChange={handleChange} value={option} />
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const SelectInputBox = ({ inputData, handleChange }) => (
-  <div className='mx-[5%] w-[90%] h-10 border-b border-black flex'>
-    <div className='w-1/5 flex items-center'>{inputData.name}</div>
-    <div className='ml-auto w-4/5 flex items-center'>
-      <select className='border border-black' name={inputData.name} onChange={handleChange}>
-        {inputData.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
-  </div>
-);
 const BtnBox = ({ onCancelBtn }) => {
   return (
-    <div className='BtnBox w-[90%] mx-auto flex'>
+    <div className='BtnBox w-[90%] mx-auto flex  mb-[5%]'>
       <div className='ml-auto mt-4'>
         <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
           취소
@@ -274,7 +155,68 @@ const BtnBox = ({ onCancelBtn }) => {
   );
 };
 
+const ModalBox = tw.div`
+  mx-auto h-[114%] w-[94%] px-[4%]
+      border-[10px] border-white rounded-[60px]
+      flex flex-col 
+      absolute
+      top-[-14%]
+      left-[3%]
+      bg-[#8eebf9]
+      
+`;
+
 const EditBtn = tw.button`
   text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
 `;
+
+const EditInputDiv = tw.div`
+  w-full h-8 mt-5 flex  
+`;
+const EditInputName = tw.div`
+  w-1/4 flex justify-start items-center text-gray-500
+`;
+const EditInput = tw.div`
+  w-3/4 flex
+`;
+
+const TextInput = tw.input`
+  w-full h-full rounded-full pl-3
+`;
+const RadioInput = ({ data, setData, option }) => {
+  return (
+    <div className='ml-2 text-center'>
+      <label value={option}>{option}</label>
+      <input
+        type='radio'
+        name={data.name}
+        value={option}
+        onChange={(e) => {
+          setData((userData) => {
+            userData[data.dataName] = e.target.value;
+          });
+        }}
+      />
+    </div>
+  );
+};
+const SelectInput = ({ data, setData }) => {
+  return (
+    <select
+      className='border border-black'
+      name={data.name}
+      onChange={(e) => {
+        setData((userData) => {
+          userData[data.dataName] = e.target.value;
+        });
+      }}>
+      {data.options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+};
+
 export default RegisterProfile;

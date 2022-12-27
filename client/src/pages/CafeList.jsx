@@ -1,16 +1,10 @@
-import { React, Fragment, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import React, { useState, useEffect } from 'react';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import * as Api from '../utils/api';
-import { useEffect } from 'react';
 import Pagination from 'react-js-pagination';
 import './CafeList.css';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import SelectOption from '../components/common/SelectOption';
 
 const CafeList = () => {
   const detailRegion = ['전체', '홍대', '강남', '건대'];
@@ -32,7 +26,7 @@ const CafeList = () => {
 
   const getAllCafeData = async () => {
     try {
-      const data = await Api.get('/api/cafe-infos/cafeAll');
+      const data = await Api.get('/api/cafe-infos/all');
       console.log(data);
       setList(data);
     } catch (e) {
@@ -59,6 +53,7 @@ const CafeList = () => {
     getAllCafeData();
   }, []);
 
+  const [selected, setSelected] = useState('정렬기준');
   const sortByStarRate = () => {
     const newList = [...list];
     newList.sort((a, b) => b.starRate - a.starRate);
@@ -69,8 +64,10 @@ const CafeList = () => {
     newList.sort((a, b) => b.reviewsSum - a.reviewsSum);
     setList(newList);
   };
-  const [selected, setSelected] = useState('정렬기준');
-
+  const optionsArray = [
+    { optionName: '평점순', cbFunc: () => sortByStarRate() },
+    { optionName: '리뷰 많은 순', cbFunc: () => sortByReviewsSum() },
+  ];
   return (
     <Background img={'bg2'}>
       <Navigators />
@@ -84,7 +81,7 @@ const CafeList = () => {
             onClick={() => {
               getRegionCafeData(region);
               setPage(1);
-              setSelected('정렬기준')
+              setSelected('정렬기준');
             }}>
             {region}
           </button>
@@ -93,108 +90,18 @@ const CafeList = () => {
 
       <div className='border-4 border-blue-500 w-[1200px] h-[600px] flex flex-col '>
         <div className='w-[1200px] h-[50px] flex items-start justify-end'>
-          <Listbox value={selected} onChange={setSelected}>
-            {({ open }) => (
-              <>
-                <div className='relative w-40'>
-                  <Listbox.Button className='relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm'>
-                    <span className='flex items-center'>
-                      <span className='ml-3 block truncate'>{selected}</span>
-                    </span>
-                    <span className='pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2'>
-                      <ChevronUpDownIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
-                    </span>
-                  </Listbox.Button>
-
-                  <Transition
-                    show={open}
-                    as={Fragment}
-                    leave='transition ease-in duration-100'
-                    leaveFrom='opacity-100'
-                    leaveTo='opacity-0'>
-                    <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-                      <Listbox.Option
-                        className={({ active }) =>
-                          classNames(
-                            active ? 'text-white bg-indigo-600' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-3 pr-9',
-                          )
-                        }
-                        value='평점순'
-                        onClick={() => {
-                          sortByStarRate();
-                        }}>
-                        {({ selected, active }) => (
-                          <>
-                            <div className='flex items-center'>
-                              <span
-                                className={classNames(
-                                  selected ? 'font-semibold' : 'font-normal',
-                                  'ml-3 block truncate',
-                                )}>
-                                {'평점순'}
-                              </span>
-                            </div>
-
-                            {selected ? (
-                              <span
-                                className={classNames(
-                                  active ? 'text-white' : 'text-indigo-600',
-                                  'absolute inset-y-0 right-0 flex items-center pr-4',
-                                )}>
-                                <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                              </span>
-                            ) : null}
-                          </>
-                        )}
-                      </Listbox.Option>
-                      <Listbox.Option
-                        className={({ active }) =>
-                          classNames(
-                            active ? 'text-white bg-indigo-600' : 'text-gray-900',
-                            'relative cursor-default select-none py-2 pl-3 pr-9',
-                          )
-                        }
-                        value='리뷰 많은 순'
-                        onClick={() => {
-                          sortByReviewsSum();
-                        }}>
-                        {({ selected, active }) => (
-                          <>
-                            <div className='flex items-center'>
-                              <span
-                                className={classNames(
-                                  selected ? 'font-semibold' : 'font-normal',
-                                  'ml-3 block truncate',
-                                )}>
-                                {'리뷰 많은 순'}
-                              </span>
-                            </div>
-
-                            {selected ? (
-                              <span
-                                className={classNames(
-                                  active ? 'text-white' : 'text-indigo-600',
-                                  'absolute inset-y-0 right-0 flex items-center pr-4',
-                                )}>
-                                <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                              </span>
-                            ) : null}
-                          </>
-                        )}
-                      </Listbox.Option>
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </>
-            )}
-          </Listbox>
+          <SelectOption
+            selectedOption={selected}
+            setSelectedOption={setSelected}
+            cbFuncObjs={optionsArray}
+            width={'w-40'}
+          />
         </div>
 
         <div className='border border-red-600 w-[1200px] h-[500px] grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-6'>
-          {pagePerList.map(({cafeId, cafeName, address, homePage, starRate, reviewsSum}) => {
+          {pagePerList.map(({ cafeId, cafeName, address, homePage, starRate, reviewsSum }, i) => {
             return (
-              <div className='border flex px-[27px] items-center' key={cafeId}>
+              <div className='border flex px-[27px] items-center' key={cafeId + i}>
                 <div className='border w-[100px] h-[100px]'>
                   <img></img>
                 </div>
@@ -230,7 +137,7 @@ const CafeList = () => {
           activePage={page}
           itemsCountPerPage={9}
           totalItemsCount={list.length}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={3}
           prevPageText={'‹'}
           nextPageText={'›'}
           onChange={handlePageChange}

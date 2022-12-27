@@ -19,7 +19,6 @@ const UserProfile = ({ setShowAddProfileIcon }) => {
           </button>
         </EditBtnDiv>
       </ProfileImgDiv>
-      <div>유저닉네임</div>
     </>
   );
 };
