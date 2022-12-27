@@ -13,9 +13,22 @@ const UserProfileModal = () => {
   const [usersData, setUsersData] = useState([]);
   const [currentUserData, setCurrentUserData] = useState([]);
 
-  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation } = currentUserData;
-  const mannerScore = currentUserData.mannerScore;
-  const escapeScore = currentUserData.escapeScore;
+  const {
+    gender,
+    age,
+    mbti,
+    preferenceTheme,
+    nonPreferenceTheme,
+    preferenceLocation,
+    profileImg,
+    role,
+    nickName,
+    matchingCount,
+    tier,
+    mannerScore,
+    escapeScore,
+  } = currentUserData;
+
   const mannerProgressWith = 360 * (mannerScore / 100);
   const escapeProgressWith = 360 * (escapeScore / 100);
 
@@ -48,17 +61,17 @@ const UserProfileModal = () => {
       <div className='text-center w-full'>
         <img
           className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
-          src={currentUserData['profileImg']}
+          src={profileImg}
           alt='프로필 사진'
         />
-        <p className='mt-3'>{currentUserData['role']}</p>
-        <p className='text-[35px] font-semibold'>{currentUserData['nickName']}</p>
+        <p className='mt-3'>{role}</p>
+        <p className='text-[35px] font-semibold'>{nickName}</p>
       </div>
       <div className='h-[480px] ml-5 p-4'>
         <div className=' bg-white bg-opacity-50 rounded-[15px] mb-[30px] flex items-center'>
           <div className='flex flex-col p-3 w-full items-center'>
             <p>매칭 횟수</p>
-            <p>{currentUserData['matchingCount']}</p>
+            <p>{matchingCount}</p>
           </div>
           <div className='flex align-items h-[50px] border-solid border-l-[1px] border-black'></div>
           <div className='flex flex-col p-3 w-full items-center'>
@@ -78,9 +91,9 @@ const UserProfileModal = () => {
           <section>
             <h3>탈출레벨🔑</h3>
             <Wrapper style={{ whiteSpace: 'nowrap' }}>
-              <EscapeProgress style={{ width: escapeProgressWith }}>{currentUserData['tier']}🥇</EscapeProgress>
+              <EscapeProgress style={{ width: escapeProgressWith }}>{tier}🥇</EscapeProgress>
             </Wrapper>
-            <div style={{ paddingLeft: escapeProgressWith - 15 }}>{currentUserData['escapeScore']}점</div>
+            <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
           </section>
         </div>
         <div className='w-[360px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
