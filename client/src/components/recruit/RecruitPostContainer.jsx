@@ -12,10 +12,21 @@ import UserProfileContainer from './UserProfileContainer';
 
 const RecuitPostContainer = ({ postData }) => {
   const navigate = useNavigate();
+  const { title, view, matchingTime, matchStatus, matchingPostsId, peopleNum, createdAt, themeName } = postData;
+
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
-  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState('');
+  const [matchingPostInfo, setMatchingPostInfo] = useState([]);
+
+  const getMatchingPostInfo = async () => {
+    const data = await get(ApiUrl.MATCHING_POST_INFO, matchingPostsId);
+    setMatchingPostInfo(data);
+  };
+
+  useEffect(() => {
+    getMatchingPostInfo();
+  }, []);
+
   const moveToDetailPage = async (e) => {
     await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
     navigate(`/recruit-detail/?postId=${matchingPostsId}`);
