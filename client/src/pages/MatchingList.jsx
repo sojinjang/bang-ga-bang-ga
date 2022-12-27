@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
+import { get } from '../utils/api';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import Evaluation from '../modals/Evaluation';
@@ -6,13 +7,19 @@ import tw from 'tailwind-styled-components';
 
 const MatchingList = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedList, setSelectedList] = useState(null);
-  // 날짜 최신순 정렬
-  const LIST = [
-    { matching_log_id: 1, date: '2022.12.02', title: '[강남] 방린이 모여라~ 친목환영', isEvaluated: false },
-    { matching_log_id: 2, date: '2022.12.09', title: '[건대] 초고수 구합니다 공포 쫄보 금지', isEvaluated: true },
-    { matching_log_id: 3, date: '2022.12.12', title: '[홍대] 같이 탈옥하실 분?', isEvaluated: false },
-  ].reverse();
+  const [selectedList, setSelectedList] = useState([]);
+  const [matchingList, setMatchingList] = useState([]);
+
+  // 참가한 모집글 정보 - 날짜 최신순 정렬
+  const recruitData = async () => {
+    const data = await get('/api/matching-situation');
+    console.log('recruitData', data);
+    setMatchingList(data.reverse());
+  };
+
+  useEffect(() => {
+    recruitData();
+  }, []);
 
   return (
     <Background img={'bg3'}>
@@ -27,9 +34,9 @@ const MatchingList = () => {
             </tr>
           </thead>
           <tbody>
-            {LIST.map((list) => (
+            {matchingList.map((list) => (
               <tr key={list.matching_log_id}>
-                <Td>{list.date}</Td>
+                <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
                 <Td>{list.title}</Td>
                 <Td>
                   {!list.isEvaluated && (
