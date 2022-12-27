@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
+
 import { useRecoilState } from 'recoil';
-import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
+import { screenLevelAtom } from '../../recoil/recruit-list/index';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -10,31 +12,42 @@ import UserProfileContainer from './UserProfileContainer';
 
 const RecuitPostContainer = ({ postData }) => {
   const navigate = useNavigate();
+  const { title, view, matchingTime, matchStatus, matchingPostsId, peopleNum, createdAt, themeName } = postData;
+
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
-  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState('');
-  const moveToDetailPage = async (e) => {
-    await get('/api/matching-posts/read-post', e.currentTarget.id);
-    navigate('/recruit-detail');
+  const [matchingPostInfo, setMatchingPostInfo] = useState([]);
+
+  const getMatchingPostInfo = async () => {
+    const data = await get(ApiUrl.MATCHING_POST_INFO, matchingPostsId);
+    setMatchingPostInfo(data);
   };
 
-  const parseDateFunc = (date) => {
-    const stringifiedDate = date.toString();
-    const year = stringifiedDate.slice(0, 2);
-    const month = stringifiedDate.slice(2, 4);
-    const day = stringifiedDate.slice(4, 6);
-    const hour = stringifiedDate.slice(6, 8);
-    const minute = stringifiedDate.slice(8, 10);
+  useEffect(() => {
+    getMatchingPostInfo();
+  }, []);
+
+  const moveToDetailPage = async (e) => {
+    await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
+    navigate(`/recruit-detail/?postId=${matchingPostsId}`);
+  };
+
+  const convertDate = () => {
+    const stringifiedDate = matchingTime.toString();
+    const result = [];
+
+    for (let i = 0; i < 10; i += 2) {
+      result.push(stringifiedDate.slice(i, i + 2));
+    }
+
+    const [year, month, day, hour, minute] = result;
+
     return `${year}년 ${month}월 ${day}일 ${hour}:${minute} 예정`;
   };
 
-  const changeDate = () => {
+  const convertRemainDate = () => {
     const postedDate = new Date(createdAt);
     const today = new Date();
-    // [221224] memo 재웅:
-    // today 상수를 console.log를 통해 확인해보면 총 16개의 로그가 뜬다.
-    // 과한 리렌더링을 거친다. 리소스의 낭비가 매우 심한 거 같아 원인을 찾고있다.
 
     const relativeFormatter = new Intl.RelativeTimeFormat('ko', {
       numeric: 'always',
@@ -65,14 +78,16 @@ const RecuitPostContainer = ({ postData }) => {
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
+      <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
       <p
         onClick={(e) => moveToDetailPage(e)}
         className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'
+        id={matchingPostsId}>
         {title}
-        <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (7/7)</span>
+        <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (1/{peopleNum})</span>
       </p>
       <div className='flex flex-row'>
-        <span className='mb-2'>{changeDate()}</span>
+        <span className='mb-2'>{convertRemainDate()}</span>
         <span className='mx-1.5'>・</span>
         <svg
           className='align-middle'
@@ -103,9 +118,9 @@ const RecuitPostContainer = ({ postData }) => {
         </svg>
         <span className='ml-0.5'>0</span>
       </div>
-      <div className='cursor-pointer'>
-        <p>{content}</p>
-        <p className='mb-1'>{parseDateFunc(matchingTime)}</p>
+      <div>
+        <p>{themeName}</p>
+        <p className='mb-1'>{convertDate()}</p>
       </div>
 
       {screenLevel === 1 ? (
@@ -121,6 +136,7 @@ const RecuitPostContainer = ({ postData }) => {
           </button>
           {showTeamModal && (
             <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+              <UserProfileContainer postId={matchingPostsId} />
               <UserProfileContainer postId={matchingPostsId} />
             </div>
           )}
