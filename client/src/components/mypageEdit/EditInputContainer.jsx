@@ -37,7 +37,7 @@ const EditInputContainer = ({ inputData, setData, userData }) => {
   );
 };
 const EditInputDiv = tw.div`
-  w-full h-8 mb-6 flex  
+  w-full h-8 mb-5 flex  
 `;
 const EditInputName = tw.div`
   w-1/5 flex justify-start items-center text-gray-500

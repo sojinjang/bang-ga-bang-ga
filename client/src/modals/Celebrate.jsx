@@ -11,7 +11,7 @@ const Celebrate = () => {
 
   const onSkipBtn = () => {
     setShowCelebrate(false);
-    navigate('/login');
+    navigate('/');
   };
   const onRegisterProfileBtn = () => {
     setShowCelebrate(false);
@@ -20,18 +20,17 @@ const Celebrate = () => {
 
   return (
     <Modal>
-      <div className='text-2xl mt-auto text-center'>
+      <CelebrateTextBox>
         <div>방가네 식구가 되신 것을 환영합니다!🎉</div>
-        <br />
         <div>바로 프로필을 작성하러 가실까요?</div>
-      </div>
+      </CelebrateTextBox>
       <BtnContainer>
-        <button className='bg-gray-200  mx-5 p-4 rounded-[10px]' onClick={onSkipBtn}>
+        <SkipBtn className='bg-gray-200' onClick={onSkipBtn}>
           나중에 하기
-        </button>
-        <button className='bg-[#4A94D7] mx-5 p-4 rounded-[10px]' onClick={onRegisterProfileBtn}>
+        </SkipBtn>
+        <SkipBtn className='bg-[#4A94D7]' onClick={onRegisterProfileBtn}>
           지금 작성하기
-        </button>
+        </SkipBtn>
       </BtnContainer>
     </Modal>
   );
@@ -43,8 +42,15 @@ const Modal = tw.div`
   absolute top-[10%] left-[-5%]
   bg-white
 `;
+const CelebrateTextBox = tw.div`
+  text-2xl mt-auto text-center
+  flex flex-col
+`;
 const BtnContainer = tw.div`
   mt-auto mb-[20px] w-full mx-auto flex justify-center
+`;
+const SkipBtn = tw.button`
+  mx-5 p-4 rounded-[10px]
 `;
 
 export default Celebrate;

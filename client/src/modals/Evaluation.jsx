@@ -25,7 +25,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
 
   const date = selectedList.date;
   const [YEAR, MONTH, DATE] = date.split('.');
-  const [evalResult, setEvalResult] = useImmer({});
   const [evalRes, setEvalRes] = useImmer([]);
 
   return (
@@ -54,11 +53,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((value, i) => (
                           <IconImg
                             src={
-                              // evalResult[nick_name]
-                              //   ? evalResult[nick_name].manner >= value
-                              //     ? fullHeart
-                              //     : emptyHeart
-                              //   : emptyHeart
                               evalRes.find((user) => user['nickName'] == nick_name)
                                 ? evalRes.find((user) => user['nickName'] == nick_name).manner >= value
                                   ? fullHeart
@@ -70,10 +64,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                               e.preventDefault();
                               const nickName = nick_name;
                               const manner = value;
-                              setEvalResult((evalResult) => {
-                                evalResult[nickName] = { ...evalResult[nickName], manner };
-                              });
-                              // console.log(evalResult);
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 {
@@ -94,11 +84,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((level) => (
                           <IconImg
                             src={
-                              // evalResult[nick_name]
-                              //   ? evalResult[nick_name].escape >= level
-                              //     ? fullKey
-                              //     : emptyKey
-                              //   : emptyKey
                               evalRes.find((user) => user['nickName'] == nick_name)
                                 ? evalRes.find((user) => user['nickName'] == nick_name).level >= level
                                   ? fullKey
@@ -109,11 +94,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             onClick={(e) => {
                               e.preventDefault();
                               const nickName = nick_name;
-                              const escape = level;
-                              setEvalResult((evalResult) => {
-                                evalResult[nickName] = { ...evalResult[nickName], escape };
-                              });
-                              // console.log(evalResult);
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 {
@@ -136,9 +116,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     onChange={(e) => {
                       const nickName = nick_name;
                       const review = e.target.value;
-                      setEvalResult((evalResult) => {
-                        evalResult[nick_name] = { ...evalResult[nick_name], review };
-                      });
                       setEvalRes((evalRes) => {
                         const userIndex = evalRes.findIndex((user) => user['nickName'] == nick_name);
                         {

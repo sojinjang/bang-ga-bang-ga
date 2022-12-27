@@ -23,7 +23,7 @@ const EditTitle = tw.div`
   border-b-2 border-black  text-2xl
 `;
 const EditInputBox = tw.div`
-  w-4/5 px-[5%] h-3/4 my-auto bg-red-100 mx-auto rounded-3xl flex flex-col justify-center
+  w-4/5 px-[5%] h-4/5 my-auto bg-red-100 mx-auto rounded-3xl flex flex-col justify-center
 `;
 const EditBtnContainer = tw.div`
   flex justify-end

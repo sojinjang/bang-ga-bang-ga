@@ -11,23 +11,33 @@ import Navigators from '../components/common/Navigators';
 import { post } from '../utils/api';
 import { useImmer } from 'use-immer';
 import { USER_INPUT_DATA } from '../constants/registerUserInputData';
-
+import jwt_decode from 'jwt-decode';
+import { Keys } from '../constants/Keys';
+import { setCookie } from '../utils/cookie';
+import { useNavigate } from 'react-router-dom';
 const Register = () => {
+  const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useImmer({});
   const [userId, setUserId] = useState('');
 
-  const registerUser = async () => {
+  const registerUser = async (email, password) => {
     try {
       const result = await post('/api/user', userData);
       setUserId(result.userId);
       setShowCelebrate(true);
+      const response = await post('/api/user/login', { email, password });
+      const accessToken = response.accessToken;
+      const userId = jwt_decode(accessToken).userId;
+      setCookie(Keys.LOGIN_TOKEN, accessToken);
+      setCookie(Keys.USER_ID, userId);
     } catch (err) {
       console.log(err);
     }
   };
+
   const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
     console.log(userData);
@@ -56,7 +66,7 @@ const Register = () => {
       return;
     }
     setError('');
-    registerUser();
+    registerUser(userData.email, userData.password);
   };
 
   return (
@@ -65,17 +75,19 @@ const Register = () => {
       <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
-        {showRegisterProfile && <RegisterProfile userId={userId} />}
+        {showRegisterProfile && <RegisterProfile userId={userId} userPWD={userData.password} />}
         <InnerContainer>
           <form onSubmit={onSubmitRegisterBtn}>
             {USER_INPUT_DATA.map((inputData) => (
               <InputBox key={inputData.name} inputData={inputData} setUserData={setUserData} />
             ))}
             {error && <p className='text-red-500'>{error}</p>}
-            <RegisterBtn type='submit'>가입하기</RegisterBtn>
-            <RegisterBtn onClick={() => setShowCelebrate(true)} type='submit'>
-              가입완료(임시)
-            </RegisterBtn>
+            <div className='flex justify-center'>
+              <RegisterBtn type='submit'>가입하기</RegisterBtn>
+              <RegisterBtn onClick={() => setShowCelebrate(true)} type='submit'>
+                임시
+              </RegisterBtn>
+            </div>
           </form>
         </InnerContainer>
       </InputContainer>
@@ -103,9 +115,7 @@ const InputBox = ({ inputData, setUserData }) => {
 };
 
 const Title = tw.div`
-  mx-auto 
-  mt-auto 
-  mb-4 
+  m-auto
   text-3xl 
   bg-[#3F51A2] 
   text-white 
@@ -113,14 +123,15 @@ const Title = tw.div`
   border-white 
   border-[6px] 
   rounded-[24px]
-  w-[150px]
-  h-[60px]
+  w-1/6
+  py-[2%]
+  h-[7%]
   flex
   justify-center
   items-center
 `;
 const InputContainer = tw.div`
-  rounded-[80px] w-[30%] h-3/4 mx-auto mb-[2%]  bg-gradient-to-r from-cyan-200 to-blue-300   
+  rounded-[80px] w-[27%] h-3/4 mx-auto mb-[2%]  bg-gradient-to-r from-cyan-200 to-blue-300   
   border 
   border-[#4497D4] 
   border-[6px] 

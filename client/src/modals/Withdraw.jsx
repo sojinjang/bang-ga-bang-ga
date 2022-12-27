@@ -24,7 +24,7 @@ const Withdraw = ({ setShowWithdraw }) => {
         </div>
         <div>탈퇴시 삭제/유지되는 정보를 확인하세요!</div>
         <div>한 번 삭제된 정보는 복구가 불가능합니다.</div>
-        <div className='border border-black w-3/4 mx-auto mt-4' id='withDrawInfo'>
+        <div className='border border-black w-3/4 mx-auto mt-4'>
           <div>계정 및 프로필 정보 삭제</div>
           <div> 내 매칭 이력 삭제</div>
           <div> 매너지수, 탈출레벨 삭제</div>
