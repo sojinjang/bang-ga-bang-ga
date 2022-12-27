@@ -129,8 +129,7 @@ const SecondModal = () => {
     return difficultArray[parseInt(num / 2)];
   };
 
-  const postFunc = async () => {
-    console.log(recruitPostData);
+  const submitMatchingPost = async () => {
     await post('/api/matching-posts', recruitPostData);
   };
 
@@ -276,7 +275,9 @@ const SecondModal = () => {
                   };
                 });
 
-                postFunc();
+                submitMatchingPost();
+                setShowRecruitPost();
+                window.location.replace('/recruit-list');
               }
             }}>
             등록
