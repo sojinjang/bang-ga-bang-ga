@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
+
 import { useRecoilState } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
@@ -15,8 +17,8 @@ const RecuitPostContainer = ({ postData }) => {
   const [showTeamModal, setShowTeamModal] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
   const moveToDetailPage = async (e) => {
-    await get('/api/matching-posts/read-post', e.currentTarget.id);
-    navigate('/recruit-detail');
+    await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
+    navigate(`/recruit-detail/?postId=${matchingPostsId}`);
   };
 
   const parseDateFunc = (date) => {
