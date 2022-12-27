@@ -49,12 +49,18 @@ const RecuitPostContainer = ({ postData }) => {
       numeric: 'always',
     });
 
-    let timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
-    if (timeDiff === 0) {
-      timeDiff = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
-      return relativeFormatter.format(timeDiff, 'minute');
+    let timeDiffDay = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    let timeDiffHour = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60 * 60));
+
+    if (timeDiffHour === 0) {
+      timeDiffHour = Math.ceil((postedDate.getTime() - today.getTime()) / (1000 * 60));
+      return relativeFormatter.format(timeDiffHour, 'minute');
     }
-    return relativeFormatter.format(timeDiff, 'hour');
+    if (timeDiffDay === 0) {
+      return relativeFormatter.format(timeDiffHour, 'hour');
+    } else {
+      return relativeFormatter.format(timeDiffDay, 'day');
+    }
   };
 
   const handleResize = () => {
@@ -115,7 +121,7 @@ const RecuitPostContainer = ({ postData }) => {
         <span className='ml-0.5'>0</span>
       </div>
       <div>
-        <p>{themeName}</p>
+        <p className='truncate'>{themeName}</p>
         <p className='mb-1'>{convertDate()}</p>
       </div>
 
