@@ -3,8 +3,10 @@ import tw from 'tailwind-styled-components';
 import { useRecoilState } from 'recoil';
 import { screenLevelAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
 
-import userArray from '../../assets/images/user-profile/profile';
+import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
+import UserProfileContainer from './UserProfileContainer';
 
 const RecuitPostContainer = ({ postData }) => {
   const navigate = useNavigate();
@@ -58,25 +60,6 @@ const RecuitPostContainer = ({ postData }) => {
     };
   }, []);
 
-  const UserProfileContainer = () => {
-    return (
-      <div>
-        <span className='text-2xl ml-[13px]'>👑</span>
-        <div className='grid gap-3 grid-cols-4 grid-rows-2'>
-          {userArray.map((user, index) => (
-            <img
-              onClick={() => setShowUserProfileModal(!showUserProfileModal)}
-              className='w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-              src={user['url']}
-              alt='유저 프로필'
-              key={index}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div
       className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
@@ -126,7 +109,7 @@ const RecuitPostContainer = ({ postData }) => {
       </div>
 
       {screenLevel === 1 ? (
-        <UserProfileContainer />
+        <UserProfileContainer postId={matchingPostsId} />
       ) : (
         <div className='flex mt-7 justify-end gap-3 relative'>
           <button
@@ -138,7 +121,7 @@ const RecuitPostContainer = ({ postData }) => {
           </button>
           {showTeamModal && (
             <div className='w-[300px] h-[170px] -right-[34px] bottom-12 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-              <UserProfileContainer />
+              <UserProfileContainer postId={matchingPostsId} />
             </div>
           )}
         </div>
