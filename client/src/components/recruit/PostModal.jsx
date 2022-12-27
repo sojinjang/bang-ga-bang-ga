@@ -317,10 +317,10 @@ const PostModal = () => {
 
   return (
     <div className='rounded-xl absolute top-[65px] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
-      <div className={showRecruitModalPage === 1 ? '' : 'hidden'}>
+      <div className={showRecruitModalPage !== 1 && 'hidden'}>
         <FirstModal />
       </div>
-      <div className={showRecruitModalPage === 2 ? '' : 'hidden'}>
+      <div className={showRecruitModalPage !== 2 && 'hidden'}>
         <SecondModal />
       </div>
     </div>
