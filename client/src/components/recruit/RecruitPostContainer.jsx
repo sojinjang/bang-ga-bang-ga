@@ -12,7 +12,18 @@ import UserProfileContainer from './UserProfileContainer';
 
 const RecuitPostContainer = ({ postData }) => {
   const navigate = useNavigate();
-  const { title, view, matchingTime, matchStatus, matchingPostsId, peopleNum, createdAt, themeName } = postData;
+  const {
+    title,
+    view,
+    matchingTime,
+    matchStatus,
+    matchingLocation,
+    cafeName,
+    matchingPostsId,
+    peopleNum,
+    createdAt,
+    themeName,
+  } = postData;
 
   const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
   const currentRegion = useRecoilValue(currentRegionAtom);
@@ -81,13 +92,15 @@ const RecuitPostContainer = ({ postData }) => {
       w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
   bg-gray-400 text-white`}>
       <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
-      <p
-        onClick={(e) => moveToDetailPage(e)}
-        className='pt-5 mb-3 text-lg font-semibold h-[70px] cursor-pointer'
-        id={matchingPostsId}>
-        {title}
-        <span className='text-blue-4 stroke-cyan-50 stroke-width-1'> (1/{peopleNum})</span>
-      </p>
+      <div className='flex w-[240px] mt-5'>
+        <p
+          onClick={(e) => moveToDetailPage(e)}
+          className='w-[190px] mr-1 text-lg font-semibold cursor-pointer truncate'
+          id={matchingPostsId}>
+          {title}
+        </p>
+        <p className='text-blue-4 font-semibold'> (1/{peopleNum})</p>
+      </div>
       <div className='flex flex-row'>
         <span className='mb-2'>{convertRemainDate()}</span>
         <span className='mx-1.5'>・</span>
@@ -121,8 +134,9 @@ const RecuitPostContainer = ({ postData }) => {
         <span className='ml-0.5'>0</span>
       </div>
       <div>
+        <p className='truncate'>{`${matchingLocation} ${cafeName}`}</p>
         <p className='truncate'>{themeName}</p>
-        <p className='mb-1'>{convertDate()}</p>
+        <p className='mt-2 mb-1'>{convertDate()}</p>
       </div>
 
       {screenLevel === 1 ? (
