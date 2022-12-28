@@ -10,11 +10,6 @@ const showRecruitModalPageAtom = atom({
   default: 1,
 });
 
-const screenLevelAtom = atom({
-  key: 'screenLevel',
-  default: 0,
-});
-
 const showUserProfileModalAtom = atom({
   key: 'showUserProfileModal',
   default: false,
@@ -67,7 +62,6 @@ const currentRegionAtom = atom({
 export {
   showRecruitPostAtom,
   showRecruitModalPageAtom,
-  screenLevelAtom,
   showUserProfileModalAtom,
   currentPageAtom,
   maxPageNumAtom,

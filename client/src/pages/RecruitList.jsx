@@ -8,8 +8,10 @@ import {
   currentRegionAtom,
 } from '../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import { get } from '../utils/api';
+import jwt_decode from 'jwt-decode';
 
+import { get } from '../utils/api';
+import { getCookieValue } from '../utils/cookie';
 import RecuitPostContainer from '../components/recruit/RecruitPostContainer';
 import PostModal from '../components/recruit/PostModal';
 import PaginationButton from '../components/recruit/PageinationButton';
@@ -32,6 +34,8 @@ const RecruitList = () => {
   const [nowRecruiting, setNowRecruiting] = useState(false);
   const [slicedData, setSlicedData] = useState([]);
   const [currentPageData, setCurrentPageData] = useState([]);
+
+  const loginToken = getCookieValue('token');
 
   const REGION_DATA = ['전체', '홍대', '강남', '건대'];
 
@@ -116,7 +120,9 @@ const RecruitList = () => {
               </label>
             </FilterContainer>
             <button
-              onClick={() => setShowRecruitPost(true)}
+              onClick={() => {
+                loginToken ? setShowRecruitPost(true) : alert('로그인이 필요합니다.');
+              }}
               className='h-10 border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
               글쓰기
             </button>
