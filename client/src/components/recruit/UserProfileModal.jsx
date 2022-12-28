@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import tw from 'tailwind-styled-components';
-import { showUserProfileModalAtom, currentPostIdAtom, currentUserIndexAtom } from '../../recoil/recruit-list/index';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import {
+  showUserProfileModalAtom,
+  currentPostIdAtom,
+  currentUserIndexAtom,
+  currentUserDataAtom,
+} from '../../recoil/recruit-list/index';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 import UserProfileModalInner from './UserProfileModalInner';
 
 const UserProfileModal = () => {
-  const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const currentPostId = useRecoilValue(currentPostIdAtom);
   const currentUserIndex = useRecoilValue(currentUserIndexAtom);
   const [usersData, setUsersData] = useState([]);
-  const [currentUserData, setCurrentUserData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useRecoilState(currentUserDataAtom);
 
   const { profileImg, role, nickName, matchingCount } = currentUserData;
 
-  useEffect(() => {
-    const fetchPostInfo = async () => {
-      const data = await get(ApiUrl.MATCHING_POST_INFO, currentPostId);
-      setUsersData(data);
-    };
+  const fetchPostInfo = async () => {
+    const data = await get(ApiUrl.MATCHING_POST_INFO, currentPostId);
+    setUsersData(data);
+  };
 
+  useEffect(() => {
     fetchPostInfo();
   }, []);
 
@@ -58,7 +62,10 @@ const UserProfileModal = () => {
       </div>
       <button
         className='w-[60px] h-[35px] right-8 bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
-        onClick={() => setShowUserProfileModal(false)}>
+        onClick={() => {
+          setCurrentUserData({});
+          setShowUserProfileModal(false);
+        }}>
         닫기
       </button>
     </div>
