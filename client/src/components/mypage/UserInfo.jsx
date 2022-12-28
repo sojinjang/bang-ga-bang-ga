@@ -15,12 +15,15 @@ const UserInfo = ({ userData }) => {
   return (
     <div className='w-[900px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
       <Container>
-        {USER_INFO.map((info) => (
-          <Information key={info.name}>
-            <Title>{info.name}</Title>
-            <Body>{info.value}</Body>
-          </Information>
-        ))}
+        <thead></thead>
+        <tbody>
+          {USER_INFO.map((info) => (
+            <Information key={info.name}>
+              <Title>{info.name}</Title>
+              <Body>{info.value}</Body>
+            </Information>
+          ))}
+        </tbody>
       </Container>
     </div>
   );

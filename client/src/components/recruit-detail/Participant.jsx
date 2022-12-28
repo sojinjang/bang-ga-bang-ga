@@ -1,18 +1,21 @@
 import React from 'react';
 import detective from '../../assets/images/icon/detective.png';
 import closeBtn from '../../assets/images/icon/close.png';
-import { post } from '../../utils/api';
+import * as api from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 import tw from 'tailwind-styled-components';
 
-const Participant = ({ isLeader, participantList, postId, memberListData }) => {
+const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, memberListData }) => {
   const deleteData = async (userId) => {
-    await post('/api/matching-situation/leader', { matchingPostsId: postId, userId });
+    await api.post(ApiUrl.RECRUIT_LEADER_INFO, { matchingPostsId: postId, userId });
     memberListData();
   };
 
   const handleKickOut = (participant) => {
     const userId = participant.userId;
     // 참가 취소
+
+    // if (participant[0].matchStatus)
     deleteData(userId);
   };
 
@@ -24,7 +27,7 @@ const Participant = ({ isLeader, participantList, postId, memberListData }) => {
             <img src={detective} alt='탐정 이모지' className='w-[20px] h-[23px] inline-block pt-[3px]' />
             <span className='pl-[3px] font-semibold mb-[10px]'>{participant.count}</span>
           </Count>
-          {isLeader && (
+          {!isRecruitCompleted && isLeader && (
             <button onClick={() => handleKickOut(participant)}>
               <img className='w-5 h-5' src={closeBtn} alt='삭제 버튼' />
             </button>
