@@ -14,7 +14,7 @@ const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ');
 };
 
-const SelectOption = ({ selectedOption, setSelectedOption, cbFuncObjs, width }) => {
+const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs, width }) => {
   return (
     <Listbox value={selectedOption} onChange={setSelectedOption}>
       {({ open }) => (
@@ -35,7 +35,9 @@ const SelectOption = ({ selectedOption, setSelectedOption, cbFuncObjs, width }) 
               leave='transition ease-in duration-100'
               leaveFrom='opacity-100'
               leaveTo='opacity-0'>
-              <Listbox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+              <Listbox.Options
+                className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+                onClick={pageReset}>
                 {cbFuncObjs.map(({ optionName }, i) => (
                   <Listbox.Option
                     key={i}

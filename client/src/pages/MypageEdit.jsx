@@ -4,6 +4,7 @@ import tw from 'tailwind-styled-components';
 import Withdraw from '../modals/Withdraw';
 import { useState } from 'react';
 import Navigators from '../components/common/Navigators';
+import * as validator from '../utils/validator';
 import UserProfile from '../components/mypageEdit/UserProfile';
 import EditProfileIcon from '../components/mypageEdit/EditProfileIcon';
 import EditBox from '../components/mypageEdit/EditBox';
@@ -13,8 +14,17 @@ import { useEffect } from 'react';
 import { patch, get } from '../utils/api';
 import { USER_BASIC_DATA } from '../constants/mypageEditUserBasicData';
 import { USER_ADD_DATA } from '../constants/mypageEditUserAddData';
+import { useNavigate } from 'react-router-dom';
 const MypageEdit = () => {
   const userId = getCookieValue('userId');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userId) {
+      alert('로그인이 필요한 페이지입니다');
+      navigate('/');
+    }
+  }, []);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showAddProfileIcon, setShowAddProfileIcon] = useState(false);
   const [userBasicData, setUserBasicData] = useImmer({});
@@ -24,6 +34,8 @@ const MypageEdit = () => {
       const res = await get('/api/user');
       return res;
     } catch (err) {
+      // alert('잘못된 접근입니다');
+      // navigate('/');
       console.log(err);
     }
   };
@@ -50,10 +62,33 @@ const MypageEdit = () => {
   }, []);
 
   const editUserBasicData = async () => {
+    if (!validator.isName(userBasicData.userName)) {
+      alert('이름은 2~4글자의 한글로 작성해주세요');
+      return;
+    }
+    if (!validator.isNickName(userBasicData.nickName)) {
+      alert('닉네임은 3~12자리로 작성해주세요');
+      return;
+    }
+    if (!validator.isPhoneNumber(userBasicData.mobileNumber)) {
+      alert('올바른 핸드폰 번호를 입력해주세요');
+      return;
+    }
+    if (!validator.isValidEmail(userBasicData.email)) {
+      alert('올바른 이메일 형식을 입력해주세요');
+      return;
+    }
+    if (!validator.isValidPassword(userBasicData.password)) {
+      alert('올바른 비밀번호 형식이 아닙니다.');
+      return;
+    }
+    if (userBasicData.password !== userBasicData.pwdConfirm) {
+      alert('새 비밀번호가 일치하지 않습니다');
+      return;
+    }
     try {
       const response = await patch('/api/user', userId, userBasicData);
       console.log(response);
-      console.log(userBasicData);
       alert('기본정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);
@@ -97,7 +132,9 @@ const MypageEdit = () => {
           setData={setUserBasicData}
           onSubmit={onSubmitBasicData}
           userData={userBasicData}>
-          <WithdrawBtn onClick={() => setShowWithdraw(true)}>탈퇴하기</WithdrawBtn>
+          <WithdrawBtn type='button' onClick={() => setShowWithdraw(true)}>
+            탈퇴하기
+          </WithdrawBtn>
           <EditBtn type='submit'>변경</EditBtn>
         </EditBox>
         <EditBox

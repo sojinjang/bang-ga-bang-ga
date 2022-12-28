@@ -1,9 +1,13 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 const Withdraw = ({ setShowWithdraw }) => {
+  const [password, setPassword] = useState(null);
+  const [reason, setReason] = useState(null);
   const navigate = useNavigate();
   const onWithdraw = () => {
+    console.log(password, reason);
     const willWithdraw = confirm('정말 탈퇴를 진행하시겠습니까?');
     {
       willWithdraw ? (alert('탈퇴가 완료되었습니다'), navigate('/')) : alert('탈퇴가 취소되었습니다');
@@ -31,20 +35,28 @@ const Withdraw = ({ setShowWithdraw }) => {
           <div> 크루원 모집글 및 댓글 유지</div>
           <div> 팀원 한 줄 평 유지</div>
         </div>
-        <div>
-          <div className='text-lg'>비밀번호 입력</div>
-          <input type='password' className='pl-2 border border-black w-3/5 rounded' />
-        </div>
-        <div>
-          <div className='text-lg'>탈퇴 사유(선택)</div>
-          <select className='border border-black w-3/5 rounded'>
-            <option value=''>자주 사용하지 않음</option>
-            <option value=''>서비스 장애와 오류 때문에</option>
-            <option value=''>탈퇴후 신규 가입을 위해</option>
-            <option value=''>직접입력</option>
-          </select>
-        </div>
-        <WithdrawBtn onClick={onWithdraw}>탈퇴하기</WithdrawBtn>
+        <form method='patch' action='/api/user'>
+          <div>
+            <div className='text-lg'>비밀번호 입력</div>
+            <input
+              type='password'
+              className='pl-2 border border-black w-3/5 rounded'
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <div className='text-lg'>탈퇴 사유(선택)</div>
+            <select className='border border-black w-3/5 rounded' onChange={(e) => setReason(e.target.value)}>
+              <option value='자주 사용하지 않음'>자주 사용하지 않음</option>
+              <option value='서비스 장애와 오류 때문에'>서비스 장애와 오류 때문에</option>
+              <option value='탈퇴후 신규 가입을 위해'>탈퇴후 신규 가입을 위해</option>
+              <option value='직접입력'>직접입력</option>
+            </select>
+          </div>
+          <WithdrawBtn type='submit' onClick={onWithdraw}>
+            탈퇴하기
+          </WithdrawBtn>
+        </form>
       </div>
     </WithdrawModal>
   );

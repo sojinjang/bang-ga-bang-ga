@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 import DropdownMenu from './DropdownMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,12 +11,15 @@ import { useState } from 'react';
 const Navigators = () => {
   const [myManner, setMyManner] = useState(null);
   const [myTier, setMyTier] = useState(null);
+  const [imgUrl, setImgUrl] = useState(null);
   const getUserInfo = async () => {
     try {
       const res = await get('/api/user');
-      const { mannerScore, tier } = res;
+      const { mannerScore, tier, profileImg } = res;
       setMyManner(mannerScore);
       setMyTier(tier);
+      setImgUrl(profileImg);
+      console.log(profileImg);
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +47,7 @@ const Navigators = () => {
               {myManner > 80 ? ' 🥰' : myManner > 60 ? '😊' : myManner > 40 ? '🙂' : myManner > 20 ? '🥲' : '🙃'}
             </span>
           </MyStat>
-          <DropdownMenu />
+          <DropdownMenu imgUrl={imgUrl} />
         </MyStatContainer>
       )}
     </NavContainer>

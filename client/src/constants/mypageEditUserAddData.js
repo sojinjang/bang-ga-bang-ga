@@ -69,10 +69,4 @@ export const USER_ADD_DATA = [
     type: 'select',
     dataName: 'nonPreferenceTheme',
   },
-  {
-    name: '현재 비밀번호',
-    placeHolder: '확인을 위해 현재 비밀번호를 입력해주세요',
-    type: 'password',
-    dataName: 'checkPassword',
-  },
 ];
