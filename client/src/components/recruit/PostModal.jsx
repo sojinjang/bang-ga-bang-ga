@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import tw from 'tailwind-styled-components';
 import { showRecruitPostAtom, showRecruitModalPageAtom, recruitPostDataAtom } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
@@ -12,6 +12,29 @@ const FirstModal = () => {
   const setRecruitPostData = useSetRecoilState(recruitPostDataAtom);
   const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const setShowRecruitModalPage = useSetRecoilState(showRecruitModalPageAtom);
+
+  const selectedDate = useRef();
+
+  const checkPreviousDate = () => {
+    const parsedDate = (dateValue, iso) => {
+      if (iso === true) {
+        dateValue = dateValue.slice(0, 16);
+      }
+      return parseInt(dateValue.toString().replace(/[^0-9]/g, ''));
+    };
+    const today = new Date();
+    const offset = today.getTimezoneOffset() * 60000;
+
+    const dateOffset = new Date(today.getTime() - offset).toISOString();
+    const selectedDateValue = selectedDate.current.value;
+    const isPrevDate = parsedDate(selectedDateValue) - parsedDate(dateOffset, true) < 0;
+
+    if (isPrevDate) {
+      alert('이전 시간은 불가능합니다.');
+    } else {
+      setShowRecruitModalPage(2);
+    }
+  };
 
   return (
     <div className=' mt-10 ml-[40px]'>
@@ -57,6 +80,7 @@ const FirstModal = () => {
         <div className='flex flex-col'>
           <span>접선 시간</span>
           <input
+            ref={selectedDate}
             onChange={(e) =>
               setRecruitPostData((prevState) => {
                 return {
@@ -79,7 +103,7 @@ const FirstModal = () => {
         <button
           className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
           onClick={() => {
-            setShowRecruitModalPage(2);
+            checkPreviousDate();
           }}>
           다음
         </button>
