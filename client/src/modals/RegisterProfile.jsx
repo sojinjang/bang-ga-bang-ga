@@ -1,141 +1,74 @@
-import React, { useState, useEffect } from 'react';
-// import tw from 'tailwind-styled-components';
+import React, { useState } from 'react';
 import { useImmer } from 'use-immer';
-
+import tw from 'tailwind-styled-components';
 import Modal from 'react-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
+import { patch, postImg } from '../utils/api';
+import { REGISTER_USER_ADD_DATA } from '../constants/registerUserAddData';
 
-const RegisterProfile = () => {
-  const userRadioInputData = [
-    { name: '성별', options: ['남자', '여자'] },
-    { name: '나이', options: ['10대', '20대', '30대 이상'] },
-    { name: '선호 지역', options: ['강남', '건대', '홍대'] },
-  ];
-  const userSelectInputData = [
-    {
-      name: 'MBTI',
-      options: [
-        '선택',
-        'ISTJ',
-        'ISFJ',
-        'INFJ',
-        'INTJ',
-        'ISTP',
-        'ISFP',
-        'INFP',
-        'INTP',
-        'ESTP',
-        'ESFP',
-        'ENFP',
-        'ENTP',
-        'ESTJ',
-        'ESFJ',
-        'ENFJ',
-        'ENTJ',
-      ],
-    },
-    {
-      name: '선호 테마',
-      options: [
-        '없음',
-        '추리',
-        '미스테리',
-        '공포',
-        '판타지',
-        'SF',
-        '모험',
-        '로맨스',
-        '드라마',
-        '감성',
-        '범죄',
-        '스릴러',
-        '액션',
-        '19금',
-      ],
-    },
-    {
-      name: '비선호 테마',
-      options: [
-        '없음',
-        '추리',
-        '미스테리',
-        '공포',
-        '판타지',
-        'SF',
-        '모험',
-        '로맨스',
-        '드라마',
-        '감성',
-        '범죄',
-        '스릴러',
-        '액션',
-        '19금',
-      ],
-    },
-  ];
+const RegisterProfile = ({ userId, userPWD }) => {
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
   const [tempProfileImg, setTempProfileImg] = useState(null);
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
-  const [error, setError] = useState(null);
+  const [imgUrl, setImgUrl] = useState('');
 
-  const handleChange = (e) => {
-    setUserAddInfo((userAddInfo) => {
-      userAddInfo[e.target.name] = e.target.value;
-    });
+  const patchProfileUrl = async () => {
+    try {
+      await patch('/api/user', userId, { profileImg: imgUrl });
+      alert('프로필 사진이 정상적으로 업로드되었습니다');
+    } catch (err) {
+      alert(err);
+    }
   };
 
-  useEffect(() => {
-    console.log(userAddInfo);
-  }, [userAddInfo]);
+  const uploadProfileImg = async () => {
+    const formData = new FormData();
+    formData.append('imgFile', tempProfileImg);
+    try {
+      const response = await postImg('/api/img-upload', formData);
+      console.log(response.path);
+      setImgUrl(response.path);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSubmit = async (e) => {
+    await e.preventDefault();
+    await uploadProfileImg();
+    await patchProfileUrl();
+    setShowAddProfileIcon(false);
+  };
 
   const navigate = useNavigate();
   const onCancelBtn = () => {
-    setShowRegisterProfile(false);
-  };
-
-  const onCompleteBtn = () => {
-    setShowRegisterProfile(false);
-    navigate('/login');
-  };
-
-  const onChangeProfileImg = (e) => {
-    setTempProfileImg(e.target.files[0]);
-  };
-
-  const onSubmitProfileImg = (e) => {
-    e.preventDefault();
-    setProfileImg(tempProfileImg);
-    setShowAddProfileIcon(false);
-  };
-  const onCancelProfileImg = (e) => {
-    e.preventDefault();
-    setShowAddProfileIcon(false);
-  };
-
-  const onSubmitUserInfo = async (e) => {
-    try {
-      const response = await fetch('/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userAddInfo),
-      });
-      const result = await response.json();
-      if (result.success) {
-        alert('추가정보가 성공적으로 입력되었습니다!');
-        //성공시 실행할 코드
-      } else {
-        setError(response.error);
-      }
-    } catch (error) {
-      setError('로그인을 시도하는 중 에러가 발생했습니다');
-      console.error(error);
+    const later = confirm('추가정보를 입력하지 않고 가입을 완료하시겠습니까?');
+    if (later) {
+      alert('가입이 완료되었습니다');
+      setShowRegisterProfile(false);
+      navigate('/login');
     }
+  };
+  const addUserAddInfo = async () => {
+    try {
+      const res = await patch('/api/user', userId, { ...userAddInfo, checkPassword: userPWD });
+      console.log(res);
+      alert('추가정보가 정상적으로 입력되었습니다');
+      navigate('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onSubmitAddData = async () => {
+    console.log(userAddInfo);
+    setShowRegisterProfile(false);
+    addUserAddInfo();
   };
 
   const modalStyle = {
@@ -146,104 +79,158 @@ const RegisterProfile = () => {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      width: '20%', // specify desired width
-      height: '60%', // specify desired height
+      width: '26%',
+      height: '62%',
+      'border-radius': '50px',
+      background: '#D0DBF6',
     },
   };
 
   return (
-    <div
-      className='mx-auto h-[90%] w-[104%] 
-      border border-black border-[1px] rounded-[30px]
-      flex flex-col 
-      absolute 
-      left-[-2%]
-      bg-[#F2F2F2]
-  '>
-      <div className='mt-[5%] mx-auto  flex  relative'>
-        <div className='w-[120px] h-[120px] rounded-full bg-gray-300'>
+    <ModalBox>
+      <div className='mt-[5%] m-auto h-1/4 flex relative'>
+        <div className='w-[120px] h-[120px] rounded-full bg-white'>
           {profileImg && (
             <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
           )}
         </div>
         <div className='absolute w-10 h-10  top-0 left-[90%]'>
-          <button onClick={() => setShowAddProfileIcon(true)}>
+          <button onClick={() => (setShowAddProfileIcon(true), console.log('clicked'))}>
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
         <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
-          <h2>프로필 사진을 업로드하세요</h2>
-          {tempProfileImg && (
-            <img className='rounded-full' src={URL.createObjectURL(tempProfileImg)} alt='uploaded image' />
-          )}
-          <form onSubmit={onSubmitProfileImg}>
-            <input type='file' onChange={onChangeProfileImg} />
-            <div className='w-full flex justify-between'>
-              <button className='ml-auto border border-black' type='submit'>
-                저장하기
-              </button>
-              <button className='ml-2 border border-black' onClick={onCancelProfileImg}>
-                취소하기
-              </button>
+          <h2 className='text-center text-xl'>프로필 사진을 업로드하세요</h2>
+          <div className='w-3/4 h-3/4 flex items-center mx-auto'>
+            {tempProfileImg ? (
+              <img
+                className='rounded-full w-full h-3/4'
+                src={URL.createObjectURL(tempProfileImg)}
+                alt='uploaded image'
+              />
+            ) : (
+              <div className='rounded-full bg-gray-400 w-full h-3/4'></div>
+            )}
+          </div>
+          <form onSubmit={handleSubmit} encType='multipart/form-data'>
+            <input type='file' name='imgFile' onChange={(e) => setTempProfileImg(e.target.files[0])} />
+            <div className='w-full flex justify-center mt-4'>
+              <EditBtn type='submit'>업로드</EditBtn>
+              <EditBtn onClick={() => setShowAddProfileIcon(false)}>닫기</EditBtn>
             </div>
           </form>
         </Modal>
       </div>
-      <div className='mx-auto mt-[1%]'>닉네임</div>
-      <div className='mx-auto mt-[1%] w-full text-center'>
-        <input className='border rounded-full pl-[5%] w-4/5' type='text' placeholder='한 줄 소개' />
-      </div>
-      <form action='post' onSubmit={() => console.log(userAddInfo)}>
-        {userRadioInputData.map((inputData) => (
-          <RadioInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
+      <form className='h-3/4' onSubmit={onSubmitAddData}>
+        {REGISTER_USER_ADD_DATA.map((data) => (
+          <EditInputDiv key={data.name}>
+            <EditInputName>{data.name}</EditInputName>
+            <EditInput>
+              {data.options ? (
+                data.type === 'radio' ? (
+                  data.options.map((option) => (
+                    <RadioInput key={data.name + option} data={data} setData={setUserAddInfo} option={option} />
+                  ))
+                ) : (
+                  <SelectInput data={data} setData={setUserAddInfo} />
+                )
+              ) : (
+                <TextInput
+                  type={data.type}
+                  placeholder={data.placeHolder}
+                  onChange={(e) => {
+                    setUserAddInfo((userData) => {
+                      userData[data.dataName] = e.target.value;
+                    });
+                  }}
+                />
+              )}
+            </EditInput>
+          </EditInputDiv>
         ))}
-        {userSelectInputData.map((inputData) => (
-          <SelectInputBox inputData={inputData} key={inputData.name} handleChange={handleChange} />
-        ))}
-        <div className='BtnBox w-[90%] mx-auto flex'>
-          <div className='ml-auto mt-4'>
-            <Link to='/'>
-              <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
-                취소
-              </button>
-            </Link>
-            <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' onClick={onCompleteBtn} type='submit'>
-              완료
-            </button>
-          </div>
-        </div>
+        <BtnBox onCancelBtn={onCancelBtn} />
       </form>
+    </ModalBox>
+  );
+};
+
+const BtnBox = ({ onCancelBtn }) => {
+  return (
+    <div className='BtnBox w-[90%] mx-auto flex  mb-[5%]'>
+      <div className='ml-auto mt-4'>
+        <button className='px-4 py-2 bg-[#E5E5E5] rounded-lg mr-2 shadow-xl' onClick={onCancelBtn}>
+          취소
+        </button>
+        <button className='px-4 py-2 bg-[#BCE3FF] rounded-lg shadow-xl' type='submit'>
+          완료
+        </button>
+      </div>
     </div>
   );
 };
 
-const RadioInputBox = ({ inputData, handleChange }) => (
-  <div className='mx-[5%] w-[90%] h-10 border-b border-black flex'>
-    <div className='w-1/5 flex items-center'>{inputData.name}</div>
-    <div className='ml-auto w-4/5 flex items-center'>
-      {inputData.options.map((option) => (
-        <div className='ml-2 text-center' key={inputData.name + option}>
-          <label value={option}>{option}</label>
-          <input type='radio' name={inputData.name} onChange={handleChange} value={option} />
-        </div>
-      ))}
-    </div>
-  </div>
-);
+const ModalBox = tw.div`
+  mx-auto h-[114%] w-[94%] px-[4%]
+      border-[10px] border-white rounded-[60px]
+      flex flex-col 
+      absolute
+      top-[-14%]
+      left-[3%]
+      bg-[#8eebf9]
+      
+`;
 
-const SelectInputBox = ({ inputData, handleChange }) => (
-  <div className='mx-[5%] w-[90%] h-10 border-b border-black flex'>
-    <div className='w-1/5 flex items-center'>{inputData.name}</div>
-    <div className='ml-auto w-4/5 flex items-center'>
-      <select className='border border-black' name={inputData.name} onChange={handleChange}>
-        {inputData.options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+const EditBtn = tw.button`
+  text-gray-500 ml-4 bg-white px-5 py-1 rounded-md shadow-lg
+`;
+
+const EditInputDiv = tw.div`
+  w-full h-8 mt-5 flex  
+`;
+const EditInputName = tw.div`
+  w-1/4 flex justify-start items-center text-gray-500
+`;
+const EditInput = tw.div`
+  w-3/4 flex
+`;
+
+const TextInput = tw.input`
+  w-full h-full rounded-full pl-3
+`;
+const RadioInput = ({ data, setData, option }) => {
+  return (
+    <div className='ml-2 text-center'>
+      <label value={option}>{option}</label>
+      <input
+        type='radio'
+        name={data.name}
+        value={option}
+        onChange={(e) => {
+          setData((userData) => {
+            userData[data.dataName] = e.target.value;
+          });
+        }}
+      />
     </div>
-  </div>
-);
+  );
+};
+const SelectInput = ({ data, setData }) => {
+  return (
+    <select
+      className='border border-black'
+      name={data.name}
+      onChange={(e) => {
+        setData((userData) => {
+          userData[data.dataName] = e.target.value;
+        });
+      }}>
+      {data.options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+};
 
 export default RegisterProfile;
