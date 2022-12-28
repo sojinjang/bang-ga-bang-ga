@@ -1,0 +1,75 @@
+import React, { useState, useEffect } from 'react';
+import {
+  showUserProfileModalAtom,
+  currentPostIdAtom,
+  currentUserIndexAtom,
+  currentUserDataAtom,
+} from '../../recoil/recruit-list/index';
+import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+
+import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
+import UserProfileModalInner from './UserProfileModalInner';
+
+const UserProfileModal = () => {
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
+  const currentPostId = useRecoilValue(currentPostIdAtom);
+  const currentUserIndex = useRecoilValue(currentUserIndexAtom);
+  const [usersData, setUsersData] = useState([]);
+  const [currentUserData, setCurrentUserData] = useRecoilState(currentUserDataAtom);
+
+  const { profileImg, role, nickName, matchingCount } = currentUserData;
+
+  const fetchPostInfo = async () => {
+    const data = await get(ApiUrl.MATCHING_POST_INFO, currentPostId);
+    setUsersData(data);
+  };
+
+  useEffect(() => {
+    fetchPostInfo();
+  }, []);
+
+  useEffect(() => {
+    if (usersData.length > 0) {
+      setCurrentUserData(usersData[currentUserIndex]);
+    }
+  }, [usersData]);
+
+  return (
+    <div className='flex p-12 w-[750px] h-[600px] absolute bg-slate-100 rounded-2xl top-[13%] left-[50%] translate-x-[-50%] translate-y-[-30%]'>
+      <div className='text-center w-full'>
+        <img
+          className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
+          src={profileImg}
+          alt='프로필 사진'
+        />
+        <p className='mt-3'>{role}</p>
+        <p className='text-[35px] font-semibold'>{nickName}</p>
+      </div>
+      <div className='h-[480px] ml-5 p-4'>
+        <div className=' bg-white bg-opacity-50 rounded-[15px] mb-[30px] flex items-center'>
+          <div className='flex flex-col p-3 w-full items-center'>
+            <p>매칭 횟수</p>
+            <p>{matchingCount}</p>
+          </div>
+          <div className='flex align-items h-[50px] border-solid border-l-[1px] border-black'></div>
+          <div className='flex flex-col p-3 w-full items-center'>
+            <p>받은 매너 평가</p>
+            <p>없음</p>
+          </div>
+        </div>
+        <UserProfileModalInner />
+      </div>
+      <button
+        className='w-[60px] h-[35px] right-8 bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
+        onClick={() => {
+          setCurrentUserData({});
+          setShowUserProfileModal(false);
+        }}>
+        닫기
+      </button>
+    </div>
+  );
+};
+
+export default UserProfileModal;

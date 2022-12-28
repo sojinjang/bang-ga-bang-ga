@@ -6,4 +6,35 @@ import 승빈 from './승빈.png';
 import 재웅 from './재웅.png';
 import 지현 from './지현.jpeg';
 
-export { 동현, 선아, 소진, 동하, 승빈, 재웅, 지현 };
+const userArray = [
+  {
+    name: '동현',
+    url: Object.values(동현).join(''),
+  },
+  {
+    name: '선아',
+    url: Object.values(선아).join(''),
+  },
+  {
+    name: '소진',
+    url: Object.values(소진).join(''),
+  },
+  {
+    name: '동하',
+    url: Object.values(동하).join(''),
+  },
+  {
+    name: '승빈',
+    url: Object.values(승빈).join(''),
+  },
+  {
+    name: '재웅',
+    url: Object.values(재웅).join(''),
+  },
+  {
+    name: '지현',
+    url: Object.values(지현).join(''),
+  },
+];
+
+export default userArray;

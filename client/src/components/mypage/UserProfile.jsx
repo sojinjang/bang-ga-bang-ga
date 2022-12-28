@@ -1,19 +1,25 @@
 import React from 'react';
-import Profile from '../common/Profile';
-import tw from 'tailwind-styled-components';
+import { useNavigate } from 'react-router-dom';
+import ProfileWithHat from '../common/ProfileWithHat';
+import userImg from '../../assets/images/user-profile/지현.jpeg';
 
-const UserProfile = () => {
+const UserProfile = ({ userData }) => {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <Profile></Profile>
-      <UserName>탈주각</UserName>
-      <div>프로 계획러입니다! 지각 노노</div>
+      <ProfileWithHat img={userImg} />
+      <div className='pl-[15px]'>
+        <h2 className='font-bold text-3xl'>{userData.nickName}</h2>
+        <div className='font-medium text-xl mb-[3px]'>{userData.userIntro}</div>
+        <button
+          onClick={() => navigate('/mypage/edit')}
+          className='font-semibold text-white border-4 bg-amber-500 shadow-lg shadow-gray-500/50 my-[10px] px-[15px] py-[5px] rounded-lg'>
+          회원정보 수정
+        </button>
+      </div>
     </div>
   );
 };
 
 export default UserProfile;
-
-const UserName = tw.div`
-  text-2xl
-`;

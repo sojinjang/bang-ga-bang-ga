@@ -1,0 +1,119 @@
+import React, { useState, useEffect } from 'react';
+import tw from 'tailwind-styled-components';
+
+import { currentUserDataAtom } from '../../recoil/recruit-list/index';
+import { useRecoilValue } from 'recoil';
+
+const UserProfileModalInner = () => {
+  const currentUserData = useRecoilValue(currentUserDataAtom);
+
+  useEffect(() => {
+    const isEmpty = Object.keys(currentUserData);
+    if (isEmpty.length > 0) {
+      console.log(currentUserData);
+    }
+  }, [currentUserData]);
+
+  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation, tier, mannerScore, escapeScore } =
+    currentUserData;
+
+  const mannerProgressWith = 360 * (mannerScore / 100);
+  const escapeProgressWith = 360 * (escapeScore / 100);
+
+  const USER_INFO = [
+    { name: '성별', value: gender === null && '없음' },
+    { name: '나이', value: age === null && '없음' },
+    { name: 'MBTI', value: mbti === null && '없음' },
+    { name: '선호 테마', value: preferenceTheme === null && '없음' },
+    { name: '비선호 테마', value: nonPreferenceTheme === null && '없음' },
+    { name: '선호 지역', value: preferenceLocation === null && '없음' },
+  ];
+
+  return (
+    <div className='h-[480px] ml-5 p-4'>
+      <div>
+        <section>
+          <h3>매너점수💖</h3>
+          <Wrapper style={{ whiteSpace: 'nowrap' }}>
+            <MannerProgress style={{ width: mannerProgressWith }}>{mannerScore}점😊</MannerProgress>
+          </Wrapper>
+          <div style={{ paddingLeft: mannerProgressWith - 15 }}>{mannerScore}점</div>
+        </section>
+
+        <section>
+          <h3>탈출레벨🔑</h3>
+          <Wrapper style={{ whiteSpace: 'nowrap' }}>
+            <EscapeProgress style={{ width: escapeProgressWith }}>{tier}🥇</EscapeProgress>
+          </Wrapper>
+          <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
+        </section>
+      </div>
+      <div className='w-[360px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
+        <Container>
+          {USER_INFO.map((info) => (
+            <Information key={info.name}>
+              <Title>{info.name}</Title>
+              <Body>{info.value}</Body>
+            </Information>
+          ))}
+        </Container>
+      </div>
+    </div>
+  );
+};
+
+export default UserProfileModalInner;
+
+const Wrapper = tw.div`
+  w-[360px]
+  bg-gray-200
+  rounded-[20px]
+`;
+
+const MannerProgress = tw.div`
+  w-[490px]
+  bg-pink-400
+  font-medium
+  text-lg
+  text-white
+  text-center
+  p-[3px]
+  leading-none
+  rounded-[20px]
+  shadow-lg
+  shadow-pink-500/50
+`;
+
+const EscapeProgress = tw.div`
+  bg-blue-500
+  font-medium
+  text-lg
+  text-white
+  text-center
+  p-[3px]
+  leading-none
+  rounded-[20px]
+  shadow-lg
+  shadow-blue-500/50
+`;
+
+const Container = tw.table`
+  w-full
+`;
+
+const Information = tw.tr`
+  border-b-2
+  border-b-slate-300
+`;
+
+const Title = tw.th`
+  w-[180px]
+  p-[4.9px]
+  pl-[30px]
+  text-start
+  font-semibold
+`;
+
+const Body = tw.td`
+  p-[3px]
+`;
