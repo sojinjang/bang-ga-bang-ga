@@ -12,6 +12,7 @@ const FirstModal = () => {
   const setRecruitPostData = useSetRecoilState(recruitPostDataAtom);
   const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const setShowRecruitModalPage = useSetRecoilState(showRecruitModalPageAtom);
+  const [showDateAlert, setShowDateAlert] = useState(false);
 
   const selectedDate = useRef();
 
@@ -29,8 +30,8 @@ const FirstModal = () => {
     const selectedDateValue = selectedDate.current.value;
     const isPrevDate = parsedDate(selectedDateValue) - parsedDate(dateOffset, true) < 0;
 
-    if (isPrevDate) {
-      alert('이전 시간은 불가능합니다.');
+    if (isPrevDate || selectedDateValue == '') {
+      setShowDateAlert(true);
     } else {
       setShowRecruitModalPage(2);
     }
@@ -94,6 +95,8 @@ const FirstModal = () => {
           />
         </div>
       </div>
+      {showDateAlert && <div className='ml-1 mt-1'>일자를 선택하지 않았거나, 이전 일자를 선택하였습니다!</div>}
+
       <div>
         <button
           className='w-[60px] h-[35px] right-[100px] bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
