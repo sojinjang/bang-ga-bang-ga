@@ -1,60 +1,68 @@
 import React, { useState, useEffect } from 'react';
-import { get, del } from '../utils/api';
-import Leader from '../components/recruit-detail/Leader';
-import Participant from '../components/recruit-detail/Participant';
+import { useParams } from 'react-router-dom';
+import { get, post, patch, del } from '../utils/api';
+import { getCookieValue } from '../utils/cookie';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import member1 from '../assets/images/user-profile/동하.png';
-import leader from '../assets/images/user-profile/동현.jpg';
-import member2 from '../assets/images/user-profile/선아.png';
-import member3 from '../assets/images/user-profile/소진.jpg';
-import member4 from '../assets/images/user-profile/승빈.png';
-import member5 from '../assets/images/user-profile/재웅.png';
-import user from '../assets/images/user-profile/지현.jpeg';
+import Leader from '../components/recruit-detail/Leader';
+import Participant from '../components/recruit-detail/Participant';
+import LeaderBtn from '../components/recruit-detail/LeaderBtn';
+import ParticipantBtn from '../components/recruit-detail/ParticipantBtn';
 import tw from 'tailwind-styled-components';
+import jwt_decode from 'jwt-decode';
 
 const RecruitDetail = () => {
-  const [data, setData] = useState([]);
+  const params = useParams();
+  const postId = params.postId;
+  const [isLeader, setIsLeader] = useState(undefined); // user 리더인지 확인
+  const [leaderList, setLeaderList] = useState({});
+  const [participantList, setParticipantList] = useState([]);
 
-  // useEffect(() => {
-  //   const data = get('http://localhost:3008');
-  //   setData(data);
-  // }, []);
+  // userId 가져오기
+  const loginToken = getCookieValue('token');
+  const userId = jwt_decode(loginToken).userId;
+  console.log('내 아이디', userId);
 
-  const LIST = [
-    { role: 'leader', nick_name: '돌체프로지망생', count: '20회', manner: 70, escape: 'gold', profile_img: leader },
-    { role: 'user', nick_name: '탈주각', count: '3회', manner: 70, escape: 'gold', profile_img: user },
-    {
-      role: 'member1',
-      nick_name: '왕복3시간통학러',
-      count: '15회',
-      manner: 70,
-      escape: 'silver',
-      profile_img: member1,
-    },
-    { role: 'member2', nick_name: '비둘기', count: '20회', manner: 70, escape: 'gold', profile_img: member2 },
-    { role: 'member3', nick_name: '다람쥐', count: '20회', manner: 70, escape: 'gold', profile_img: member3 },
-    { role: 'member4', nick_name: '거북이', count: '20회', manner: 70, escape: 'gold', profile_img: member4 },
-    { role: 'member5', nick_name: '토끼', count: '20회', manner: 70, escape: 'gold', profile_img: member5 },
-  ];
-  const leaderList = LIST[0];
-  const participantList = LIST.slice(1);
+  // 모집글 참가자 명단 가져오기
+  const memberListData = async () => {
+    const data = await get(`/api/matching-situation/post/${postId}`);
+    setLeaderList(data[0]); // 방장 명단은 항상 0번째 위치
+    setParticipantList(data.slice(1));
 
-  const [isSignUp, setIsSignUp] = useState(true);
+    data[0].userId === userId ? setIsLeader(true) : setIsLeader(false);
+  };
+
+  useEffect(() => {
+    memberListData();
+  }, []);
 
   return (
     <Background img={'bg2'} className='relative'>
       <Navigators />
       <div style={{ width: '100%', height: '800px', margin: '0 auto' }}>
         <div style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
-          <Leader leaderList={leaderList} />
-          <Participant participantList={participantList} />
+          <>
+            {leaderList && <Leader leaderList={leaderList} />}
+            {participantList && (
+              <Participant
+                isLeader={isLeader}
+                participantList={participantList}
+                postId={postId}
+                memberListData={memberListData}
+              />
+            )}
+          </>
         </div>
-        <button
-          className='font-bold text-6xl font-bold text-white border-4 bg-[#5F5FAC] my-[10px] px-[30px] py-[10px] rounded-lg'
-          onClick={() => setIsSignUp(!isSignUp)}>
-          {isSignUp ? '신청 취소!' : '신청 하기!'}
-        </button>
+        {isLeader ? (
+          <LeaderBtn />
+        ) : (
+          <ParticipantBtn
+            postId={postId}
+            userId={userId}
+            participantList={participantList}
+            memberListData={memberListData}
+          />
+        )}
       </div>
     </Background>
   );

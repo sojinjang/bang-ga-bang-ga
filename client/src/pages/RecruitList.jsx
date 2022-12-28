@@ -38,14 +38,14 @@ const RecruitList = () => {
   useEffect(() => {
     if (currentRegion === '전체') {
       const fetchRecruitData = (async () => {
-        const data = await get('/api/matching-posts');
+        const data = await get(ApiUrl.MATCHING_POSTS);
         const asendedData = data.reverse();
 
         setFetchedData(asendedData);
       })();
     } else {
       const fetchRecruitData = (async () => {
-        const data = await get('http://34.64.127.117' + ApiUrl.MATCHING_POSTS, currentRegion);
+        const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
         const asendedData = data.reverse();
 
         setFetchedData(asendedData);

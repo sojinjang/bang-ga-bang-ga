@@ -5,6 +5,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileModal = () => {
   const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
