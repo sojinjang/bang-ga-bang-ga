@@ -9,4 +9,5 @@ export {
   currentRegionAtom,
   currentPostIdAtom,
   currentUserIndexAtom,
+  currentUserDataAtom,
 } from './atom';

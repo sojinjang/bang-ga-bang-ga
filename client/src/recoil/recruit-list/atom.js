@@ -35,6 +35,11 @@ const currentUserIndexAtom = atom({
   default: 0,
 });
 
+const currentUserDataAtom = atom({
+  key: 'currentUserData',
+  default: {},
+});
+
 const maxPageNumAtom = atom({
   key: 'maxPageNum',
   default: 1,
@@ -50,7 +55,7 @@ const recruitPostDataAtom = atom({
     matchingTime: 0,
     matchingLocation: '',
     cafeId: 0,
-    userId: 1,
+    userId: 0,
   },
 });
 
@@ -70,4 +75,5 @@ export {
   currentRegionAtom,
   currentPostIdAtom,
   currentUserIndexAtom,
+  currentUserDataAtom,
 };
