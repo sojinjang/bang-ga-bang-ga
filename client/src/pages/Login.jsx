@@ -32,7 +32,7 @@ const Login = () => {
       setCookie(Keys.USER_ID, userId);
       navigate('/');
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 

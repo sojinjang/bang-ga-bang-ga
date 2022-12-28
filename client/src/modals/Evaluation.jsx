@@ -12,8 +12,16 @@ import fullKey from '../assets/images/icon/full-key.png';
 import emptyKey from '../assets/images/icon/empty-key.png';
 import tw from 'tailwind-styled-components';
 import { useImmer } from 'use-immer';
+import { get, post } from '../utils/api';
+import { useEffect } from 'react';
 
 const Evaluation = ({ selectedList, setVisible }) => {
+  const [members, setMembers] = useState([]);
+  const getMembers = async () => {
+    const res = await get('/');
+  };
+  useEffect(() => {}, []);
+
   const TEAM_MEMBERS = [
     { nick_name: '프로 탈옥수', profile_image: teamMember1 },
     { nick_name: '햄토리', profile_image: teamMember2 },
@@ -22,10 +30,30 @@ const Evaluation = ({ selectedList, setVisible }) => {
     { nick_name: '몬스터', profile_image: teamMember5 },
     { nick_name: '김승빈', profile_image: teamMember6 },
   ];
+  // const dataForm = [
+  //   {
+  //     evaluateTargetId: userId,
+  //     evaluatorId: 'jwt토큰에서 유저아이디 꺼내서 넣기',
+  //     shortEvaluate,
+  //     mannerEvaluate,
+  //     escapeEvaluate,
+  //   },
+  // ];
 
   const date = selectedList.date;
   const [YEAR, MONTH, DATE] = date.split('.');
   const [evalRes, setEvalRes] = useImmer([]);
+  const postEvaluation = async () => {
+    const res = await post('/api/evaluate/post', evalRes);
+  };
+
+  const submitEvaluation = (e) => {
+    e.preventDefault();
+    const finish = confirm('평가를 완료하시겠습니까? 제출된 평가는 다시 수정할 수 없습니다');
+    {
+      finish && (alert('평가가 완료되었습니다'), setVisible(false));
+    }
+  };
 
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
@@ -37,7 +65,7 @@ const Evaluation = ({ selectedList, setVisible }) => {
           </button>
         </div>
         <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3>
-        <form action=''>
+        <form onSubmit={submitEvaluation}>
           <div>
             {TEAM_MEMBERS.map(({ nick_name, profile_image }) => (
               <div key={nick_name} className='flex justify-between mb-[15px]'>
@@ -50,7 +78,7 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     <div>
                       <span>매너지수</span>
                       <IconContainer>
-                        {[1, 2, 3, 4, 5].map((value, i) => (
+                        {[1, 2, 3, 4, 5].map((value) => (
                           <IconImg
                             src={
                               evalRes.find((user) => user['nickName'] == nick_name)
@@ -131,12 +159,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
             ))}
           </div>
           <button
-            onClick={() => {
-              const finish = confirm('평가를 완료하시겠습니까? 제출된 평가는 다시 수정할 수 없습니다');
-              {
-                finish ? alert('평가가 완료되었습니다') : null;
-              }
-            }}
             type='submit'
             className='font-semibold text-white border-4 bg-blue-500 shadow-lg shadow-gray-500/50 my-[10px] px-[15px] py-[5px] rounded-lg'>
             제출하기

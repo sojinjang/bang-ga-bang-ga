@@ -190,4 +190,5 @@ const ScrollBtn = tw.button`
   bg-[#3F51A2] hover:text-[#3F51A2] hover:border-[#3F51A2] hover:bg-white
 
 `;
+
 export default Home;
