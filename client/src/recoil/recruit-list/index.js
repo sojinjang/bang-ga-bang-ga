@@ -7,4 +7,7 @@ export {
   maxPageNumAtom,
   recruitPostDataAtom,
   currentRegionAtom,
+  currentPostIdAtom,
+  currentUserIndexAtom,
+  currentUserDataAtom,
 } from './atom';
