@@ -13,7 +13,7 @@ const UserProfileContainer = ({ postId }) => {
   const [currentTeamInfo, setCurrentTeamInfo] = useState([]);
 
   const userArray = async () => {
-    const data = await get(ApiUrl.MATCHING_POST_INFO, postId);
+    const data = await get(ApiUrl.RECRUIT_USER_INFO, postId);
     setCurrentPostId(postId);
     setCurrentTeamInfo(data);
   };
