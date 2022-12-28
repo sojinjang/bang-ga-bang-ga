@@ -13,7 +13,7 @@ export default function DropdownMenu({ imgUrl }) {
   };
 
   return (
-    <Menu as='div' className='ml-auto w-1/3 flex justify-end'>
+    <Menu as='div' className='w-1/3 flex justify-end'>
       <Menu.Button className='w-20 h-20'>
         <ProfileImg
           src={`http://localhost:5001/server/bangabanga/server/uploads/1672118463447-test.png`}
@@ -32,11 +32,9 @@ export default function DropdownMenu({ imgUrl }) {
           <div className='py-1'>
             {MENUS.map((menu) => (
               <Menu.Item key={menu.name}>
-                <MenuItemDiv>
-                  <Link to={menu.link} onClick={menu.name === '로그아웃' && onLogout}>
-                    {menu.name}
-                  </Link>
-                </MenuItemDiv>
+                <Link to={menu.link} onClick={menu.name === '로그아웃' && onLogout}>
+                  <MenuItemDiv>{menu.name}</MenuItemDiv>
+                </Link>
               </Menu.Item>
             ))}
           </div>
