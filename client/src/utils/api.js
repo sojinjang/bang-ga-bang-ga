@@ -1,7 +1,8 @@
 import { getCookieValue } from './cookie.js';
 import { Keys } from '../constants/Keys';
 
-async function get(endpoint, params = '') {
+async function get(endpointInput, params = '') {
+  const endpoint = process.env.REACT_APP_SERVER_URL + endpointInput;
   const apiUrl = params === '' ? endpoint : `${endpoint}/${params}`;
   const res = await fetch(apiUrl, {
     method: 'GET',
@@ -20,7 +21,8 @@ async function get(endpoint, params = '') {
   return result;
 }
 
-async function post(endpoint, data) {
+async function post(endpointInput, data) {
+  const endpoint = process.env.REACT_APP_SERVER_URL + endpointInput;
   const apiUrl = endpoint;
   const bodyData = JSON.stringify(data);
   const res = await fetch(apiUrl, {
@@ -41,7 +43,8 @@ async function post(endpoint, data) {
   return result;
 }
 
-async function postImg(endpoint, data) {
+async function postImg(endpointInput, data) {
+  const endpoint = process.env.REACT_APP_SERVER_URL + endpointInput;
   const apiUrl = endpoint;
   const res = await fetch(apiUrl, {
     method: 'POST',
@@ -57,7 +60,8 @@ async function postImg(endpoint, data) {
   return result;
 }
 
-async function patch(endpoint, params = '', data) {
+async function patch(endpointInput, params = '', data) {
+  const endpoint = process.env.REACT_APP_SERVER_URL + endpointInput;
   const apiUrl = params === '' ? endpoint : `${endpoint}/${params}`;
   const bodyData = JSON.stringify(data);
   const res = await fetch(apiUrl, {
@@ -78,7 +82,8 @@ async function patch(endpoint, params = '', data) {
   return result;
 }
 
-async function del(endpoint, params = '', data = {}) {
+async function del(endpointInput, params = '', data = {}) {
+  const endpoint = process.env.REACT_APP_SERVER_URL + endpointInput;
   const apiUrl = params === '' ? endpoint : `${endpoint}/${params}`;
   const bodyData = JSON.stringify(data);
 
