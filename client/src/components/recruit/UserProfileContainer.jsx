@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showUserProfileModalAtom, currentPostIdAtom, currentUserIndexAtom } from '../../recoil/recruit-list/index';
-import { get } from '../../utils/api';
-import { ApiUrl } from '../../constants/ApiUrl';
 
 import crown from '../../assets/images/icon/crown.png';
+import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileContainer = ({ postId }) => {
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
@@ -38,7 +38,7 @@ const UserProfileContainer = ({ postId }) => {
                 src={user['profileImg']}
                 alt='유저 프로필'
               />
-              <span className='text-black text-xs'>{user['userName']}</span>
+              <span className='text-black text-xs'>{user['nickName']}</span>
             </div>
           ))}
       </div>
