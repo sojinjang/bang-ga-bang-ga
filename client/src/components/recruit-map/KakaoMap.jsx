@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Map, MapMarker, useMap, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 
-import { regionAtom, targetCafeAtom } from '../../recoil/recruit-map';
+import { regionAtom, targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
+import { ResizeButtonContainer } from './ResizeButtonContainer';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -24,15 +25,24 @@ export default function KakaoMap() {
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
+  const [scope, setScope] = useRecoilState(scopeAtom);
+  const [cafesWithinScope, setcafesWithinScope] = useRecoilState(cafesWithinScopeAtom);
   const [cafeInfo, setCafeInfo] = useState({});
+  const [level, setLevel] = useState(5);
 
   const addRegionCafeData = async () => {
     const regionCafeInfoArr = await getCafeInfo(region);
     setCafeInfo({ ...cafeInfo, [region]: regionCafeInfoArr });
   };
 
+  const handleRegionChange = async () => {
+    if (!cafeInfo[region]) await addRegionCafeData();
+    setTargetCafe(undefined);
+    setcafesWithinScope(cafeInfo[region]);
+  };
+
   useEffect(() => {
-    if (!cafeInfo[region]) addRegionCafeData();
+    handleRegionChange();
   }, [region]);
 
   const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
@@ -65,36 +75,44 @@ export default function KakaoMap() {
           })
         }>
         {isOver && <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />}
-        {/* memo 소진: 아래 주석 코드 -> https://react-kakao-maps-sdk.jaeseokim.dev/docs/sample/overlay/customOverlay2 참고
-        예제랑 다르게 커스텀 오버레이 컴포넌트 위치 이상해짐 issue #17 22.12.23 */}
-        {/* {isOver && (
-          <CustomOverlayMap position={position} xAnchor={0.3} yAnchor={0.91}>
-            <InfoWindow cafeName={cafeName} recruitingNum={recruitingNum} />
-          </CustomOverlayMap>
-        )} */}
       </MapMarker>
     );
   };
 
   return (
-    <Map
-      center={regionCoordinate[region]}
-      style={{
-        width: '900px',
-        height: '700px',
-      }}
-      level={5}>
-      {cafeInfo?.[region] &&
-        cafeInfo[region].map((cafe) => (
-          <MarkerContainer
-            key={cafe.cafeId}
-            cafeId={cafe.cafeId}
-            setTargetCafe={setTargetCafe}
-            position={{ lat: cafe.lat, lng: cafe.lng }}
-            cafeName={cafe.cafeName}
-            recruitingNum={cafe.recruitingNum}
-          />
-        ))}
-    </Map>
+    <div className='relative'>
+      <Map
+        center={regionCoordinate[region]}
+        style={{
+          width: '900px',
+          height: '700px',
+        }}
+        onBoundsChanged={(map) =>
+          setScope({
+            swLatLng: {
+              lat: map.getBounds().getSouthWest().getLat(),
+              lng: map.getBounds().getSouthWest().getLng(),
+            },
+            neLatLng: {
+              lat: map.getBounds().getNorthEast().getLat(),
+              lng: map.getBounds().getNorthEast().getLng(),
+            },
+          })
+        }
+        level={level}>
+        <ResizeButtonContainer level={level} setLevel={setLevel}></ResizeButtonContainer>
+        {cafeInfo?.[region] &&
+          cafeInfo[region].map((cafe) => (
+            <MarkerContainer
+              key={cafe.cafeId}
+              cafeId={cafe.cafeId}
+              setTargetCafe={setTargetCafe}
+              position={{ lat: cafe.lat, lng: cafe.lng }}
+              cafeName={cafe.cafeName}
+              recruitingNum={cafe.recruitingNum}
+            />
+          ))}
+      </Map>
+    </div>
   );
 }
