@@ -76,7 +76,7 @@ const Home = () => {
           <OuterTrapezoid ref={divRef}>
             <InnerTrapezoid
               onClick={() => {
-                navigate('/recruit-map');
+                navigate('/recruit-list');
               }}>
               <MatchingBtn>모집 리스트 보기!</MatchingBtn>
             </InnerTrapezoid>

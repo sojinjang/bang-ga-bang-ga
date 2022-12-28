@@ -8,6 +8,16 @@ import { get } from '../../utils/api';
 import { useEffect } from 'react';
 import { getCookieValue } from '../../utils/cookie';
 import { useState } from 'react';
+import level1 from '../../assets/images/icon/lv1.png';
+import level2 from '../../assets/images/icon/lv2.png';
+import level3 from '../../assets/images/icon/lv3.png';
+import level4 from '../../assets/images/icon/lv4.png';
+import level5 from '../../assets/images/icon/lv5.png';
+import mn1 from '../../assets/images/icon/manner1.png';
+import mn2 from '../../assets/images/icon/manner2.png';
+import mn3 from '../../assets/images/icon/manner3.png';
+import mn4 from '../../assets/images/icon/manner4.png';
+import mn5 from '../../assets/images/icon/manner5.png';
 const Navigators = () => {
   const [myManner, setMyManner] = useState(null);
   const [myTier, setMyTier] = useState(null);
@@ -15,9 +25,9 @@ const Navigators = () => {
   const getUserInfo = async () => {
     try {
       const res = await get('/api/user');
-      const { mannerScore, tier, profileImg } = res;
+      const { mannerScore, tier, escapeScore, profileImg } = res;
       setMyManner(mannerScore);
-      setMyTier(tier);
+      setMyTier(escapeScore);
       setImgUrl(profileImg);
       console.log(profileImg);
     } catch (err) {
@@ -31,7 +41,15 @@ const Navigators = () => {
       loginToken && getUserInfo();
     }
   }, []);
-
+  const myMedalImg = (score) => {
+    const medalImg = score >= 80 ? level5 : score >= 60 ? level4 : score >= 40 ? level3 : score >= 20 ? level2 : level1;
+    return medalImg;
+  };
+  const myMannerImg = (score) => {
+    const mannerImg = score >= 80 ? mn5 : score >= 60 ? mn4 : score >= 40 ? mn3 : score >= 20 ? mn2 : mn1;
+    return mannerImg;
+  };
+  myMedalImg(myTier);
   return (
     <NavContainer>
       <NavMenu />
@@ -39,12 +57,12 @@ const Navigators = () => {
         <MyStatContainer>
           <MyStat myStat={myTier}>
             <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
-              <img src={`${process.env.PUBLIC_URL}/images/icon/gold-medal.png`} className='w-full h-full' alt='' />
+              <img src={myMedalImg(myTier)} className='w-full h-full' alt='' />
             </span>
           </MyStat>
           <MyStat myStat={myManner}>
-            <span className='absolute w-12 h-12 left-[-14px] top-[-12px] text-[42px]'>
-              {myManner > 80 ? ' 🥰' : myManner > 60 ? '😊' : myManner > 40 ? '🙂' : myManner > 20 ? '🥲' : '🙃'}
+            <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
+              <img src={myMannerImg(myManner)} className='w-full h-full' alt='' />
             </span>
           </MyStat>
           <DropdownMenu imgUrl={imgUrl} />
@@ -113,12 +131,12 @@ const NavBtn = tw.nav`
   flex justify-center items-center text-3xl
 `;
 const MyStatContainer = tw.div`
-  w-1/3 flex justify-end
+  w-1/3 flex justify-between
 `;
 
 const MyStat = ({ myStat, children }) => {
   return (
-    <div className='w-1/3 flex justify-center items-center'>
+    <div className='w-[28%] flex justify-center items-center'>
       <span className='bg-black w-4/5 h-9 pl-2 relative rounded-full flex justify-center items-center'>
         <span className='text-white text-xl font-extrabold'>{myStat}</span>
         {children}
