@@ -20,17 +20,18 @@ const Celebrate = () => {
 
   return (
     <Modal>
-      <CelebrateTextBox>
+      <div className='text-2xl mt-auto text-center'>
         <div>방가네 식구가 되신 것을 환영합니다!🎉</div>
+        <br />
         <div>바로 프로필을 작성하러 가실까요?</div>
-      </CelebrateTextBox>
+      </div>
       <BtnContainer>
-        <SkipBtn className='bg-gray-200' onClick={onSkipBtn}>
+        <button className='bg-gray-200  mx-5 p-4 rounded-[10px]' onClick={onSkipBtn}>
           나중에 하기
-        </SkipBtn>
-        <SkipBtn className='bg-[#4A94D7]' onClick={onRegisterProfileBtn}>
+        </button>
+        <button className='bg-[#4A94D7] mx-5 p-4 rounded-[10px]' onClick={onRegisterProfileBtn}>
           지금 작성하기
-        </SkipBtn>
+        </button>
       </BtnContainer>
     </Modal>
   );
@@ -42,15 +43,8 @@ const Modal = tw.div`
   absolute top-[10%] left-[-5%]
   bg-white
 `;
-const CelebrateTextBox = tw.div`
-  text-2xl mt-auto text-center
-  flex flex-col
-`;
 const BtnContainer = tw.div`
   mt-auto mb-[20px] w-full mx-auto flex justify-center
-`;
-const SkipBtn = tw.button`
-  mx-5 p-4 rounded-[10px]
 `;
 
 export default Celebrate;
