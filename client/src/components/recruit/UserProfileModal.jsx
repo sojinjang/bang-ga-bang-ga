@@ -10,7 +10,7 @@ const UserProfileModal = () => {
   const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
 
   const fetchPostInfo = async () => {
-    const data = await get('api/matching-situation/post/1');
+    const data = await get(ApiUrl.MATCHING_POST_INFO, 1);
   };
 
   return (
