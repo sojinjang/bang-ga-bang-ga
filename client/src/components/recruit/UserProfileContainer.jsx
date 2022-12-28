@@ -8,8 +8,7 @@ const UserProfileContainer = ({ postId }) => {
   const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
 
   const userArray = async () => {
-    const data = await get('/api/matching-situation/post', postId);
-    console.log(data);
+    const data = await get(ApiUrl.MATCHING_POST_INFO, postId);
 
     return data;
   };
