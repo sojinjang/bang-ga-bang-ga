@@ -5,6 +5,8 @@ import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
 
 import { get, post } from '../../utils/api.js';
 import { ApiUrl } from '../../constants/ApiUrl';
+import jwt_decode from 'jwt-decode';
+import { getCookieValue } from '../../utils/cookie';
 
 const FirstModal = () => {
   const setRecruitPostData = useSetRecoilState(recruitPostDataAtom);
@@ -100,6 +102,9 @@ const SecondModal = () => {
 
   const REGION_DATA = ['홍대', '강남', '건대'];
 
+  const loginToken = getCookieValue('token');
+  const userId = jwt_decode(loginToken).userId;
+
   useEffect(() => {
     const getCafeData = (async () => {
       try {
@@ -117,7 +122,6 @@ const SecondModal = () => {
       const themeData = await get(ApiUrl.MATCHING_POST_THEME_INFO, cafeId);
 
       setCurrentThemeDataArray(themeData);
-      console.log(themeData);
     } catch (err) {
       alert(err.message);
     }
@@ -130,6 +134,22 @@ const SecondModal = () => {
   };
 
   const submitMatchingPost = async () => {
+    const dateValue = recruitPostData.matchingTime;
+    const parsedDate = parseInt(
+      dateValue
+        .toString()
+        .slice(1)
+        .replace(/[^0-9]/g, ''),
+    );
+
+    setRecruitPostData((prevState) => {
+      return {
+        ...prevState,
+
+        userId: userId,
+        matchingTime: parsedDate,
+      };
+    });
     await post('/api/matching-posts', recruitPostData);
   };
 
@@ -262,21 +282,10 @@ const SecondModal = () => {
           </button>
           <button
             className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
-            onClick={() => {
+            onClick={async () => {
               if (submitStatus) {
-                const dateValue = recruitPostData.matchingTime;
-                const parsedDate = parseInt(dateValue.toString().replace(/[^0-9]/g, ''));
-
-                setRecruitPostData((prevState) => {
-                  return {
-                    ...prevState,
-
-                    matchingTime: parsedDate,
-                  };
-                });
-
-                submitMatchingPost();
-                setShowRecruitPost();
+                await submitMatchingPost();
+                setShowRecruitPost(false);
                 window.location.replace('/recruit-list');
               }
             }}>
@@ -317,10 +326,10 @@ const PostModal = () => {
 
   return (
     <div className='rounded-xl absolute top-[65px] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
-      <div className={showRecruitModalPage !== 1 && 'hidden'}>
+      <div className={showRecruitModalPage === 1 ? '' : 'hidden'}>
         <FirstModal />
       </div>
-      <div className={showRecruitModalPage !== 2 && 'hidden'}>
+      <div className={showRecruitModalPage === 2 ? '' : 'hidden'}>
         <SecondModal />
       </div>
     </div>
