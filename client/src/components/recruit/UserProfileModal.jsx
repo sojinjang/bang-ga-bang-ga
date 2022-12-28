@@ -5,6 +5,7 @@ import userArray from '../../assets/images/user-profile/profile';
 
 import UserScore from '../mypage/UserScore';
 import { get } from '../../utils/api';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const UserProfileModal = () => {
   const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
