@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { get } from '../utils/api';
+import * as api from '../utils/api';
+import { ApiUrl } from '../constants/ApiUrl';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
 import Evaluation from '../modals/Evaluation';
@@ -12,8 +13,7 @@ const MatchingList = () => {
 
   // 참가한 모집글 정보 - 날짜 최신순 정렬
   const recruitData = async () => {
-    const data = await get('/api/matching-situation');
-    console.log('recruitData', data);
+    const data = await api.get(ApiUrl.RECRUIT_INFO);
     setMatchingList(data.reverse());
   };
 
