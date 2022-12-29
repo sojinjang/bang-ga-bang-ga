@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import detective from '../../assets/images/icon/detective.png';
 import closeBtn from '../../assets/images/icon/close.png';
+import LevelImage from '../common/LevelImage';
+import MannerImage from '../common/MannerImage';
+import Profile from '../../modals/UserProfile';
 import * as api from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 import tw from 'tailwind-styled-components';
 
 const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, memberListData }) => {
+  const [visible, setVisible] = useState(false);
+  const [userData, setUserData] = useState([]);
+
   const deleteData = async (userId) => {
     await api.post(ApiUrl.RECRUIT_LEADER_INFO, { matchingPostsId: postId, userId });
     memberListData();
@@ -31,14 +37,33 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
               </button>
             )}
           </div>
-          <ProfileImg src={process.env.REACT_APP_SERVER_URL + participant.profileImg} alt='프로필 이미지' />
+          <ProfileImg
+            onClick={() => {
+              setVisible(true);
+              setUserData(participant);
+            }}
+            src={process.env.REACT_APP_SERVER_URL + participant.profileImg}
+            alt='프로필 이미지'
+            className='cursor-pointer'
+          />
           <NickName>{participant.nickName}</NickName>
-          <div className='flex justify-between mx-[40px]'>
-            <Score>{participant.escapeScore}</Score>
-            <Score>{participant.mannerScore}</Score>
+          <div className='flex justify-evenly'>
+            <Score>
+              <span className='absolute w-10 h-10 left-[-23px] top-[-5px]'>
+                <LevelImage score={participant.escapeScore} size={'100%'} />
+              </span>
+              <span>{participant.escapeScore}</span>
+            </Score>
+            <Score>
+              <span className='absolute w-10 h-10 left-[-23px] top-[-5px]'>
+                <MannerImage score={participant.mannerScore} size={'100%'} />
+              </span>
+              <span>{participant.mannerScore}</span>
+            </Score>
           </div>
         </Container>
       ))}
+      {visible && <Profile setVisible={setVisible} userData={userData} />}
     </>
   );
 };
@@ -81,10 +106,13 @@ const NickName = tw.div`
 
 const Score = tw.span`
   inline-block
-  w-[70px]
+  w-[80px]
   h-[30px]
   rounded-[30px]
   bg-black
   text-white
   text-lg
+  ml-[20px]
+
+  relative
 `;
