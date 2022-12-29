@@ -29,7 +29,7 @@ const LeaderBtn = ({ postId, isRecruitCompleted, setIsRecruitCompleted, leaderLi
       {!isRecruitCompleted && (
         <button
           type='submit'
-          className='font-bold text-6xl font-bold text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] ml-[1100px] px-[30px] py-[10px] rounded-lg'
+          className='font-bold text-6xl text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] ml-[1100px] px-[30px] py-[10px] rounded-lg'
           onClick={handleClick}>
           모집 완료!
         </button>

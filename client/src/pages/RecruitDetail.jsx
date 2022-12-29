@@ -47,12 +47,12 @@ const RecruitDetail = () => {
   return (
     <Background img={'bg2'} className='relative'>
       <Navigators />
-      <h3>
-        모집 인원 {participantNumber} / {totalParticipantNumber}
-      </h3>
-      <div style={{ width: '100%', height: '800px', margin: '0 auto' }}>
-        <div style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
-          <>
+      <div>
+        <h3 className='font-bold text-5xl text-white mt-[40px] ml-[50px]'>
+          모집 인원 {participantNumber} / {totalParticipantNumber}
+        </h3>
+        <div style={{ width: '100%' }}>
+          <div className='mt-[40px]' style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
             {leaderList && <Leader leaderList={leaderList} />}
             {participantList && (
               <Participant
@@ -63,27 +63,27 @@ const RecruitDetail = () => {
                 memberListData={memberListData}
               />
             )}
-          </>
+          </div>
+          {isLeader ? (
+            <LeaderBtn
+              postId={postId}
+              isRecruitCompleted={isRecruitCompleted}
+              setIsRecruitCompleted={setIsRecruitCompleted}
+              leaderList={leaderList}
+              participantList={participantList}
+            />
+          ) : (
+            <ParticipantBtn
+              postId={postId}
+              userId={userId}
+              participantList={participantList}
+              isRecruitCompleted={isRecruitCompleted}
+              memberListData={memberListData}
+              participantNumber={participantNumber}
+              totalParticipantNumber={totalParticipantNumber}
+            />
+          )}
         </div>
-        {isLeader ? (
-          <LeaderBtn
-            postId={postId}
-            isRecruitCompleted={isRecruitCompleted}
-            setIsRecruitCompleted={setIsRecruitCompleted}
-            leaderList={leaderList}
-            participantList={participantList}
-          />
-        ) : (
-          <ParticipantBtn
-            postId={postId}
-            userId={userId}
-            participantList={participantList}
-            isRecruitCompleted={isRecruitCompleted}
-            memberListData={memberListData}
-            participantNumber={participantNumber}
-            totalParticipantNumber={totalParticipantNumber}
-          />
-        )}
       </div>
     </Background>
   );

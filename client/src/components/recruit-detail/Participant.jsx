@@ -31,7 +31,7 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
               </button>
             )}
           </div>
-          <ProfileImg src={detective} alt='프로필 이미지' />
+          <ProfileImg src={process.env.REACT_APP_SERVER_URL + participant.profileImg} alt='프로필 이미지' />
           <NickName>{participant.nickName}</NickName>
           <div className='flex justify-between mx-[40px]'>
             <Score>{participant.escapeScore}</Score>
@@ -52,8 +52,7 @@ const Container = tw.div`
   h-[350px]
   inline-block
   mx-[20px]
-  mt-[140px]
-  mb-[80px]
+  
   rounded-[15px]
   bg-gradient-to-b
   from-[#3e7dab]

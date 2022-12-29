@@ -11,7 +11,7 @@ const Leader = ({ leaderList }) => {
         <span className='pl-[3px] font-semibold mt-[3px]'>{leaderList.matchingCount}</span>
       </div>
       <div className='relative w-[210px] h-[210px] mx-auto'>
-        <LeaderProfileImg src={crown} alt='프로필 사진' />
+        <LeaderProfileImg src={process.env.REACT_APP_SERVER_URL + leaderList.profileImg} alt='프로필 사진' />
         <Crown src={crown} alt='왕관 이모지' />
       </div>
       <NickName>{leaderList.nickName}</NickName>

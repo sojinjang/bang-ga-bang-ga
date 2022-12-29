@@ -1,14 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfileWithHat from '../common/ProfileWithHat';
-import userImg from '../../assets/images/user-profile/지현.jpeg';
 
 const UserProfile = ({ userData }) => {
   const navigate = useNavigate();
 
   return (
     <div>
-      <ProfileWithHat img={userImg} />
+      <ProfileWithHat img={process.env.REACT_APP_SERVER_URL + userData.profileImg} />
       <div className='pl-[15px]'>
         <h2 className='font-bold text-3xl'>{userData.nickName}</h2>
         <div className='font-medium text-xl mb-[3px]'>{userData.userIntro}</div>
