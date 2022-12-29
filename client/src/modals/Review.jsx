@@ -19,11 +19,11 @@ const Review = ({ setVisible, reviewData }) => {
                 <div className='flex'>
                   <Profile img={review.profile_image} size={80} />
                   <div className='mt-[5px] ml-[10px]'>
-                    <span className='text-lg'>{review.nick_name}</span>
+                    <span className='text-lg'>{review.nickName}</span>
                     <div className='text-xl bg-amber-200 bg-opacity-70'>{review.shortEvaluate}</div>
                   </div>
                 </div>
-                <div>{review.date}</div>
+                <div>{review.createdAt.slice(0, 10).replaceAll('-', '.')}</div>
               </section>
             </div>
           ))}

@@ -18,28 +18,27 @@ const RecruitDetail = () => {
   const [isRecruitCompleted, setIsRecruitCompleted] = useState(undefined);
   const [leaderList, setLeaderList] = useState({});
   const [participantList, setParticipantList] = useState([]);
+  const [participantNumber, setParticipantNumber] = useState(1); // 현재 참여 인원
+  const [totalParticipantNumber, setTotalParticipantNumber] = useState(1); // 총 모집 인원
 
   // userId 가져오기
   const loginToken = getCookieValue('token');
   const userId = jwt_decode(loginToken).userId;
-  console.log('내 아이디', userId);
 
   // 모집글 참가자 명단 가져오기
   const memberListData = async () => {
     const data = await api.get(ApiUrl.RECRUIT_USER_INFO, postId);
-    // const data = await api.get(`/api/matching-situation/post/${postId}`);
-    console.log('명다라란', data);
-    setLeaderList(data[0]); // 방장 명단은 항상 0번째 위치
-    setParticipantList(data.slice(1));
+    const leader = data[0];
+    const participant = data.slice(1);
 
-    data[0].userId === userId ? setIsLeader(true) : setIsLeader(false);
-    data[0].matchStatus ? setIsRecruitCompleted(true) : setIsRecruitCompleted(false);
+    setLeaderList(leader); // 방장 명단은 항상 0번째 위치
+    setParticipantList(participant);
+
+    leader.userId === userId ? setIsLeader(true) : setIsLeader(false);
+    leader.matchStatus ? setIsRecruitCompleted(true) : setIsRecruitCompleted(false);
+    setTotalParticipantNumber(leader.peopleNum);
+    setParticipantNumber(participant.length + 1);
   };
-
-  // 모집 완료 상태 ({ matchStatus: 1 })
-  // const get await get(`/api/matching-situation/post/${postId}`);
-
-  // /api/matching-situation/post/1
 
   useEffect(() => {
     memberListData();
@@ -48,6 +47,9 @@ const RecruitDetail = () => {
   return (
     <Background img={'bg2'} className='relative'>
       <Navigators />
+      <h3>
+        모집 인원 {participantNumber} / {totalParticipantNumber}
+      </h3>
       <div style={{ width: '100%', height: '800px', margin: '0 auto' }}>
         <div style={{ whiteSpace: 'nowrap', overflowX: 'auto' }}>
           <>
@@ -64,7 +66,13 @@ const RecruitDetail = () => {
           </>
         </div>
         {isLeader ? (
-          <LeaderBtn postId={postId} isRecruitCompleted={isRecruitCompleted} />
+          <LeaderBtn
+            postId={postId}
+            isRecruitCompleted={isRecruitCompleted}
+            setIsRecruitCompleted={setIsRecruitCompleted}
+            leaderList={leaderList}
+            participantList={participantList}
+          />
         ) : (
           <ParticipantBtn
             postId={postId}
@@ -72,6 +80,8 @@ const RecruitDetail = () => {
             participantList={participantList}
             isRecruitCompleted={isRecruitCompleted}
             memberListData={memberListData}
+            participantNumber={participantNumber}
+            totalParticipantNumber={totalParticipantNumber}
           />
         )}
       </div>
