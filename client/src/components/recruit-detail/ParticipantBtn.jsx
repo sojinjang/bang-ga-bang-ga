@@ -31,7 +31,6 @@ const ParticipantBtn = ({
       };
       deleteData();
       setIsSignUp(false);
-      memberListData();
     } else {
       const postData = async () => {
         await api.post(ApiUrl.RECRUIT_INFO, { matchingPostsId: postId });
@@ -39,7 +38,6 @@ const ParticipantBtn = ({
       };
       postData();
       setIsSignUp(true);
-      memberListData();
     }
   };
 
@@ -48,7 +46,7 @@ const ParticipantBtn = ({
       {!isRecruitCompleted && participantNumber < totalParticipantNumber && (
         <button
           type='submit'
-          className='font-bold text-6xl font-bold text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] ml-[1100px] px-[30px] py-[10px] rounded-lg'
+          className='font-bold text-6xl font-bold text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] mt-[30px] ml-[1050px] px-[30px] pt-[15px] pb-[10px] rounded-lg'
           onClick={handleClick}>
           {isSignUp ? '신청 취소!' : '신청 하기!'}
         </button>

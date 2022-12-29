@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import * as api from '../../utils/api';
+import { useNavigate } from 'react-router-dom';
+import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 import Review from '../../modals/Review';
-import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
 const UserBanner = ({ matchingList }) => {
@@ -11,7 +11,7 @@ const UserBanner = ({ matchingList }) => {
   const navigate = useNavigate();
 
   const fetchReviewData = async () => {
-    const data = await api.get(ApiUrl.SHORT_EVALUATE_INFO);
+    const data = await get(ApiUrl.SHORT_EVALUATE_INFO);
     const validData = data.filter((v) => v.shortEvaluate !== null);
     setReviewData(validData.reverse());
   };
