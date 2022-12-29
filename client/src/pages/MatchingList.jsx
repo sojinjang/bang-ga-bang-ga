@@ -152,7 +152,7 @@ const MatchingList = () => {
                       prevPageText={'<'}
                       nextPageText={'>'}
                       hideDisabled={false}
-                      hideFirstLastPages={false}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
                       disabledClass={'cursor:not-allowed'}
                     />
@@ -218,7 +218,7 @@ const MatchingList = () => {
                       prevPageText={'<'}
                       nextPageText={'>'}
                       hideDisabled={false}
-                      hideFirstLastPages={false}
+                      hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
                   </div>
