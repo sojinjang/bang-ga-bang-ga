@@ -51,6 +51,10 @@ const RecuitPostContainer = ({ postData }) => {
   };
 
   const convertDate = () => {
+    if (matchingTime == null) {
+      return '';
+    }
+
     const stringifiedDate = matchingTime.toString();
     const result = [];
 
