@@ -42,17 +42,25 @@ const RecruitList = () => {
   useEffect(() => {
     if (currentRegion === '전체') {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS);
-        const asendedData = data.reverse();
+        try {
+          const data = await get(ApiUrl.MATCHING_POSTS);
+          const asendedData = data.reverse();
 
-        setFetchedData(asendedData);
+          setFetchedData(asendedData);
+        } catch (err) {
+          alert(err);
+        }
       })();
     } else {
       const fetchRecruitData = (async () => {
-        const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
-        const asendedData = data.reverse();
+        try {
+          const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
+          const asendedData = data.reverse();
 
-        setFetchedData(asendedData);
+          setFetchedData(asendedData);
+        } catch (err) {
+          alert(err);
+        }
       })();
     }
   }, [currentRegion]);
