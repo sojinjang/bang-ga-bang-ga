@@ -5,8 +5,10 @@ import tw from 'tailwind-styled-components';
 import { Link } from 'react-router-dom';
 import { deleteCookie } from '../../utils/cookie';
 import { MENUS } from '../../constants/dropdownMenus';
-
-export default function DropdownMenu({ imgUrl }) {
+import { useRecoilValue } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
+export default function DropdownMenu() {
+  const profileImg = useRecoilValue(profileImgAtom);
   const onLogout = () => {
     deleteCookie('token');
     deleteCookie('userId');
@@ -15,7 +17,7 @@ export default function DropdownMenu({ imgUrl }) {
   return (
     <Menu as='div' className='w-1/3 flex justify-end'>
       <Menu.Button className='w-20 h-20'>
-        <ProfileImg src={process.env.REACT_APP_SERVER_URL + imgUrl} alt='프로필 사진' />
+        <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='프로필 사진' />
       </Menu.Button>
       <Transition
         as={Fragment}

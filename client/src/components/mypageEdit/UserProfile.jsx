@@ -1,17 +1,21 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { profileImgAtom } from '../../recoil/register';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 const UserProfile = ({ setShowAddProfileIcon }) => {
-  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
+  const profileImg = useRecoilValue(profileImgAtom);
   return (
     <>
       <ProfileImgDiv>
         {profileImg && (
-          <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
+          <img
+            className='w-full h-full rounded-full'
+            src={process.env.REACT_APP_SERVER_URL + profileImg}
+            alt='uploaded image'
+          />
         )}
         <EditBtnDiv>
           <button onClick={() => setShowAddProfileIcon(true)}>

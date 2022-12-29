@@ -4,7 +4,8 @@ import tw from 'tailwind-styled-components';
 import { postImg, patch } from '../../utils/api';
 import { getCookieValue } from '../../utils/cookie';
 import { ApiUrl } from '../../constants/ApiUrl';
-
+import { useRecoilState } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
 const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   const userId = getCookieValue('userId');
 
@@ -22,13 +23,12 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
       background: '#D0DBF6',
     },
   };
-  const [imgUrl, setImgUrl] = useState('');
   const [tempProfileImg, setTempProfileImg] = useState(false);
+  const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
 
   const patchProfileUrl = async () => {
-    console.log(imgUrl);
     try {
-      await patch(ApiUrl.USER, userId, { profileImg: imgUrl });
+      await patch(ApiUrl.USER, userId, { profileImg });
     } catch (err) {
       alert(err);
     }
@@ -40,7 +40,7 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
     try {
       const response = await postImg(ApiUrl.UPLOAD_IMG, formData);
       alert('프로필 사진이 정상적으로 업로드되었습니다');
-      setImgUrl('/' + response.path);
+      setProfileImg('/' + response.path);
     } catch (err) {
       console.log(err);
     }
@@ -52,7 +52,7 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   };
   useEffect(() => {
     patchProfileUrl();
-  }, [imgUrl]);
+  }, [profileImg]);
 
   return (
     <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
