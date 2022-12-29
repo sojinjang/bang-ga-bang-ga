@@ -7,7 +7,6 @@ const Withdraw = ({ setShowWithdraw }) => {
   const [reason, setReason] = useState(null);
   const navigate = useNavigate();
   const onWithdraw = () => {
-    console.log(password, reason);
     const willWithdraw = confirm('정말 탈퇴를 진행하시겠습니까?');
     {
       willWithdraw ? (alert('탈퇴가 완료되었습니다'), navigate('/')) : alert('탈퇴가 취소되었습니다');

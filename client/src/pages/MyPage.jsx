@@ -29,12 +29,6 @@ const MyPage = () => {
   const recruitData = async () => {
     const data = await api.get(ApiUrl.RECRUIT_INFO);
     setMatchingList(data);
-    // try {
-    // } catch (err) {
-    //   console.error(err);
-    //   alert('로그인 후 이용해주세요22.');
-    //   navigate('/');
-    // }
   };
 
   useEffect(() => {

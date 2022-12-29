@@ -88,7 +88,6 @@ const MypageEdit = () => {
     }
     try {
       const response = await patch('/api/user', userId, userBasicData);
-      console.log(response);
       alert('기본정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);
@@ -97,12 +96,8 @@ const MypageEdit = () => {
   const editUserAddData = async () => {
     try {
       const response = await patch('/api/user', userId, userAddData);
-      console.log(response);
-      console.log(userAddData);
       alert('추가정보가 정상적으로 수정되었습니다');
     } catch (err) {
-      console.log(userAddData);
-
       alert(err);
     }
   };

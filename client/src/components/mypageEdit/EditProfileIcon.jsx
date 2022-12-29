@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import tw from 'tailwind-styled-components';
 import { postImg, patch } from '../../utils/api';
@@ -25,9 +25,9 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   const [tempProfileImg, setTempProfileImg] = useState(false);
 
   const patchProfileUrl = async () => {
+    console.log(imgUrl);
     try {
       await patch('/api/user', userId, { profileImg: imgUrl });
-      alert('프로필 사진이 정상적으로 업로드되었습니다');
     } catch (err) {
       alert(err);
     }
@@ -38,7 +38,8 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
     formData.append('imgFile', tempProfileImg);
     try {
       const response = await postImg('/api/img-upload', formData);
-      setImgUrl(response.path);
+      alert('프로필 사진이 정상적으로 업로드되었습니다');
+      setImgUrl('/' + response.path);
     } catch (err) {
       console.log(err);
     }
@@ -46,9 +47,12 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   const handleSubmit = async (e) => {
     await e.preventDefault();
     await uploadProfileImg();
-    await patchProfileUrl();
     await setShowAddProfileIcon(false);
   };
+  useEffect(() => {
+    patchProfileUrl();
+  }, [imgUrl]);
+
   return (
     <Modal style={modalStyle} isOpen={showAddProfileIcon} onRequestClose={() => setShowAddProfileIcon(false)}>
       <UploadProfile>프로필 사진을 업로드하세요</UploadProfile>
