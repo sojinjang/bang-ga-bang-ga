@@ -21,12 +21,12 @@ const UserProfileModalInner = () => {
   const escapeProgressWith = 360 * (escapeScore / 100);
 
   const USER_INFO = [
-    { name: '성별', value: gender === null && '없음' },
-    { name: '나이', value: age === null && '없음' },
-    { name: 'MBTI', value: mbti === null && '없음' },
-    { name: '선호 테마', value: preferenceTheme === null && '없음' },
-    { name: '비선호 테마', value: nonPreferenceTheme === null && '없음' },
-    { name: '선호 지역', value: preferenceLocation === null && '없음' },
+    { name: '성별', value: gender === null ? '없음' : gender },
+    { name: '나이', value: age === null ? '없음' : age },
+    { name: 'MBTI', value: mbti === null ? '없음' : mbti },
+    { name: '선호 테마', value: preferenceTheme === null ? '없음' : preferenceTheme },
+    { name: '비선호 테마', value: nonPreferenceTheme === null ? '없음' : nonPreferenceTheme },
+    { name: '선호 지역', value: preferenceLocation === null ? '없음' : preferenceLocation },
   ];
 
   return (

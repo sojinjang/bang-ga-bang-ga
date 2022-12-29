@@ -21,7 +21,7 @@ const UserProfileModal = () => {
   const { profileImg, role, nickName, matchingCount } = currentUserData;
 
   const fetchPostInfo = async () => {
-    const data = await get(ApiUrl.MATCHING_POST_INFO, currentPostId);
+    const data = await get(ApiUrl.RECRUIT_USER_INFO, currentPostId);
     setUsersData(data);
   };
 
@@ -40,22 +40,17 @@ const UserProfileModal = () => {
       <div className='text-center w-full'>
         <img
           className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
-          src={profileImg}
+          src={process.env.REACT_APP_SERVER_URL + profileImg}
           alt='프로필 사진'
         />
         <p className='mt-3'>{role}</p>
         <p className='text-[35px] font-semibold'>{nickName}</p>
       </div>
       <div className='h-[480px] ml-5 p-4'>
-        <div className=' bg-white bg-opacity-50 rounded-[15px] mb-[30px] flex items-center'>
-          <div className='flex flex-col p-3 w-full items-center'>
+        <div className=' bg-white bg-opacity-50 w-[300px] rounded-[15px] mb-[30px] mx-auto flex items-center'>
+          <div className='flex flex-col w-full p-3 items-center'>
             <p>매칭 횟수</p>
-            <p>{matchingCount}</p>
-          </div>
-          <div className='flex align-items h-[50px] border-solid border-l-[1px] border-black'></div>
-          <div className='flex flex-col p-3 w-full items-center'>
-            <p>받은 매너 평가</p>
-            <p>없음</p>
+            <p>{matchingCount}회</p>
           </div>
         </div>
         <UserProfileModalInner />

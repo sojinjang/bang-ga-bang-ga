@@ -5,6 +5,7 @@ import tw from 'tailwind-styled-components';
 import { useRecoilValue } from 'recoil';
 import { currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
 
+import { getCookieValue } from '../../utils/cookie';
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
@@ -21,6 +22,7 @@ const RecuitPostContainer = ({ postData }) => {
     cafeName,
     matchingPostsId,
     peopleNum,
+    matchingSituationUserSum,
     createdAt,
     themeName,
   } = postData;
@@ -34,11 +36,25 @@ const RecuitPostContainer = ({ postData }) => {
   }, [currentRegion, currentPage]);
 
   const moveToDetailPage = async (e) => {
-    await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
-    navigate(`/recruit-detail/${matchingPostsId}`);
+    const loginToken = getCookieValue('token');
+
+    if ((loginToken == '') | !loginToken) {
+      alert('로그인이 필요한 서비스입니다.');
+    } else {
+      try {
+        await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
+        navigate(`/recruit-detail/${matchingPostsId}`);
+      } catch (err) {
+        alert(err);
+      }
+    }
   };
 
   const convertDate = () => {
+    if (matchingTime == null) {
+      return '';
+    }
+
     const stringifiedDate = matchingTime.toString();
     const result = [];
 
@@ -85,7 +101,10 @@ const RecuitPostContainer = ({ postData }) => {
           id={matchingPostsId}>
           {title}
         </p>
-        <p className='text-blue-4 font-semibold'> (1/{peopleNum})</p>
+        <p className='text-blue-4 font-semibold'>
+          {' '}
+          ({matchingSituationUserSum}/{peopleNum})
+        </p>
       </div>
       <div className='flex flex-row'>
         <span className='mb-2'>{convertRemainDate()}</span>
