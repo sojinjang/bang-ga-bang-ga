@@ -1,5 +1,4 @@
 import React from 'react';
-import LevelImage from '../common/LevelImage';
 import tw from 'tailwind-styled-components';
 
 import level1 from '../../assets/images/icon/lv1.png';
