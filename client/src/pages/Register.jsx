@@ -95,7 +95,7 @@ const Register = () => {
 
 const InputBox = ({ inputData, setUserData }) => {
   return (
-    <div className='w-full h-[60px] mt-1'>
+    <div className='w-full h-[60px] mt-1 text-black'>
       <label className='mr-auto'>
         {inputData.name}
         <RegisterInput
