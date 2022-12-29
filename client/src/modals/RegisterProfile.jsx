@@ -17,11 +17,10 @@ const RegisterProfile = ({ userId }) => {
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
-  const [imgUrl, setImgUrl] = useState('');
 
   const patchProfileUrl = async () => {
     try {
-      await patch(ApiUrl.USER, userId, { profileImg: imgUrl });
+      await patch(ApiUrl.USER, userId, { profileImg: profileImg });
     } catch (err) {
       alert(err);
     }
@@ -32,7 +31,7 @@ const RegisterProfile = ({ userId }) => {
     formData.append('imgFile', tempProfileImg);
     try {
       const response = await postImg(ApiUrl.UPLOAD_IMG, formData);
-      setImgUrl('/' + response.path);
+      setProfileImg('/' + response.path);
     } catch (err) {
       console.log(err);
     }
@@ -40,12 +39,12 @@ const RegisterProfile = ({ userId }) => {
   const handleSubmit = async (e) => {
     await e.preventDefault();
     await uploadProfileImg();
+    // await patchProfileUrl();
     setShowAddProfileIcon(false);
   };
   useEffect(() => {
     patchProfileUrl();
-  }, [imgUrl]);
-
+  }, [profileImg]);
   const navigate = useNavigate();
   const onCancelBtn = () => {
     const later = confirm('추가정보를 입력하지 않고 가입을 완료하시겠습니까?');
@@ -92,7 +91,7 @@ const RegisterProfile = ({ userId }) => {
           {profileImg && (
             <img
               className='w-full h-full rounded-full'
-              src={URL.createObjectURL(tempProfileImg)}
+              src={process.env.REACT_APP_SERVER_URL + profileImg}
               alt='uploaded image'
             />
           )}
