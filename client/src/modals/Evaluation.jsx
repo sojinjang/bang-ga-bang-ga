@@ -32,7 +32,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
         });
       });
       setEvalRes(team);
-      console.log(team);
     } catch (err) {
       console.log(err);
     }
@@ -60,7 +59,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
   const postEvaluation = async () => {
     try {
       const res = await post('/api/evaluate', evalRes);
-      console.log(res);
     } catch (err) {
       console.log(err);
     }
@@ -115,7 +113,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 evalRes[userIndex] = { ...evalRes[userIndex], mannerEvaluate };
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}
@@ -145,7 +142,6 @@ const Evaluation = ({ selectedList, setVisible }) => {
                                     : (evalRes[userIndex] = { ...evalRes[userIndex], escapeEvaluate });
                                 }
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}

@@ -29,7 +29,6 @@ const Navigators = () => {
       setMyManner(mannerScore);
       setMyTier(escapeScore);
       setImgUrl(profileImg);
-      console.log(profileImg);
     } catch (err) {
       console.log(err);
     }

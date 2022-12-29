@@ -40,7 +40,6 @@ const Register = () => {
 
   const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
-    console.log(userData);
     if (!validator.isName(userData.userName)) {
       setError('이름은 2~4글자의 한글로 작성해주세요');
       return;

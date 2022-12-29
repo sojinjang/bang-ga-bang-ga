@@ -15,10 +15,7 @@ export default function DropdownMenu({ imgUrl }) {
   return (
     <Menu as='div' className='w-1/3 flex justify-end'>
       <Menu.Button className='w-20 h-20'>
-        <ProfileImg
-          src={`http://localhost:5001/server/bangabanga/server/uploads/1672118463447-test.png`}
-          alt='프로필 사진'
-        />
+        <ProfileImg src={process.env.REACT_APP_SERVER_URL + imgUrl} alt='프로필 사진' />
       </Menu.Button>
       <Transition
         as={Fragment}

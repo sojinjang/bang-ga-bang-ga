@@ -32,7 +32,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
     formData.append('imgFile', tempProfileImg);
     try {
       const response = await postImg('/api/img-upload', formData);
-      console.log(response.path);
       setImgUrl(response.path);
     } catch (err) {
       console.log(err);
@@ -57,7 +56,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
   const addUserAddInfo = async () => {
     try {
       const res = await patch('/api/user', userId, { ...userAddInfo, checkPassword: userPWD });
-      console.log(res);
       alert('추가정보가 정상적으로 입력되었습니다');
       navigate('/');
     } catch (err) {
@@ -66,7 +64,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
   };
 
   const onSubmitAddData = async () => {
-    console.log(userAddInfo);
     setShowRegisterProfile(false);
     addUserAddInfo();
   };
@@ -95,7 +92,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
           )}
         </div>
         <div className='absolute w-10 h-10  top-0 left-[90%]'>
-          <button onClick={() => (setShowAddProfileIcon(true), console.log('clicked'))}>
+          <button onClick={() => setShowAddProfileIcon(true)}>
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
