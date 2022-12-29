@@ -128,9 +128,8 @@ const RecruitList = () => {
             </button>
           </div>
           <ListItemContainer>
-            {currentPageData.map((post, index) => (
-              <RecuitPostContainer postData={post} key={index} />
-            ))}
+            {currentPageData &&
+              currentPageData.map((post, index) => <RecuitPostContainer postData={post} key={index} />)}
             {showUserProfileModal && <UserProfileModal />}
             {showRecruitPost && <PostModal />}
           </ListItemContainer>
