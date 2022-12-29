@@ -13,9 +13,6 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
 
   const handleKickOut = (participant) => {
     const userId = participant.userId;
-    // 참가 취소
-
-    // if (participant[0].matchStatus)
     deleteData(userId);
   };
 
@@ -23,15 +20,17 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
     <>
       {participantList.map((participant) => (
         <Container key={participant.nickName}>
-          <Count>
-            <img src={detective} alt='탐정 이모지' className='w-[20px] h-[23px] inline-block pt-[3px]' />
-            <span className='pl-[3px] font-semibold mb-[10px]'>{participant.count}</span>
-          </Count>
-          {!isRecruitCompleted && isLeader && (
-            <button onClick={() => handleKickOut(participant)}>
-              <img className='w-5 h-5' src={closeBtn} alt='삭제 버튼' />
-            </button>
-          )}
+          <div className='flex justify-between mx-[10px] mt-[5px]'>
+            <div className='text-lg flex mt-[5px]'>
+              <img src={detective} alt='탐정 이모지' className='w-[25px] h-[28px] inline-block pt-[3px]' />
+              <span className='pl-[3px] font-semibold mt-[5px]'>{participant.matchingCount}</span>
+            </div>
+            {!isRecruitCompleted && isLeader && (
+              <button onClick={() => handleKickOut(participant)}>
+                <img className='w-5 h-5' src={closeBtn} alt='삭제 버튼' />
+              </button>
+            )}
+          </div>
           <ProfileImg src={detective} alt='프로필 이미지' />
           <NickName>{participant.nickName}</NickName>
           <div className='flex justify-between mx-[40px]'>
@@ -72,13 +71,6 @@ const ProfileImg = tw.img`
   object-cover
   shadow-lg
   mx-auto
-`;
-
-const Count = tw.span`
-  text-lg
-  flex
-  ml-[10px]
-  mt-[5px]
 `;
 
 const NickName = tw.div`

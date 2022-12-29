@@ -6,11 +6,10 @@ import tw from 'tailwind-styled-components';
 const Leader = ({ leaderList }) => {
   return (
     <Container>
-      <Count>
-        <img src={detective} alt='탐정 이모지' className='w-[20px] h-[23px] inline-block pt-[3px]' />
-        <span className='pl-[3px] font-semibold mb-[30px]'>{30}</span>
-        {/* <span className='pl-[3px] font-semibold mb-[30px]'>{leaderList.matchingCount}</span> */}
-      </Count>
+      <div className='flex mx-[10px] mt-[13px] text-lg flex mt-[5px]'>
+        <img src={detective} alt='탐정 이모지' className='w-[25px] h-[28px] inline-block pt-[3px]' />
+        <span className='pl-[3px] font-semibold mt-[3px]'>{leaderList.matchingCount}</span>
+      </div>
       <div className='relative w-[210px] h-[210px] mx-auto'>
         <LeaderProfileImg src={crown} alt='프로필 사진' />
         <Crown src={crown} alt='왕관 이모지' />
@@ -69,13 +68,6 @@ const Container = tw.div`
   to-[#ffe696]
 
   text-center
-`;
-
-const Count = tw.span`
-  text-lg
-  flex
-  ml-[10px]
-  mt-[8px]
 `;
 
 const NickName = tw.div`

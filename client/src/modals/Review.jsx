@@ -3,6 +3,7 @@ import closeBtn from '../assets/images/icon/close.png';
 import Profile from '../components/common/Profile';
 
 const Review = ({ setVisible, reviewData }) => {
+  console.log(reviewData);
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
       <div className='h-[600px] bg-white rounded-2xl w-10/12 md:w-1/3 overflow-auto p-[20px]'>
@@ -23,7 +24,7 @@ const Review = ({ setVisible, reviewData }) => {
                     <div className='text-xl bg-amber-200 bg-opacity-70'>{review.shortEvaluate}</div>
                   </div>
                 </div>
-                <div>{review.date}</div>
+                <div>{review.createdAt.slice(0, 10).replaceAll('-', '.')}</div>
               </section>
             </div>
           ))}
