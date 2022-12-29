@@ -40,7 +40,7 @@ const UserProfileModal = () => {
   }, [usersData]);
 
   return (
-    <div className='flex p-12 w-[750px] h-[600px] absolute bg-slate-100 rounded-2xl top-[13%] left-[50%] translate-x-[-50%] translate-y-[-30%]'>
+    <div className='flex p-12 w-[750px] h-[600px] absolute bg-slate-100 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%]'>
       <div className='text-center w-full'>
         <img
           className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
