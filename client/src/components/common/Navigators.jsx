@@ -18,13 +18,15 @@ import mn2 from '../../assets/images/icon/manner2.png';
 import mn3 from '../../assets/images/icon/manner3.png';
 import mn4 from '../../assets/images/icon/manner4.png';
 import mn5 from '../../assets/images/icon/manner5.png';
+import { ApiUrl } from '../../constants/ApiUrl';
+
 const Navigators = () => {
   const [myManner, setMyManner] = useState(null);
   const [myTier, setMyTier] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const getUserInfo = async () => {
     try {
-      const res = await get('/api/user');
+      const res = await get(ApiUrl.USER);
       const { mannerScore, tier, escapeScore, profileImg } = res;
       setMyManner(mannerScore);
       setMyTier(escapeScore);
@@ -61,7 +63,7 @@ const Navigators = () => {
           </MyStat>
           <MyStat myStat={myManner}>
             <span className='absolute w-12 h-12 left-[-18px] top-[-8px]'>
-              <img src={myMannerImg(myManner)} className='w-full h-full' alt='' />
+              <img src={!myManner ? mn3 : myMannerImg(myManner)} className='w-full h-full' alt='' />
             </span>
           </MyStat>
           <DropdownMenu imgUrl={imgUrl} />
