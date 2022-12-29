@@ -51,15 +51,10 @@ const UserProfileModal = () => {
         <p className='text-[35px] font-semibold'>{nickName}</p>
       </div>
       <div className='h-[480px] ml-5 p-4'>
-        <div className=' bg-white bg-opacity-50 rounded-[15px] mb-[30px] flex items-center'>
-          <div className='flex flex-col p-3 w-full items-center'>
+        <div className=' bg-white bg-opacity-50 w-[300px] rounded-[15px] mb-[30px] mx-auto flex items-center'>
+          <div className='flex flex-col w-full p-3 items-center'>
             <p>매칭 횟수</p>
-            <p>{matchingCount}</p>
-          </div>
-          <div className='flex align-items h-[50px] border-solid border-l-[1px] border-black'></div>
-          <div className='flex flex-col p-3 w-full items-center'>
-            <p>받은 매너 평가</p>
-            <p>없음</p>
+            <p>{matchingCount}회</p>
           </div>
         </div>
         <UserProfileModalInner />
