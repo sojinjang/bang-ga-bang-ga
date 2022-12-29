@@ -151,7 +151,9 @@ const RecuitPostContainer = ({ postData }) => {
           팀원보기
         </button>
         {showTeamModal && (
-          <div className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+          <div
+            onMouseLeave={() => setShowTeamModal(false)}
+            className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
             <svg
               onClick={() => setShowTeamModal(false)}
               className='absolute right-2 top-2 cursor-pointer'
