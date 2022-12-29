@@ -21,8 +21,12 @@ const UserProfileModal = () => {
   const { profileImg, role, nickName, matchingCount } = currentUserData;
 
   const fetchPostInfo = async () => {
-    const data = await get(ApiUrl.RECRUIT_USER_INFO, currentPostId);
-    setUsersData(data);
+    try {
+      const data = await get(ApiUrl.RECRUIT_USER_INFO, currentPostId);
+      setUsersData(data);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   useEffect(() => {
