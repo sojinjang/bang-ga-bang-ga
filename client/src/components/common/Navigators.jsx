@@ -105,7 +105,7 @@ const NavMenu = () => {
 };
 
 const NavContainer = tw.div`
-  flex w-full h-[12vh] z-20
+  flex w-full h-[12vh]
 `;
 
 const NavbarBg = tw.div`

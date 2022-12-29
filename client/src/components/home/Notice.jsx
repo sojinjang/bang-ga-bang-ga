@@ -44,9 +44,9 @@ const NoticeDiv = tw.div`
 `;
 
 const NoticeCard = tw.div`
-  rounded-[10px]
-  bg-gray-300
-  border 
+  rounded-[20px]
+  bg-[#62BFDB]
+  border-[10px] 
   w-[230px] 
   h-[400px] 
   p-10 

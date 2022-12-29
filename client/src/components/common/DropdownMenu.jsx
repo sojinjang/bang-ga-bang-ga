@@ -25,7 +25,7 @@ export default function DropdownMenu({ imgUrl }) {
         leave='transition ease-in duration-75'
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'>
-        <Menu.Items className='absolute right-0 w-29 mt-20  origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='z-20 absolute right-0 w-29 mt-20  origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
           <div className='py-1'>
             {MENUS.map((menu) => (
               <Menu.Item key={menu.name}>
