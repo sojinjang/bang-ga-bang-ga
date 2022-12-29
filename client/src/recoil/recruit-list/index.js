@@ -1,7 +1,6 @@
 export {
   showRecruitPostAtom,
   showRecruitModalPageAtom,
-  screenLevelAtom,
   showUserProfileModalAtom,
   currentPageAtom,
   maxPageNumAtom,

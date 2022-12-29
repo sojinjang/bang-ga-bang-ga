@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { screenLevelAtom, currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
+import { useRecoilValue } from 'recoil';
+import { currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -25,7 +25,6 @@ const RecuitPostContainer = ({ postData }) => {
     themeName,
   } = postData;
 
-  const [screenLevel, setScreenLevel] = useRecoilState(screenLevelAtom);
   const currentRegion = useRecoilValue(currentRegionAtom);
   const currentPage = useRecoilValue(currentPageAtom);
   const [showTeamModal, setShowTeamModal] = useState(false);
@@ -74,23 +73,10 @@ const RecuitPostContainer = ({ postData }) => {
     }
   };
 
-  const handleResize = () => {
-    window.innerHeight < 985 ? setScreenLevel(2) : setScreenLevel(1);
-  };
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <div
-      className={`${screenLevel === 1 ? 'h-[340px]' : 'h-[260px]'}
-      w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
-  bg-gray-400 text-white`}>
+      className='h-[260px] w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
+  bg-gray-400 text-white'>
       <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
       <div className='flex w-[240px] mt-5'>
         <p
@@ -139,45 +125,41 @@ const RecuitPostContainer = ({ postData }) => {
         <p className='mt-2 mb-1'>{convertDate()}</p>
       </div>
 
-      {screenLevel === 1 ? (
-        <UserProfileContainer postId={matchingPostsId} />
-      ) : (
-        <div className='flex mt-7 justify-end gap-3 relative'>
-          <button
-            onClick={() => {
-              setShowTeamModal(!showTeamModal);
-            }}
-            className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
-            팀원보기
-          </button>
-          {showTeamModal && (
-            <div className='w-[285px] h-[265px] -right-[26px] -bottom-3 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
-              <svg
-                onClick={() => setShowTeamModal(false)}
-                className='absolute right-2 top-2 cursor-pointer'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'>
-                <g clipPath='url(#clip0_16_1336)'>
-                  <path
-                    d='M11.9997 10.586L16.9497 5.63599L18.3637 7.04999L13.4137 12L18.3637 16.95L16.9497 18.364L11.9997 13.414L7.04974 18.364L5.63574 16.95L10.5857 12L5.63574 7.04999L7.04974 5.63599L11.9997 10.586Z'
-                    fill='black'
-                  />
-                </g>
-                <defs>
-                  <clipPath id='clip0_16_1336'>
-                    <rect width='24' height='24' fill='white' />
-                  </clipPath>
-                </defs>
-              </svg>
+      <div className='flex mt-7 justify-end gap-3 relative'>
+        <button
+          onClick={() => {
+            setShowTeamModal(!showTeamModal);
+          }}
+          className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
+          팀원보기
+        </button>
+        {showTeamModal && (
+          <div className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+            <svg
+              onClick={() => setShowTeamModal(false)}
+              className='absolute right-2 top-2 cursor-pointer'
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'>
+              <g clipPath='url(#clip0_16_1336)'>
+                <path
+                  d='M11.9997 10.586L16.9497 5.63599L18.3637 7.04999L13.4137 12L18.3637 16.95L16.9497 18.364L11.9997 13.414L7.04974 18.364L5.63574 16.95L10.5857 12L5.63574 7.04999L7.04974 5.63599L11.9997 10.586Z'
+                  fill='black'
+                />
+              </g>
+              <defs>
+                <clipPath id='clip0_16_1336'>
+                  <rect width='24' height='24' fill='white' />
+                </clipPath>
+              </defs>
+            </svg>
 
-              <UserProfileContainer postId={matchingPostsId} />
-            </div>
-          )}
-        </div>
-      )}
+            <UserProfileContainer postId={matchingPostsId} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
