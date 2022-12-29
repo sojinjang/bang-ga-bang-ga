@@ -38,7 +38,7 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
     const formData = new FormData();
     formData.append('imgFile', tempProfileImg);
     try {
-      const response = await postImg('/api/img-upload', formData);
+      const response = await postImg(ApiUrl.UPLOAD_IMG, formData);
       alert('프로필 사진이 정상적으로 업로드되었습니다');
       setImgUrl('/' + response.path);
     } catch (err) {

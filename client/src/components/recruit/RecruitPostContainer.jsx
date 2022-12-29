@@ -101,7 +101,9 @@ const RecuitPostContainer = ({ postData }) => {
           id={matchingPostsId}>
           {title}
         </p>
-        <p className='text-blue-300 font-semibold'> (1/{peopleNum})</p>
+        <p className='text-blue-300 font-semibold'>
+          ({matchingSituationUserSum}/{peopleNum})
+        </p>
       </div>
       <div className='flex flex-row'>
         <span className='mb-2'>{convertRemainDate()}</span>
