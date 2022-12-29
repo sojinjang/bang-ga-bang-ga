@@ -12,9 +12,7 @@ const UserBanner = ({ matchingList }) => {
 
   const fetchReviewData = async () => {
     const data = await api.get(ApiUrl.SHORT_EVALUATE_INFO);
-    const validData = data.filter((v) => v.shortEvaluate !== null);
-    console.log('validData', validData);
-    setReviewData(validData.reverse());
+    setReviewData(data.reverse());
   };
 
   useEffect(() => {

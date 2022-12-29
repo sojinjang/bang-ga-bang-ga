@@ -27,8 +27,14 @@ const MyPage = () => {
 
   // 참가한 모집글 정보
   const recruitData = async () => {
-    const data = await api.get(ApiUrl.RECRUIT_INFO);
-    setMatchingList(data);
+    try {
+      const data = await api.get(ApiUrl.RECRUIT_INFO);
+      setMatchingList(data);
+    } catch (err) {
+      console.error(err);
+      alert('로그인 후 이용해주세요.');
+      navigate('/');
+    }
   };
 
   useEffect(() => {

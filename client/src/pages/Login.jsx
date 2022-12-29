@@ -27,8 +27,6 @@ const Login = () => {
     try {
       const response = await post('/api/user/login', { email, password });
       const accessToken = response.accessToken;
-      console.log(accessToken);
-      console.log('accessToken');
       const userId = jwt_decode(accessToken).userId;
       setCookie(Keys.LOGIN_TOKEN, accessToken);
       setCookie(Keys.USER_ID, userId);
