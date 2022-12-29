@@ -39,7 +39,7 @@ const UserProfileContainer = ({ postId }) => {
                   setShowUserProfileModal(!showUserProfileModal);
                 }}
                 className='mx-auto w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-                src={user['profileImg']}
+                src={process.env.REACT_APP_SERVER_URL + user['profileImg']}
                 alt='유저 프로필'
               />
               <span className='text-black text-xs'>{user['nickName']}</span>

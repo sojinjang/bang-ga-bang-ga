@@ -44,7 +44,7 @@ const UserProfileModal = () => {
       <div className='text-center w-full'>
         <img
           className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
-          src={profileImg}
+          src={process.env.REACT_APP_SERVER_URL + profileImg}
           alt='프로필 사진'
         />
         <p className='mt-3'>{role}</p>
