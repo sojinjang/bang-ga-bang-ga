@@ -69,7 +69,7 @@ const Home = () => {
   };
 
   return (
-    <BackgroundScroll img={'bg1'}>
+    <BackgroundScroll img={'bg1-long'}>
       <HomeFirstPage>
         <Navigators />
         <MatchingBtnContainer>
