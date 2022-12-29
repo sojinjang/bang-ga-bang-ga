@@ -78,7 +78,7 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
             {evalRes.map(({ nickName, profileImg }) => (
               <div key={nickName} className='flex justify-between mb-[15px]'>
                 <div className='w-[100px]'>
-                  <ProfileImg src={profileImg} alt='팀원 프로필 사진' />
+                  <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='팀원 프로필 사진' />
                   <div className='text-lg text-center'>{nickName}</div>
                 </div>
                 <div className='flex flex-col'>
