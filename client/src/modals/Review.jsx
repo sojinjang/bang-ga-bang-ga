@@ -3,7 +3,6 @@ import closeBtn from '../assets/images/icon/close.png';
 import Profile from '../components/common/Profile';
 
 const Review = ({ setVisible, reviewData }) => {
-  console.log(reviewData);
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
       <div className='h-[600px] bg-white rounded-2xl w-10/12 md:w-1/3 overflow-auto p-[20px]'>
@@ -20,7 +19,7 @@ const Review = ({ setVisible, reviewData }) => {
                 <div className='flex'>
                   <Profile img={review.profile_image} size={80} />
                   <div className='mt-[5px] ml-[10px]'>
-                    <span className='text-lg'>{review.nick_name}</span>
+                    <span className='text-lg'>{review.nickName}</span>
                     <div className='text-xl bg-amber-200 bg-opacity-70'>{review.shortEvaluate}</div>
                   </div>
                 </div>
