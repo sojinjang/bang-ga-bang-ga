@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import tw from 'tailwind-styled-components';
 import { postImg, patch } from '../../utils/api';
 import { getCookieValue } from '../../utils/cookie';
+import { ApiUrl } from '../../constants/ApiUrl';
 
 const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   const userId = getCookieValue('userId');
@@ -27,7 +28,7 @@ const EditProfileIcon = ({ showAddProfileIcon, setShowAddProfileIcon }) => {
   const patchProfileUrl = async () => {
     console.log(imgUrl);
     try {
-      await patch('/api/user', userId, { profileImg: imgUrl });
+      await patch(ApiUrl.USER, userId, { profileImg: imgUrl });
     } catch (err) {
       alert(err);
     }

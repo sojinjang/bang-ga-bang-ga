@@ -9,6 +9,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
 import { patch, postImg } from '../utils/api';
 import { REGISTER_USER_ADD_DATA } from '../constants/registerUserAddData';
+import { ApiUrl } from '../constants/ApiUrl';
 
 const RegisterProfile = ({ userId, userPWD }) => {
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
@@ -20,7 +21,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
 
   const patchProfileUrl = async () => {
     try {
-      await patch('/api/user', userId, { profileImg: imgUrl });
+      await patch(ApiUrl.USER, userId, { profileImg: imgUrl });
       alert('프로필 사진이 정상적으로 업로드되었습니다');
     } catch (err) {
       alert(err);
@@ -31,7 +32,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
     const formData = new FormData();
     formData.append('imgFile', tempProfileImg);
     try {
-      const response = await postImg('/api/img-upload', formData);
+      const response = await postImg(ApiUrl.UPLOAD_IMG, formData);
       setImgUrl(response.path);
     } catch (err) {
       console.log(err);
@@ -55,7 +56,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
   };
   const addUserAddInfo = async () => {
     try {
-      const res = await patch('/api/user', userId, { ...userAddInfo, checkPassword: userPWD });
+      const res = await patch(ApiUrl.USER, userId, { ...userAddInfo, checkPassword: userPWD });
       alert('추가정보가 정상적으로 입력되었습니다');
       navigate('/');
     } catch (err) {
