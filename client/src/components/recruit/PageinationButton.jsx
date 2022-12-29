@@ -9,7 +9,10 @@ const PaginationButton = () => {
   return (
     <div className='flex justify-center mt-4'>
       <button
-        className='w-[30px] h-[30px] text-sm mx-1 text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'
+        className={
+          'w-[30px] h-[30px] text-sm mx-1 text-white border-solid border-[0.5px] rounded border-white ' +
+          (currentPage === 0 ? 'bg-gray-400' : 'bg-blue-1')
+        }
         onClick={() => {
           currentPage > 0 && setCurrentPage(currentPage - 1);
         }}>
@@ -26,11 +29,23 @@ const PaginationButton = () => {
           />
         </svg>
       </button>
+      <button
+        className={
+          'w-[30px] h-[30px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'
+        }>
+        {0 < currentPage && currentPage}
+      </button>
       <button className='w-[30px] h-[30px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
         {currentPage + 1}
       </button>
+      <button className='w-[30px] h-[30px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white'>
+        {currentPage + 1 > maxPageNum || currentPage + 2}
+      </button>
       <button
-        className=' w-[30px] h-[30px] text-sm mx-1 text-white bg-gray-400 border-solid border-[0.5px] rounded border-white'
+        className={
+          'w-[30px] h-[30px] text-sm mx-1 text-white bg-gray-400 border-solid border-[0.5px] rounded border-white ' +
+          (currentPage + 1 > maxPageNum ? 'bg-gray-400' : 'bg-blue-1')
+        }
         onClick={() => {
           currentPage < maxPageNum && setCurrentPage(currentPage + 1);
         }}>
