@@ -4,7 +4,7 @@ import Profile from '../components/common/Profile';
 
 const Review = ({ setVisible, userData }) => {
   return (
-    <div className='flex p-12 w-[720px] h-[600px] absolute bg-slate-300 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%] z-10'>
+    <div className='flex p-12 w-[760px] h-[600px] absolute bg-slate-300 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%] z-10'>
       <div className='text-center w-full'>
         <Profile img={process.env.REACT_APP_SERVER_URL + userData.profileImg} size={250} />
         <p className='text-[35px] font-semibold mt-[10px]'>{userData.nickName}</p>
