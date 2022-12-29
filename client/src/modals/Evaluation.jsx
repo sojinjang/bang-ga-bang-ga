@@ -1,10 +1,4 @@
-import React, { useState } from 'react';
-import teamMember1 from '../assets/images/user-profile/동하.png';
-import teamMember2 from '../assets/images/user-profile/동현.jpg';
-import teamMember3 from '../assets/images/user-profile/선아.png';
-import teamMember4 from '../assets/images/user-profile/소진.jpg';
-import teamMember5 from '../assets/images/user-profile/승빈.png';
-import teamMember6 from '../assets/images/user-profile/재웅.png';
+import React from 'react';
 import closeBtn from '../assets/images/icon/close.png';
 import fullHeart from '../assets/images/icon/full-heart.png';
 import emptyHeart from '../assets/images/icon/empty-heart.png';
@@ -14,20 +8,20 @@ import tw from 'tailwind-styled-components';
 import { useImmer } from 'use-immer';
 import { get, post } from '../utils/api';
 import { useEffect } from 'react';
+import { ApiUrl } from '../constants/ApiUrl';
 
-const Evaluation = ({ selectedList, setVisible }) => {
-  const matchingPostId = selectedList.matchingPostsId;
+const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
+  const matchingPostsId = selectedList.matchingPostsId;
   const userId = selectedList.userId;
   const [evalRes, setEvalRes] = useImmer([]);
   const getMembers = async () => {
     try {
-      const res = await get(`/api/matching-situation/myteam/${matchingPostId}`);
+      const res = await get(ApiUrl.RECRUIT_TEAM_INFO, matchingPostsId);
       const team = [];
       res.map((member) => {
         team.push({
           nickName: member['nickName'],
           evaluateTargetId: member['userId'],
-          // profileImg: member['profileImg'],
           evaluatorId: userId,
         });
       });
@@ -40,25 +34,17 @@ const Evaluation = ({ selectedList, setVisible }) => {
     getMembers();
   }, []);
 
-  const mockMembers = [
-    { nickName: '서나서나', evaluateTargetId: 13, profileImg: null },
-    { nickName: '보라돌이', evaluateTargetId: 8, profileImg: null },
-  ];
+  const isEvaluate = async () => {
+    try {
+      await post(ApiUrl.RECRUIT_IS_EVALUATE, { matchingPostsId: selectedList.matchingPostsId });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  const TEAM_MEMBERS = [
-    { nick_name: '프로 탈옥수', profile_image: teamMember1 },
-    { nick_name: '햄토리', profile_image: teamMember2 },
-    { nick_name: '비둘기', profile_image: teamMember3 },
-    { nick_name: '다람쥐', profile_image: teamMember4 },
-    { nick_name: '몬스터', profile_image: teamMember5 },
-    { nick_name: '김승빈', profile_image: teamMember6 },
-  ];
-
-  const date = selectedList.date;
-  // const [YEAR, MONTH, DATE] = date.split('.');
   const postEvaluation = async () => {
     try {
-      const res = await post('/api/evaluate', evalRes);
+      const res = await post(ApiUrl.TEAM_EVALUATE, evalRes);
     } catch (err) {
       console.log(err);
     }
@@ -67,9 +53,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
   const submitEvaluation = (e) => {
     e.preventDefault();
     const finish = confirm('평가를 완료하시겠습니까? 제출된 평가는 다시 수정할 수 없습니다');
-    postEvaluation();
-    {
-      finish && (alert('평가가 완료되었습니다'), setVisible(false));
+
+    if (finish) {
+      alert('평가가 완료되었습니다');
+      setVisible(false);
+      postEvaluation();
+      isEvaluate();
+      getRecruitedData();
     }
   };
 
