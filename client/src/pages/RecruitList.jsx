@@ -123,7 +123,7 @@ const RecruitList = () => {
               onClick={() => {
                 loginToken ? setShowRecruitPost(true) : alert('로그인이 필요합니다.');
               }}
-              className='h-10 border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
+              className='h-10 border-solid rounded-md border-[1px] p-1.5 border-gray-500 bg-white'>
               글쓰기
             </button>
           </div>
