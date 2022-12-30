@@ -20,8 +20,6 @@ import Navigators from '../components/common/Navigators';
 import Background from '../components/common/Background';
 import { ApiUrl } from '../constants/ApiUrl';
 
-document.title = '방가방가 모집글 리스트';
-
 const RecruitList = () => {
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
