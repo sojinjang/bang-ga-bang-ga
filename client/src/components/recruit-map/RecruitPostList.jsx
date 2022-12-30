@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
+import { useRecoilValue } from 'recoil';
+import { regionAtom, targetCafeAtom, scopeAtom, cafeInfoAtom } from '../../recoil/recruit-map';
 
 import { ApiUrl } from '../../constants/ApiUrl';
 import * as api from '../../utils/api';
+import { useDidMountEffect } from '../../utils/hooks';
 import RecuitPostContainer from '../recruit/RecruitPostContainer';
 
 async function getRecruitingInfo(cafeId) {
@@ -15,59 +16,80 @@ async function getRecruitingInfo(cafeId) {
   }
 }
 
-// 지도 범위 내의 마커 게시물만 띄우기
-// 1. 지도 이동시 scope state 변경 (recoil)
-// 2. 지역 변경시 cafesWithinScope에 해당 지역 마커 정보들 담기 (recoil)
-// 3. scope 변경시마다 cafesWithinScope에 담긴 마커들 중
-// scope 안에 들어오는 애들만 setCafesWithinScope (cafesWithinScope를 필터링)
-// 4. draw cafesWithinScope
+const isCafeWithinScope = (scope, lat, lng) => {
+  const isLatWithinScope = scope.swLatLng.lat < lat && scope.neLatLng.lat > lat;
+  const isLngWithinScope = scope.swLatLng.lng < lng && scope.neLatLng.lng > lng;
+  return isLatWithinScope && isLngWithinScope;
+};
 
 export default function RecruitPostList() {
+  const region = useRecoilValue(regionAtom);
   const targetCafe = useRecoilValue(targetCafeAtom);
   const scope = useRecoilValue(scopeAtom);
-  const [cafesWithinScope, setcafesWithinScope] = useRecoilState(cafesWithinScopeAtom);
+  const cafeInfo = useRecoilValue(cafeInfoAtom);
+  const [cafesWithinScope, setCafesWithinScope] = useState([]);
   const [recruitingInfo, setRecruitingInfo] = useState({});
-  const addRecruitingData = async (cafeId) => {
-    const cafeRecruitingArr = await getRecruitingInfo(cafeId);
-    setRecruitingInfo({ ...recruitingInfo, [cafeId]: cafeRecruitingArr });
-  };
 
   const filterCafesWithinScope = () => {
-    if (!scope.length) return;
-    // scope 안에 들어오는 애들만 setCafesWithinScope (cafesWithinScope를 필터링)
+    const cafesWithinScopeArr = [];
+    cafeInfo[region].forEach((cafe) => {
+      if (isCafeWithinScope(scope, cafe.lat, cafe.lng)) {
+        cafesWithinScopeArr.push(cafe.cafeId);
+      }
+    });
+    setCafesWithinScope(cafesWithinScopeArr);
+  };
+
+  const addRegionCafePost = async () => {
+    const recruitDataObj = {};
+    for await (const cafe of cafeInfo[region]) {
+      recruitDataObj[cafe.cafeId] = await getRecruitingInfo(cafe.cafeId);
+    }
+    setRecruitingInfo({ ...recruitingInfo, ...recruitDataObj });
+  };
+
+  const handleScopeChange = () => {
+    if (cafeInfo[region]) filterCafesWithinScope();
   };
 
   useEffect(() => {
-    filterCafesWithinScope();
-  }, [scope]);
+    setCafesWithinScope([]);
+  }, [region]);
+  useDidMountEffect(addRegionCafePost, [cafeInfo]);
+  useDidMountEffect(handleScopeChange, [scope]);
 
-  const CafeDescription = () => {
+  const CafeDescription = ({ cafeId }) => {
     return (
-      recruitingInfo[targetCafe] && (
+      recruitingInfo[cafeId] && (
         <div className='my-3'>
           <div className='text-lg font-semibold text-blue-4'>
-            {recruitingInfo[targetCafe]['recruitingInfo'].length}팀 모집중
+            {recruitingInfo[cafeId]['recruitingInfo'].length}팀 모집중
           </div>
-          <div className='text-xl font-medium'>{recruitingInfo[targetCafe]['cafeInfo'].cafeName}</div>
-          <div>{recruitingInfo[targetCafe]['cafeInfo'].address}</div>
+          <div className='text-xl font-medium'>{recruitingInfo[cafeId]['cafeInfo'].cafeName}</div>
+          <div>{recruitingInfo[cafeId]['cafeInfo'].address}</div>
         </div>
       )
     );
   };
 
-  if (targetCafe && !recruitingInfo[targetCafe]) addRecruitingData(targetCafe);
-
-  const TargetCafeDescription = () => {
+  const SingleCafePostList = ({ cafeId }) => {
     return (
       <div>
-        <CafeDescription />
-        {recruitingInfo[targetCafe] &&
-          recruitingInfo[targetCafe]['recruitingInfo'].map((recruitPost) => (
+        <CafeDescription cafeId={cafeId} />
+        {recruitingInfo[cafeId] &&
+          recruitingInfo[cafeId]['recruitingInfo'].map((recruitPost) => (
             <RecuitPostContainer key={recruitPost.matchingPostsId} postData={recruitPost} />
           ))}
       </div>
     );
   };
 
-  return <TargetCafeDescription></TargetCafeDescription>;
+  if (targetCafe) return <SingleCafePostList cafeId={targetCafe}></SingleCafePostList>;
+  return (
+    <div>
+      {cafesWithinScope.map((cafeId) => {
+        return <SingleCafePostList cafeId={cafeId} key={cafeId}></SingleCafePostList>;
+      })}
+    </div>
+  );
 }
