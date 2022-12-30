@@ -36,14 +36,12 @@ const MatchingList = () => {
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
     const data = await get(ApiUrl.RECRUIT_USER_INFO_ALL);
-    console.log('recruitingData', data);
     setRecruitList(data.reverse());
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
     const data = await get(ApiUrl.RECRUIT_INFO);
-    console.log('recruitedData', data);
     setRecruitList(data.reverse());
   };
 
