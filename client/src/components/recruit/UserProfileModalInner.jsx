@@ -8,14 +8,6 @@ import { useRecoilValue } from 'recoil';
 
 const UserProfileModalInner = () => {
   const currentUserData = useRecoilValue(currentUserDataAtom);
-
-  useEffect(() => {
-    const isEmpty = Object.keys(currentUserData);
-    if (isEmpty.length > 0) {
-      console.log(currentUserData);
-    }
-  }, [currentUserData]);
-
   const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation, tier, mannerScore, escapeScore } =
     currentUserData;
 
