@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { regionAtom } from '../../recoil/recruit-map/index';
-import './Buttons.css';
+import './RegionButton.css';
 
 const RegionButton = ({ title }) => {
   const setRegion = useSetRecoilState(regionAtom);
