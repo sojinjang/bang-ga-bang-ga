@@ -19,10 +19,12 @@ import UserProfileModal from '../components/recruit/UserProfileModal';
 import Navigators from '../components/common/Navigators';
 import Background from '../components/common/Background';
 import { ApiUrl } from '../constants/ApiUrl';
+import { useNavigate } from 'react-router-dom';
 
 document.title = '방가방가 모집글 리스트';
 
 const RecruitList = () => {
+  const navigate = useNavigate();
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
@@ -128,7 +130,7 @@ const RecruitList = () => {
           </FilterContainer>
           <button
             onClick={() => {
-              loginToken ? setShowRecruitPost(true) : alert('로그인이 필요합니다.');
+              loginToken ? setShowRecruitPost(true) : (alert('로그인이 필요합니다.'), navigate('/login'));
             }}
             className='h-10 border-solid border-[1px] p-1.5 border-gray-500 bg-white'>
             글쓰기
