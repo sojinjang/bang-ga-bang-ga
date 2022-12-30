@@ -46,7 +46,7 @@
 ## 🪪 테스트 계정
   ```
   ID: test@elice.com
-  PW: 0000qwer12340000
+  PW: qwer1234! 
   ```
 
 ## 👨‍👩‍👦‍👦 Responsibility
