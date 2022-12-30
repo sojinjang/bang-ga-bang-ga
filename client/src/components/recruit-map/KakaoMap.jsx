@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Map, MapMarker, useMap } from 'react-kakao-maps-sdk';
 
-import { regionAtom, targetCafeAtom, scopeAtom, cafesWithinScopeAtom } from '../../recoil/recruit-map';
+import { regionAtom, targetCafeAtom, scopeAtom, cafeInfoAtom } from '../../recoil/recruit-map';
 import { ResizeButtonContainer } from './ResizeButtonContainer';
 import { InfoWindow } from './InfoWindow';
 import { regionCoordinate } from '../../constants/regionCoordinate';
@@ -20,14 +20,27 @@ async function getCafeInfo(region) {
   }
 }
 
+const getMapScreenScope = (map) => {
+  return {
+    swLatLng: {
+      lat: map.getBounds().getSouthWest().getLat(),
+      lng: map.getBounds().getSouthWest().getLng(),
+    },
+    neLatLng: {
+      lat: map.getBounds().getNorthEast().getLat(),
+      lng: map.getBounds().getNorthEast().getLng(),
+    },
+  };
+};
+
 export default function KakaoMap() {
+  const mapRef = useRef();
   const BASIC_SIZE = 40;
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
-  const [scope, setScope] = useRecoilState(scopeAtom);
-  const [cafesWithinScope, setcafesWithinScope] = useRecoilState(cafesWithinScopeAtom);
-  const [cafeInfo, setCafeInfo] = useState({});
+  const [cafeInfo, setCafeInfo] = useRecoilState(cafeInfoAtom);
+  const setScope = useSetRecoilState(scopeAtom);
   const [level, setLevel] = useState(5);
 
   const addRegionCafeData = async () => {
@@ -38,7 +51,6 @@ export default function KakaoMap() {
   const handleRegionChange = async () => {
     if (!cafeInfo[region]) await addRegionCafeData();
     setTargetCafe(undefined);
-    setcafesWithinScope(cafeInfo[region]);
   };
 
   useEffect(() => {
@@ -52,7 +64,9 @@ export default function KakaoMap() {
     let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
     const onMarkerClick = (marker, cafeId) => {
       map.panTo(marker.getPosition());
-      setTimeout(() => setTargetCafe(cafeId));
+      setTimeout(() => {
+        return setTargetCafe(cafeId);
+      });
     };
     return (
       <MapMarker
@@ -85,22 +99,17 @@ export default function KakaoMap() {
         center={regionCoordinate[region]}
         style={{
           width: '900px',
-          height: '700px',
+          height: '70vh',
         }}
-        onBoundsChanged={(map) =>
-          setScope({
-            swLatLng: {
-              lat: map.getBounds().getSouthWest().getLat(),
-              lng: map.getBounds().getSouthWest().getLng(),
-            },
-            neLatLng: {
-              lat: map.getBounds().getNorthEast().getLat(),
-              lng: map.getBounds().getNorthEast().getLng(),
-            },
-          })
-        }
-        level={level}>
-        <ResizeButtonContainer level={level} setLevel={setLevel}></ResizeButtonContainer>
+        onBoundsChanged={(map) => setScope(getMapScreenScope(map))}
+        level={level}
+        ref={mapRef}>
+        <ResizeButtonContainer
+          level={level}
+          setLevel={setLevel}
+          setScope={setScope}
+          getMapScreenScope={getMapScreenScope}
+          map={mapRef.current}></ResizeButtonContainer>
         {cafeInfo?.[region] &&
           cafeInfo[region].map((cafe) => (
             <MarkerContainer

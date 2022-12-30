@@ -20,7 +20,7 @@ const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs
       {({ open }) => (
         <>
           <div className={`relative ${width}`}>
-            <Listbox.Button className='relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm'>
+            <Listbox.Button className='relative w-full cursor-default rounded-md border border-gray-300 bg-gray-200 py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600 sm:text-sm'>
               <span className='flex items-center'>
                 <span className='ml-3 block truncate'>{selectedOption}</span>
               </span>
@@ -36,7 +36,7 @@ const SelectOption = ({ selectedOption, setSelectedOption, pageReset, cbFuncObjs
               leaveFrom='opacity-100'
               leaveTo='opacity-0'>
               <Listbox.Options
-                className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+                className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-gray-200 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
                 onClick={pageReset}>
                 {cbFuncObjs.map(({ optionName }, i) => (
                   <Listbox.Option

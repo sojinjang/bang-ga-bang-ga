@@ -21,8 +21,6 @@ import Background from '../components/common/Background';
 import { ApiUrl } from '../constants/ApiUrl';
 import { useNavigate } from 'react-router-dom';
 
-document.title = '방가방가 모집글 리스트';
-
 const RecruitList = () => {
   const navigate = useNavigate();
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);

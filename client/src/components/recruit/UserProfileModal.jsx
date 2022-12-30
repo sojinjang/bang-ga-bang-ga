@@ -6,6 +6,7 @@ import {
   currentUserDataAtom,
 } from '../../recoil/recruit-list/index';
 import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import Profile from '../common/Profile';
 
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
@@ -40,13 +41,9 @@ const UserProfileModal = () => {
   }, [usersData]);
 
   return (
-    <div className='flex p-12 w-[750px] h-[600px] absolute bg-slate-100 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%]'>
+    <div className='flex p-12 w-[760px] h-[600px] absolute bg-slate-300 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%] z-10'>
       <div className='text-center w-full'>
-        <img
-          className='mx-auto w-[250px] h-[250px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500'
-          src={process.env.REACT_APP_SERVER_URL + profileImg}
-          alt='프로필 사진'
-        />
+        <Profile img={process.env.REACT_APP_SERVER_URL + profileImg} size={250} />
         <p className='mt-3'>{role}</p>
         <p className='text-[35px] font-semibold'>{nickName}</p>
       </div>
@@ -60,7 +57,7 @@ const UserProfileModal = () => {
         <UserProfileModalInner />
       </div>
       <button
-        className='w-[60px] h-[35px] right-8 bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
+        className='w-[60px] h-[35px] right-8 bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute top-[545px]'
         onClick={() => {
           setCurrentUserData({});
           setShowUserProfileModal(false);

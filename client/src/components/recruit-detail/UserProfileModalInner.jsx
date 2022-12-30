@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import tw from 'tailwind-styled-components';
+import React from 'react';
 import LevelImage from '../common/LevelImage';
 import MannerImage from '../common/MannerImage';
+import tw from 'tailwind-styled-components';
 
-import { currentUserDataAtom } from '../../recoil/recruit-list/index';
-import { useRecoilValue } from 'recoil';
-
-const UserProfileModalInner = () => {
-  const currentUserData = useRecoilValue(currentUserDataAtom);
-  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation, tier, mannerScore, escapeScore } =
-    currentUserData;
-
-  const mannerProgressWith = 360 * (mannerScore / 100);
-  const escapeProgressWith = 360 * (escapeScore / 100);
+const UserProfileModalInner = ({ userData }) => {
+  const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation } = userData;
+  const mannerScore = userData.mannerScore;
+  const escapeScore = userData.escapeScore;
+  const mannerProgressWith = 350 * (mannerScore / 100);
+  const escapeProgressWith = 350 * (escapeScore / 100);
 
   const USER_INFO = [
     { name: '성별', value: gender === null ? '없음' : gender },
@@ -41,14 +37,14 @@ const UserProfileModalInner = () => {
           <h3>탈출레벨🔑</h3>
           <Wrapper style={{ whiteSpace: 'nowrap' }}>
             <EscapeProgress style={{ width: escapeProgressWith }}>
-              <span>{tier}</span>
+              <span>{userData.tier}</span>
               <LevelImage score={escapeScore} size={20} />
             </EscapeProgress>
           </Wrapper>
           <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
         </section>
       </div>
-      <div className='w-[360px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
+      <div className='w-[360px] bg-white bg-opacity-50 rounded-[15px] mt-[20px] mx-auto flex justify-center items-center '>
         <Container>
           {USER_INFO.map((info) => (
             <Information key={info.name}>

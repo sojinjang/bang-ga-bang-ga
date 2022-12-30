@@ -23,6 +23,7 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
           nickName: member['nickName'],
           evaluateTargetId: member['userId'],
           evaluatorId: userId,
+          profileImg: member['profileImg'],
         });
       });
       setEvalRes(team);
@@ -63,6 +64,9 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
     }
   };
 
+  const date = selectedList.createdAt.slice(0, 10);
+  const [YEAR, MONTH, DATE] = date.split('-');
+
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
       <div className='h-[600px] bg-white rounded-2xl w-10/12 md:w-1/3 overflow-auto p-[20px]'>
@@ -72,13 +76,13 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
             <img className='w-5 h-5' src={closeBtn} alt='닫기 버튼' />
           </button>
         </div>
-        <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`일 매칭된 방가인들은 어떠셨나요?`}</h3>
+        <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3>
         <form onSubmit={submitEvaluation}>
           <div>
             {evalRes.map(({ nickName, profileImg }) => (
               <div key={nickName} className='flex justify-between mb-[15px]'>
                 <div className='w-[100px]'>
-                  <ProfileImg src={profileImg} alt='팀원 프로필 사진' />
+                  <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='팀원 프로필 사진' />
                   <div className='text-lg text-center'>{nickName}</div>
                 </div>
                 <div className='flex flex-col'>
