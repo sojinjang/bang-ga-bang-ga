@@ -39,6 +39,7 @@ export default function KakaoMap() {
   const OVER_SIZE = 42;
   const region = useRecoilValue(regionAtom);
   const [targetCafe, setTargetCafe] = useRecoilState(targetCafeAtom);
+  const [isClicked, setIsClicked] = useState(true);
   const [cafeInfo, setCafeInfo] = useRecoilState(cafeInfoAtom);
   const setScope = useSetRecoilState(scopeAtom);
   const [level, setLevel] = useState(5);
@@ -57,15 +58,17 @@ export default function KakaoMap() {
     handleRegionChange();
   }, [region]);
 
-  const MarkerContainer = ({ cafeId, setTargetCafe, position, cafeName, recruitingNum }) => {
+  const MarkerContainer = ({ cafeId, position, cafeName, recruitingNum }) => {
     const map = useMap();
     const [isOver, setIsOver] = useState(false);
     let markerIcon = cafeId === targetCafe ? clickedMarkerImg : markerImg;
     let markerSize = isOver ? OVER_SIZE : BASIC_SIZE;
     const onMarkerClick = (marker, cafeId) => {
       map.panTo(marker.getPosition());
+      setIsClicked(!isClicked);
       setTimeout(() => {
-        return setTargetCafe(cafeId);
+        if (isClicked) return setTargetCafe(cafeId);
+        return setTargetCafe(undefined);
       });
     };
     return (
@@ -115,7 +118,6 @@ export default function KakaoMap() {
             <MarkerContainer
               key={cafe.cafeId}
               cafeId={cafe.cafeId}
-              setTargetCafe={setTargetCafe}
               position={{ lat: cafe.lat, lng: cafe.lng }}
               cafeName={cafe.cafeName}
               recruitingNum={cafe.recruitingNum}
