@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import tw from 'tailwind-styled-components';
 import Modal from 'react-modal';
@@ -9,19 +9,18 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { showRegisterProfileAtom, showAddProfileIconAtom, profileImgAtom } from '../recoil/register';
 import { patch, postImg } from '../utils/api';
 import { REGISTER_USER_ADD_DATA } from '../constants/registerUserAddData';
+import { ApiUrl } from '../constants/ApiUrl';
 
-const RegisterProfile = ({ userId, userPWD }) => {
+const RegisterProfile = ({ userId }) => {
   const setShowRegisterProfile = useSetRecoilState(showRegisterProfileAtom);
   const [tempProfileImg, setTempProfileImg] = useState(null);
   const [showAddProfileIcon, setShowAddProfileIcon] = useRecoilState(showAddProfileIconAtom);
   const [profileImg, setProfileImg] = useRecoilState(profileImgAtom);
   const [userAddInfo, setUserAddInfo] = useImmer({});
-  const [imgUrl, setImgUrl] = useState('');
 
   const patchProfileUrl = async () => {
     try {
-      await patch('/api/user', userId, { profileImg: imgUrl });
-      alert('프로필 사진이 정상적으로 업로드되었습니다');
+      await patch(ApiUrl.USER, userId, { profileImg: profileImg });
     } catch (err) {
       alert(err);
     }
@@ -31,9 +30,8 @@ const RegisterProfile = ({ userId, userPWD }) => {
     const formData = new FormData();
     formData.append('imgFile', tempProfileImg);
     try {
-      const response = await postImg('/api/img-upload', formData);
-      console.log(response.path);
-      setImgUrl(response.path);
+      const response = await postImg(ApiUrl.UPLOAD_IMG, formData);
+      setProfileImg('/' + response.path);
     } catch (err) {
       console.log(err);
     }
@@ -41,10 +39,12 @@ const RegisterProfile = ({ userId, userPWD }) => {
   const handleSubmit = async (e) => {
     await e.preventDefault();
     await uploadProfileImg();
-    await patchProfileUrl();
+    // await patchProfileUrl();
     setShowAddProfileIcon(false);
   };
-
+  useEffect(() => {
+    patchProfileUrl();
+  }, [profileImg]);
   const navigate = useNavigate();
   const onCancelBtn = () => {
     const later = confirm('추가정보를 입력하지 않고 가입을 완료하시겠습니까?');
@@ -56,8 +56,7 @@ const RegisterProfile = ({ userId, userPWD }) => {
   };
   const addUserAddInfo = async () => {
     try {
-      const res = await patch('/api/user', userId, { ...userAddInfo, checkPassword: userPWD });
-      console.log(res);
+      const res = await patch(ApiUrl.USER, userId, { ...userAddInfo });
       alert('추가정보가 정상적으로 입력되었습니다');
       navigate('/');
     } catch (err) {
@@ -66,7 +65,6 @@ const RegisterProfile = ({ userId, userPWD }) => {
   };
 
   const onSubmitAddData = async () => {
-    console.log(userAddInfo);
     setShowRegisterProfile(false);
     addUserAddInfo();
   };
@@ -91,11 +89,15 @@ const RegisterProfile = ({ userId, userPWD }) => {
       <div className='mt-[5%] m-auto h-1/4 flex relative'>
         <div className='w-[120px] h-[120px] rounded-full bg-white'>
           {profileImg && (
-            <img className='w-full h-full rounded-full' src={URL.createObjectURL(profileImg)} alt='uploaded image' />
+            <img
+              className='w-full h-full rounded-full'
+              src={process.env.REACT_APP_SERVER_URL + profileImg}
+              alt='uploaded image'
+            />
           )}
         </div>
         <div className='absolute w-10 h-10  top-0 left-[90%]'>
-          <button onClick={() => (setShowAddProfileIcon(true), console.log('clicked'))}>
+          <button onClick={() => setShowAddProfileIcon(true)}>
             <FontAwesomeIcon icon={faPen} />
           </button>
         </div>
@@ -170,11 +172,12 @@ const BtnBox = ({ onCancelBtn }) => {
 };
 
 const ModalBox = tw.div`
+  text-black
   mx-auto h-[114%] w-[94%] px-[4%]
       border-[10px] border-white rounded-[60px]
       flex flex-col 
       absolute
-      top-[-14%]
+      top-0
       left-[3%]
       bg-[#8eebf9]
       
@@ -188,10 +191,10 @@ const EditInputDiv = tw.div`
   w-full h-8 mt-5 flex  
 `;
 const EditInputName = tw.div`
-  w-1/4 flex justify-start items-center text-gray-500
+   flex justify-start items-center text-gray-500
 `;
 const EditInput = tw.div`
-  w-3/4 flex
+  flex ml-auto
 `;
 
 const TextInput = tw.input`
@@ -217,7 +220,7 @@ const RadioInput = ({ data, setData, option }) => {
 const SelectInput = ({ data, setData }) => {
   return (
     <select
-      className='border border-black'
+      className='border border-black rounded ml-auto w-[80px]'
       name={data.name}
       onChange={(e) => {
         setData((userData) => {

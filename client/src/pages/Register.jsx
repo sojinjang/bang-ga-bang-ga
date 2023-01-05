@@ -15,6 +15,8 @@ import jwt_decode from 'jwt-decode';
 import { Keys } from '../constants/Keys';
 import { setCookie } from '../utils/cookie';
 import { useNavigate } from 'react-router-dom';
+import { ApiUrl } from '../constants/ApiUrl';
+
 const Register = () => {
   const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
@@ -25,10 +27,10 @@ const Register = () => {
 
   const registerUser = async (email, password) => {
     try {
-      const result = await post('/api/user', userData);
+      const result = await post(ApiUrl.USER, userData);
       setUserId(result.userId);
       setShowCelebrate(true);
-      const response = await post('/api/user/login', { email, password });
+      const response = await post(ApiUrl.LOGIN, { email, password });
       const accessToken = response.accessToken;
       const userId = jwt_decode(accessToken).userId;
       setCookie(Keys.LOGIN_TOKEN, accessToken);
@@ -40,7 +42,6 @@ const Register = () => {
 
   const onSubmitRegisterBtn = async (e) => {
     e.preventDefault();
-    console.log(userData);
     if (!validator.isName(userData.userName)) {
       setError('이름은 2~4글자의 한글로 작성해주세요');
       return;
@@ -72,10 +73,10 @@ const Register = () => {
   return (
     <Background img={'bg1'}>
       <Navigators />
-      <Title>회원가입</Title>
       <InputContainer>
         {showCelebrate && <Celebrate />}
         {showRegisterProfile && <RegisterProfile userId={userId} userPWD={userData.password} />}
+        <Title>회원가입</Title>
         <InnerContainer>
           <form onSubmit={onSubmitRegisterBtn}>
             {USER_INPUT_DATA.map((inputData) => (
@@ -84,9 +85,6 @@ const Register = () => {
             {error && <p className='text-red-500'>{error}</p>}
             <div className='flex justify-center'>
               <RegisterBtn type='submit'>가입하기</RegisterBtn>
-              <RegisterBtn onClick={() => setShowCelebrate(true)} type='submit'>
-                임시
-              </RegisterBtn>
             </div>
           </form>
         </InnerContainer>
@@ -97,7 +95,7 @@ const Register = () => {
 
 const InputBox = ({ inputData, setUserData }) => {
   return (
-    <div className='w-full'>
+    <div className='w-full h-[60px] mt-1 text-black'>
       <label className='mr-auto'>
         {inputData.name}
         <RegisterInput
@@ -115,33 +113,34 @@ const InputBox = ({ inputData, setUserData }) => {
 };
 
 const Title = tw.div`
-  m-auto
+  mx-auto
   text-3xl 
   bg-[#3F51A2] 
   text-white 
-  border 
-  border-white 
-  border-[6px] 
-  rounded-[24px]
-  w-1/6
+  w-full
+  border-white
+  border-[3px]
+  rounded-[10px]
   py-[2%]
-  h-[7%]
   flex
   justify-center
   items-center
 `;
 const InputContainer = tw.div`
-  rounded-[80px] w-[27%] h-3/4 mx-auto mb-[2%]  bg-gradient-to-r from-cyan-200 to-blue-300   
+pt-[1%]
+  text-white
+  rounded-[30px] w-[22%] h-[70%] mx-auto mb-[1%]  bg-[#4497D4]   
   border 
   border-[#4497D4] 
   border-[6px] 
   relative
+  text-sm
 `;
 const InnerContainer = tw.div`
   w-[80%] h-[84%] flex flex-col justify-center items-center mx-auto mt-[10%]
 `;
 const RegisterBtn = tw.button`
- bg-white w-1/2 mt-auto rounded-[24px]   
+ bg-white w-3/4 rounded-[24px]   
  text-2xl
  text-[#3F51A2]
  border 
@@ -149,6 +148,6 @@ const RegisterBtn = tw.button`
  border-[6px] 
 `;
 const RegisterInput = tw.input`
-  w-full border border-black rounded pl-2 h-10  mb-[3%]
+  w-full border border-black rounded pl-2 h-8  mb-[2%]
 `;
 export default Register;

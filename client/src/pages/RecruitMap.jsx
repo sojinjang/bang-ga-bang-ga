@@ -3,15 +3,15 @@ import tw from 'tailwind-styled-components';
 
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
-import { RegionButton } from '../components/buttons/Buttons';
+import { RegionButton } from '../components/buttons/RegionButton';
 import KakaoMap from '../components/recruit-map/KakaoMap';
 import RecruitPostList from '../components/recruit-map/RecruitPostList';
 
 const RecruitMap = () => {
   return (
-    <Background img={'bg3'}>
+    <Background img={'bg1'}>
       <Navigators />
-      <div className='my-auto'>
+      <div className='my-auto h-[88vh]'>
         <UpperPart className='flex flex-col '>
           <RegionButtonsContainer>
             <RegionButton title={'홍대'}></RegionButton>
@@ -33,7 +33,7 @@ const RecruitMap = () => {
 };
 
 const ViewSection = tw.div`
-  w-[1250px] h-[700px] bg-white bg-opacity-60 rounded-2xl
+  w-[1250px] h-[70vh] bg-white bg-opacity-60 rounded-2xl
 `;
 
 const UpperPart = tw.div`

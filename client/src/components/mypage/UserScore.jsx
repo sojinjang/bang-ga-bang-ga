@@ -1,4 +1,6 @@
 import React from 'react';
+import LevelImage from '../common/LevelImage';
+import MannerImage from '../common/MannerImage';
 import tw from 'tailwind-styled-components';
 
 const UserScore = ({ userData }) => {
@@ -12,7 +14,10 @@ const UserScore = ({ userData }) => {
       <section>
         <h3>매너점수💖</h3>
         <Wrapper style={{ whiteSpace: 'nowrap' }}>
-          <MannerProgress style={{ width: mannerProgressWith }}>{mannerScore}점😊</MannerProgress>
+          <MannerProgress style={{ width: mannerProgressWith }}>
+            <span>{mannerScore}점</span>
+            <MannerImage score={mannerScore} size={20} />
+          </MannerProgress>
         </Wrapper>
         <div style={{ paddingLeft: mannerProgressWith - 15 }}>{mannerScore}점</div>
       </section>
@@ -20,7 +25,10 @@ const UserScore = ({ userData }) => {
       <section>
         <h3>탈출레벨🔑</h3>
         <Wrapper style={{ whiteSpace: 'nowrap' }}>
-          <EscapeProgress style={{ width: escapeProgressWith }}>{userData.tier}🥇</EscapeProgress>
+          <EscapeProgress style={{ width: escapeProgressWith }}>
+            <span>{userData.tier}</span>
+            <LevelImage score={escapeScore} size={20} />
+          </EscapeProgress>
         </Wrapper>
         <div style={{ paddingLeft: escapeProgressWith - 15 }}>{escapeScore}점</div>
       </section>
@@ -37,7 +45,6 @@ const Wrapper = tw.div`
 `;
 
 const MannerProgress = tw.div`
-  w-[490px]
   bg-pink-400
   font-medium
   text-lg

@@ -5,6 +5,7 @@ import tw from 'tailwind-styled-components';
 import { useRecoilValue } from 'recoil';
 import { currentRegionAtom, currentPageAtom } from '../../recoil/recruit-list/index';
 
+import { getCookieValue } from '../../utils/cookie';
 import { get } from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 import completeRibbon from '../../assets/images/icon/complete-ribbon.png';
@@ -21,6 +22,7 @@ const RecuitPostContainer = ({ postData }) => {
     cafeName,
     matchingPostsId,
     peopleNum,
+    matchingSituationUserSum,
     createdAt,
     themeName,
   } = postData;
@@ -34,11 +36,26 @@ const RecuitPostContainer = ({ postData }) => {
   }, [currentRegion, currentPage]);
 
   const moveToDetailPage = async (e) => {
-    await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
-    navigate(`/recruit-detail/${matchingPostsId}`);
+    const loginToken = getCookieValue('token');
+
+    if ((loginToken == '') | !loginToken) {
+      alert('로그인이 필요한 서비스입니다.');
+      navigate('/login');
+    } else {
+      try {
+        await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
+        navigate(`/recruit-detail/${matchingPostsId}`);
+      } catch (err) {
+        alert(err);
+      }
+    }
   };
 
   const convertDate = () => {
+    if (matchingTime == null) {
+      return '';
+    }
+
     const stringifiedDate = matchingTime.toString();
     const result = [];
 
@@ -75,17 +92,19 @@ const RecuitPostContainer = ({ postData }) => {
 
   return (
     <div
-      className='h-[260px] w-[280px] p-5 relative rounded-xl drop-shadow-xl border-[1.5px] border-solid border-black-500
-  bg-gray-400 text-white'>
+      className='h-[240px] w-[270px] p-5 relative rounded-[20px] border-opacity-10	  drop-shadow-xl border-[3px] border-solid border-black-500
+      bg-gradient-to-b  from-[#4057A7] to-[#4496D3] text-white'>
       <CompleteRibbon src={completeRibbon} className={!matchStatus && 'hidden'} />
-      <div className='flex w-[240px] mt-5'>
+      <div className='flex w-full mt-2 border-b border-white'>
         <p
           onClick={(e) => moveToDetailPage(e)}
           className='w-[190px] mr-1 text-lg font-semibold cursor-pointer truncate'
           id={matchingPostsId}>
           {title}
         </p>
-        <p className='text-blue-4 font-semibold'> (1/{peopleNum})</p>
+        <p className='text-blue-300 font-semibold'>
+          ({matchingSituationUserSum}/{peopleNum})
+        </p>
       </div>
       <div className='flex flex-row'>
         <span className='mb-2'>{convertRemainDate()}</span>
@@ -124,17 +143,18 @@ const RecuitPostContainer = ({ postData }) => {
         <p className='truncate'>{themeName}</p>
         <p className='mt-2 mb-1'>{convertDate()}</p>
       </div>
-
-      <div className='flex mt-7 justify-end gap-3 relative'>
+      <div className='flex mt-3 justify-end gap-3 relative'>
         <button
           onClick={() => {
             setShowTeamModal(!showTeamModal);
           }}
-          className='drop-shadow-xl h-9 w-[70px] border-solid border-[1.5px] border-white cursor-pointer'>
+          className='drop-shadow-xl h-9 w-[70px] border-solid rounded-[5px]  border-[1.5px] border-white cursor-pointer'>
           팀원보기
         </button>
         {showTeamModal && (
-          <div className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
+          <div
+            onMouseLeave={() => setShowTeamModal(false)}
+            className='w-[287px] h-[270px] -right-[26px] -bottom-5 px-4 absolute bg-white rounded-[10px] border-solid border-[1.5px] border-white'>
             <svg
               onClick={() => setShowTeamModal(false)}
               className='absolute right-2 top-2 cursor-pointer'

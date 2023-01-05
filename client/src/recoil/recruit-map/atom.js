@@ -15,7 +15,7 @@ export const scopeAtom = atom({
   default: {},
 });
 
-export const cafesWithinScopeAtom = atom({
-  key: 'cafesWithinScope',
-  default: [],
+export const cafeInfoAtom = atom({
+  key: 'cafeInfoAtom',
+  default: {},
 });

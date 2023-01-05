@@ -1,26 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 import detective from '../../assets/images/icon/detective.png';
 import crown from '../../assets/images/icon/crown.png';
+import LevelImage from '../common/LevelImage';
+import MannerImage from '../common/MannerImage';
+import Profile from '../../modals/UserProfile';
 import tw from 'tailwind-styled-components';
 
 const Leader = ({ leaderList }) => {
+  const [visible, setVisible] = useState(false);
+  const [userData, setUserData] = useState([]);
+
   return (
-    <Container>
-      <Count>
-        <img src={detective} alt='탐정 이모지' className='w-[20px] h-[23px] inline-block pt-[3px]' />
-        <span className='pl-[3px] font-semibold mb-[30px]'>{30}</span>
-        {/* <span className='pl-[3px] font-semibold mb-[30px]'>{leaderList.matchingCount}</span> */}
-      </Count>
-      <div className='relative w-[210px] h-[210px] mx-auto'>
-        <LeaderProfileImg src={crown} alt='프로필 사진' />
-        <Crown src={crown} alt='왕관 이모지' />
-      </div>
-      <NickName>{leaderList.nickName}</NickName>
-      <div className='flex justify-between mx-[40px]'>
-        <Score>{leaderList.escapeScore}</Score>
-        <Score>{leaderList.mannerScore}</Score>
-      </div>
-    </Container>
+    <>
+      <Container>
+        <div className='flex mx-[10px] mt-[13px] text-lg flex mt-[5px]'>
+          <img src={detective} alt='탐정 이모지' className='w-[25px] h-[28px] inline-block pt-[3px]' />
+          <span className='pl-[3px] font-semibold mt-[3px]'>{leaderList.matchingCount}</span>
+        </div>
+        <div className='mt-[23px]'>
+          <div className='relative w-[210px] h-[210px] mx-auto'>
+            <LeaderProfileImg
+              onClick={() => {
+                setVisible(true);
+                setUserData(leaderList);
+              }}
+              src={process.env.REACT_APP_SERVER_URL + leaderList.profileImg}
+              alt='프로필 이미지'
+              className='cursor-pointer'
+            />
+            <Crown src={crown} alt='왕관 이모지' />
+          </div>
+          <NickName>{leaderList.nickName}</NickName>
+          <div className='flex justify-evenly'>
+            <Score>
+              <span className='absolute w-10 h-10 left-[-23px] top-[-5px]'>
+                <LevelImage score={leaderList.escapeScore} size={'100%'} />
+              </span>
+              <span>{leaderList.escapeScore}</span>
+            </Score>
+            <Score>
+              <span className='absolute w-10 h-10 left-[-23px] top-[-5px]'>
+                <MannerImage score={leaderList.mannerScore} size={'100%'} />
+              </span>
+              <span>{leaderList.mannerScore}</span>
+            </Score>
+          </div>
+        </div>
+      </Container>
+      {visible && <Profile setVisible={setVisible} userData={userData} />}
+    </>
   );
 };
 
@@ -71,13 +99,6 @@ const Container = tw.div`
   text-center
 `;
 
-const Count = tw.span`
-  text-lg
-  flex
-  ml-[10px]
-  mt-[8px]
-`;
-
 const NickName = tw.div`
   text-[32px]
   font-bold
@@ -93,4 +114,7 @@ const Score = tw.span`
   bg-black
   text-white
   text-lg
+  ml-[20px]
+
+  relative
 `;

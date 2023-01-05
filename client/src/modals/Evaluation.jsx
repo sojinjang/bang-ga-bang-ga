@@ -1,10 +1,4 @@
-import React, { useState } from 'react';
-import teamMember1 from '../assets/images/user-profile/동하.png';
-import teamMember2 from '../assets/images/user-profile/동현.jpg';
-import teamMember3 from '../assets/images/user-profile/선아.png';
-import teamMember4 from '../assets/images/user-profile/소진.jpg';
-import teamMember5 from '../assets/images/user-profile/승빈.png';
-import teamMember6 from '../assets/images/user-profile/재웅.png';
+import React from 'react';
 import closeBtn from '../assets/images/icon/close.png';
 import fullHeart from '../assets/images/icon/full-heart.png';
 import emptyHeart from '../assets/images/icon/empty-heart.png';
@@ -14,46 +8,64 @@ import tw from 'tailwind-styled-components';
 import { useImmer } from 'use-immer';
 import { get, post } from '../utils/api';
 import { useEffect } from 'react';
+import { ApiUrl } from '../constants/ApiUrl';
 
-const Evaluation = ({ selectedList, setVisible }) => {
-  const [members, setMembers] = useState([]);
-  const getMembers = async () => {
-    const res = await get('/');
-  };
-  useEffect(() => {}, []);
-
-  const TEAM_MEMBERS = [
-    { nick_name: '프로 탈옥수', profile_image: teamMember1 },
-    { nick_name: '햄토리', profile_image: teamMember2 },
-    { nick_name: '비둘기', profile_image: teamMember3 },
-    { nick_name: '다람쥐', profile_image: teamMember4 },
-    { nick_name: '몬스터', profile_image: teamMember5 },
-    { nick_name: '김승빈', profile_image: teamMember6 },
-  ];
-  // const dataForm = [
-  //   {
-  //     evaluateTargetId: userId,
-  //     evaluatorId: 'jwt토큰에서 유저아이디 꺼내서 넣기',
-  //     shortEvaluate,
-  //     mannerEvaluate,
-  //     escapeEvaluate,
-  //   },
-  // ];
-
-  const date = selectedList.date;
-  const [YEAR, MONTH, DATE] = date.split('.');
+const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
+  const matchingPostsId = selectedList.matchingPostsId;
+  const userId = selectedList.userId;
   const [evalRes, setEvalRes] = useImmer([]);
+  const getMembers = async () => {
+    try {
+      const res = await get(ApiUrl.RECRUIT_TEAM_INFO, matchingPostsId);
+      const team = [];
+      res.map((member) => {
+        team.push({
+          nickName: member['nickName'],
+          evaluateTargetId: member['userId'],
+          evaluatorId: userId,
+          profileImg: member['profileImg'],
+        });
+      });
+      setEvalRes(team);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getMembers();
+  }, []);
+
+  const isEvaluate = async () => {
+    try {
+      await post(ApiUrl.RECRUIT_IS_EVALUATE, { matchingPostsId: selectedList.matchingPostsId });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const postEvaluation = async () => {
-    const res = await post('/api/evaluate/post', evalRes);
+    try {
+      const res = await post(ApiUrl.TEAM_EVALUATE, evalRes);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const submitEvaluation = (e) => {
     e.preventDefault();
     const finish = confirm('평가를 완료하시겠습니까? 제출된 평가는 다시 수정할 수 없습니다');
-    {
-      finish && (alert('평가가 완료되었습니다'), setVisible(false));
+
+    if (finish) {
+      alert('평가가 완료되었습니다');
+      setVisible(false);
+      postEvaluation();
+      isEvaluate();
+      getRecruitedData();
     }
   };
+
+  const date = selectedList.createdAt.slice(0, 10);
+  const [YEAR, MONTH, DATE] = date.split('-');
 
   return (
     <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-70'>
@@ -67,11 +79,11 @@ const Evaluation = ({ selectedList, setVisible }) => {
         <h3 className='text-2xl text-center mx-[100px] my-[15px]'>{`${YEAR}년 ${MONTH}월 ${DATE}일 매칭된 방가인들은 어떠셨나요?`}</h3>
         <form onSubmit={submitEvaluation}>
           <div>
-            {TEAM_MEMBERS.map(({ nick_name, profile_image }) => (
-              <div key={nick_name} className='flex justify-between mb-[15px]'>
+            {evalRes.map(({ nickName, profileImg }) => (
+              <div key={nickName} className='flex justify-between mb-[15px]'>
                 <div className='w-[100px]'>
-                  <ProfileImg src={profile_image} alt='팀원 프로필 사진' />
-                  <div className='text-lg text-center'>{nick_name}</div>
+                  <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='팀원 프로필 사진' />
+                  <div className='text-lg text-center'>{nickName}</div>
                 </div>
                 <div className='flex flex-col'>
                   <div className='flex'>
@@ -81,8 +93,8 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((value) => (
                           <IconImg
                             src={
-                              evalRes.find((user) => user['nickName'] == nick_name)
-                                ? evalRes.find((user) => user['nickName'] == nick_name).manner >= value
+                              evalRes.find((user) => user['nickName'] == nickName)
+                                ? evalRes.find((user) => user['nickName'] == nickName).mannerEvaluate >= value
                                   ? fullHeart
                                   : emptyHeart
                                 : emptyHeart
@@ -90,17 +102,11 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             key={value}
                             onClick={(e) => {
                               e.preventDefault();
-                              const nickName = nick_name;
-                              const manner = value;
+                              const mannerEvaluate = value;
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
-                                {
-                                  userIndex == -1
-                                    ? evalRes.push({ nickName, manner })
-                                    : (evalRes[userIndex] = { ...evalRes[userIndex], manner });
-                                }
+                                evalRes[userIndex] = { ...evalRes[userIndex], mannerEvaluate };
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}
@@ -112,8 +118,8 @@ const Evaluation = ({ selectedList, setVisible }) => {
                         {[1, 2, 3, 4, 5].map((level) => (
                           <IconImg
                             src={
-                              evalRes.find((user) => user['nickName'] == nick_name)
-                                ? evalRes.find((user) => user['nickName'] == nick_name).level >= level
+                              evalRes.find((user) => user['nickName'] == nickName)
+                                ? evalRes.find((user) => user['nickName'] == nickName).escapeEvaluate >= level
                                   ? fullKey
                                   : emptyKey
                                 : emptyKey
@@ -121,16 +127,15 @@ const Evaluation = ({ selectedList, setVisible }) => {
                             key={level}
                             onClick={(e) => {
                               e.preventDefault();
-                              const nickName = nick_name;
+                              const escapeEvaluate = level;
                               setEvalRes((evalRes) => {
                                 const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                                 {
                                   userIndex == -1
-                                    ? evalRes.push({ nickName, level })
-                                    : (evalRes[userIndex] = { ...evalRes[userIndex], level });
+                                    ? evalRes.push({ nickName, escapeEvaluate })
+                                    : (evalRes[userIndex] = { ...evalRes[userIndex], escapeEvaluate });
                                 }
                               });
-                              console.log(evalRes);
                             }}
                           />
                         ))}
@@ -142,14 +147,13 @@ const Evaluation = ({ selectedList, setVisible }) => {
                     type='text'
                     placeholder='한 줄 평 (선택)'
                     onChange={(e) => {
-                      const nickName = nick_name;
-                      const review = e.target.value;
+                      const shortEvaluate = e.target.value;
                       setEvalRes((evalRes) => {
-                        const userIndex = evalRes.findIndex((user) => user['nickName'] == nick_name);
+                        const userIndex = evalRes.findIndex((user) => user['nickName'] == nickName);
                         {
                           userIndex == -1
-                            ? evalRes.push({ nickName, review })
-                            : (evalRes[userIndex] = { ...evalRes[userIndex], review });
+                            ? evalRes.push({ nickName, shortEvaluate })
+                            : (evalRes[userIndex] = { ...evalRes[userIndex], shortEvaluate });
                         }
                       });
                     }}

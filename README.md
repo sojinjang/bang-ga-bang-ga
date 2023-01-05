@@ -1,62 +1,121 @@
-아래의 템플릿을 참고하여 README.md를 작성하세요.
+# 🤗 방가방가 (bang-ga-bang-ga)
+[📎 서비스 링크 이동하기](http://kdt-sw3-team15.elicecoding.com/)
+```
+함께 할 친구가 없거나, 난이도 극악인 테마를 깨고싶은데 주변에 방탈출 고수가 없어서 절망했던 경험 있으신가요? 🤔 
+방가방가에서 손쉽게 프로 방탈출러 멤버를 구해보세요! 🧞‍♂️
+```
 
-<hr />
+![모집리스트로-보기](https://user-images.githubusercontent.com/111125577/210035778-a086737a-c4e2-4dd4-aadb-e57242094872.gif)
 
-# (서비스 명)
-- 서비스 명을 위 괄호 부분에 작성하세요.
-- 서비스의 한 줄 소개를 작성하세요.
+## 🤹 서비스 주요 기능
+- 원하는 시간대, 방탈출 카페를 지정해서 멤버 모집하기
+- 프로필에 작성된 MBTI, 선호 테마등의 정보를 조회하여 함께하고 싶은 멤버 확인 가능
+- 매칭 이후 유저들간의 탈출 레벨, 매너 점수 평가 기능
+- 모집 중인 게시글 리스트, 지도로 확인 가능
+- 방탈출 카페에 대한 정보 지역별 조회 기능
 
+## 🛠 기술 스택
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"><img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=TailwindCSS&logoColor=white"/><img src="https://img.shields.io/badge/styled_components-DB7093?style=for-the-badge&logo=styled-components&logoColor=yellow"/>![Recoil](https://img.shields.io/badge/recoil-f26b00?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iNjAwIiB2aWV3Qm94PSIwIDAgNjAwIDYwMCI+PGxpbmsgeG1sbnM9IiIgdHlwZT0idGV4dC9jc3MiIGlkPSJkYXJrLW1vZGUiIHJlbD0ic3R5bGVzaGVldCIgaHJlZj0iIi8+PGcgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xNDIuNTM2IDE5OC44NThjMCAyNi4zNi0yMS4zNjggNDcuNzItNDcuNzIgNDcuNzItMjYuMzYgMC00Ny43MjItMjEuMzYtNDcuNzIyLTQ3LjcyczIxLjM2LTQ3LjcyIDQ3LjcyLTQ3LjcyYzI2LjM1NSAwIDQ3LjcyMiAyMS4zNiA0Ny43MjIgNDcuNzIiLz48cGF0aCBkPSJNNTA1LjE4IDQxNC4yMjVIMjM4LjEyNGMtMzUuMjUgMC02My45MjYtMjguNjc0LTYzLjkyNi02My45MjNzMjguNjc4LTYzLjkyNiA2My45MjYtNjMuOTI2aDEyMC43OGMyMC44MTYgMCAzNy43NTMtMTYuOTM4IDM3Ljc1My0zNy43NTZzLTE2LjkzOC0zNy43NTYtMzcuNzUzLTM3Ljc1Nkg5NC44MWMtNy4yMjcgMC0xMy4wODYtNS44Ni0xMy4wODYtMTMuMDg1IDAtNy4yMjcgNS44Ni0xMy4wODYgMTMuMDg1LTEzLjA4NmgyNjQuMDkzYzM1LjI1IDAgNjMuOTIzIDI4LjY3OCA2My45MjMgNjMuOTI2cy0yOC42NzQgNjMuOTIzLTYzLjkyMyA2My45MjNoLTEyMC43OGMtMjAuODIgMC0zNy43NTYgMTYuOTM4LTM3Ljc1NiAzNy43NiAwIDIwLjgxNiAxNi45MzggMzcuNzUzIDM3Ljc1NiAzNy43NTNINTA1LjE4YzcuMjI3IDAgMTMuMDg2IDUuODYgMTMuMDg2IDEzLjA4NSAwIDcuMjI2LTUuODU4IDEzLjA4NS0xMy4wODUgMTMuMDg1eiIvPjxwYXRoIGQ9Ik00NTcuNDY0IDQwMS4xNDJjMC0yNi4zNiAyMS4zNi00Ny43MiA0Ny43Mi00Ny43MnM0Ny43MiAyMS4zNiA0Ny43MiA0Ny43Mi0yMS4zNiA0Ny43Mi00Ny43MiA0Ny43Mi00Ny43Mi0yMS4zNi00Ny43Mi00Ny43MiIvPjwvZz48c3R5bGUgeG1sbnM9IiIgaWQ9ImRhcmstbW9kZS1jdXN0b20tY29sb3IiPgoJCTpyb290ewoJCQktLWJnLWNvbG9yOnJnYmEoMjYsMjYsMjYsMSk7CgkJCS0tdGV4dC1jb2xvcjpyZ2JhKDExMCwxMTAsMTEwLDEpOwoJCQktLWEtY29sb3I6cmdiYSg5MCwxMjAsMTIwLDEpOwoJCQktLWEtdmlzaXRlZC1jb2xvcjpyZ2JhKDEyMCwxMjAsOTAsMSk7CgkJCS0tYS1ob3Zlci1jb2xvcjpyZ2JhKDIxMSwyMTEsMjExLDEpOwoJCQktLWlucHV0LWJvcmRlci1jb2xvcjpyZ2JhKDIxMSwyMTEsMjExLDAuMik7CgkJCS0taW5wdXQtcGxhY2Vob2xkZXItY29sb3I6cmdiYSgxNzMsMjE2LDIzMCwxKTsKCQkJLS1kaWFsb2ctYmctY29sb3I6cmdiYSgzNiwzNiwzNiwwLjk1KTsKCQkJLS1iZy1pbWFnZTpsaW5lYXItZ3JhZGllbnQocmdiYSgyNiwyNiwyNiwxKSxyZ2JhKDI2LDI2LDI2LDEpKTsKCQl9Cgk8L3N0eWxlPjwvc3ZnPg==)
 
-## 서비스 구성 안내
+## 🏃 실행 방법
 
-## 1. 서비스 소개
+1. 레포지토리 클론
 
-- 기술 스택 (Bulma css, node, mongodb 등)
-- 웹서비스에 대한 자세한 개요 등
+   ```bash
+   git clone "https://kdt-gitlab.elice.io/sw_track/class_03/web_project_2/team15/initialization"
+   ```
 
+2. 필요한 module 설치
 
-## 2. 서비스 주요 기능 설명
+   ```bash
+   yarn install
+   ```
 
-**웹서비스의 유용성, 편의성 및 시각화의 실용성에 대한 설명**
-  - 주요 기능 (주된 활용성) 및 서브 기능 소개
-  - 프로젝트만의 차별점, 기대 효과
+3. `.env` 설정
 
-## 3. 서비스 구성도
-  - 서비스 구조도 그림 (사용한 기술 스택)
-  - 와이어프레임 링크 (예상 웹 화면 UI) e.g) figma 사용
-  - API 명세를 문서화한 링크
+    ```bash
+    REACT_APP_KAKAOMAP_API_KEY=<카카오맵 api key>
+    REACT_APP_SERVER_URL=<백 서버 url>
+    ```
+    
+4. express 앱을 실행
+   ```
+   yarn start
+   ```
 
-## 4. 프로젝트 팀원 역할 분담
-| 이름 | 담당 업무 |
-| ------ | ------ |
-| 멤버1 | 팀장/프론트엔드 개발 |
-| 멤버2 | 백엔드 개발 |
-
-**멤버별 responsibility**
-
-1. 멤버 1: 팀장/프론트엔드 담당
-
-- 기획 단계: 구체적인 설계와 지표에 따른 프로젝트 제안서 작성
-- 개발 단계: 팀원간의 일정 등 조율 + 프론트 or 백엔드 개발
-- 수정 단계: 기획, 스크럼 진행, 코치님 피드백 반영해서 수정, 발표 준비
-
-2. 멤버 2: 백엔드 담당
-
-- 기획 단계: 큰 주제에서 문제 해결 아이디어 도출, 와이어프레임 작성
-- 개발 단계: 와이어프레임을 기반으로 API 완성
-- 수정 단계: 피드백 반영해서 백엔드 설계 수정
-
-## 5. 실행 방법
-- 백엔드 (예시):
-  ```bash
-  1. mongodb 실행
-  2. yarn start (혹은 npm start)
+## 🪪 테스트 계정
+  ```
+  ID: test@elice.com
+  PW: qwer1234! 
   ```
 
-## 6. 버전
-  - 프로젝트의 버전 기입 (예: 1.0.0)
+## 👨‍👩‍👦‍👦 Responsibility
+| 담당자명(GitHub) | 담당 파트 |
+| --- | --- |
+| 선아 [@sunnao](https://github.com/sunnao) | 홈, 카페리스트페이지, 매칭이력 페이지&팀원평가창 연결 |
+| 소진 [@sojinjang](https://github.com/sojinjang) | 지도 기능, 프론트 배포, msw |
+| 재웅 [@wooooooongs](https://github.com/wooooooongs) | 모집 리스트, 글쓰기, 프로필 모달창, 페이지네이션 |
+| 동현 [@cham0287](https://github.com/cham0287) | 홈, 로그인, 회원가입, 회원정보 수정, 네비바 |
+| 지현 [@ULemong](https://github.com/ULemong) | 마이페이지, 매칭 이력 페이지, 모집 글 신청/취소하기(참가자), 참가 신청자 강제 퇴장(방장), 프로필 모달창 |
+| 동하 [@donggram2](https://github.com/donggram2) | 유저관련 API, 팀원평가 API, 모집글 참여현황 API, 카페정보 API |
+| 승빈 [@kkssbbb](https://github.com/kkssbbb) | 지도관련API, 모집게시글관련API , 이미지 업로드 API,  백엔드 배포 |
 
-## 7. FAQ
-  - 자주 받는 질문 정리
-  - 예시) 이 서비스는 어떻게 실행하면 되나요?
-    - git clone을 하신 후 아래 커맨드를 입력하시면 됩니다. ~~~
+## 🗂 디렉토리 구조
+```markdown
+📦client
+ ┣ 📂public
+ ┃ ┣ 📂images
+ ┃ ┃ ┣ 📂backgrounds
+ ┃ ┃ ┣ 📂cafes
+ ┃ ┃ ┣ 📂icon
+ ┃ ┃ ┗ 📂user-profile
+ ┃ ┣ 📂sounds
+ ┣ 📂src
+ ┃ ┣ 📂assets
+ ┃ ┃ ┗ 📂images
+ ┃ ┃ ┃ ┣ 📂backgrounds
+ ┃ ┃ ┃ ┣ 📂icon
+ ┃ ┃ ┃ ┗ 📂user-profile
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂buttons
+ ┃ ┃ ┣ 📂common
+ ┃ ┃ ┣ 📂home
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┣ 📂mypage
+ ┃ ┃ ┣ 📂mypageEdit
+ ┃ ┃ ┣ 📂recruit
+ ┃ ┃ ┣ 📂recruit-detail
+ ┃ ┃ ┗ 📂recruit-map
+ ┃ ┣ 📂constants
+ ┃ ┣ 📂mocks
+ ┃ ┣ 📂modals
+ ┃ ┣ 📂pages
+ ┃ ┃ ┣ 📜CafeList.css
+ ┃ ┃ ┣ 📜CafeList.jsx
+ ┃ ┃ ┣ 📜Home.css
+ ┃ ┃ ┣ 📜Home.jsx
+ ┃ ┃ ┣ 📜Login.jsx
+ ┃ ┃ ┣ 📜MatchingList.jsx
+ ┃ ┃ ┣ 📜MyPage.jsx
+ ┃ ┃ ┣ 📜MypageEdit.jsx
+ ┃ ┃ ┣ 📜NotFound.jsx
+ ┃ ┃ ┣ 📜RecruitDetail.jsx
+ ┃ ┃ ┣ 📜RecruitList.jsx
+ ┃ ┃ ┣ 📜RecruitMap.jsx
+ ┃ ┃ ┗ 📜Register.jsx
+ ┃ ┣ 📂recoil
+ ┃ ┃ ┣ 📂login
+ ┃ ┃ ┣ 📂recruit-list
+ ┃ ┃ ┣ 📂recruit-map
+ ┃ ┃ ┗ 📂register
+ ┃ ┣ 📂router
+ ┃ ┗ 📂utils
+ ┃ ┗ 📜index.js
+ ┣ 📜.eslintrc.js
+ ┣ 📜.gitignore
+ ┣ 📜.prettierrc
+ ┣ 📜.yarnrc.yml
+ ┣ 📜package.json
+ ┣ 📜postcss.config.js
+ ┗ 📜tailwind.config.js
+```

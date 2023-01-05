@@ -13,9 +13,13 @@ const UserProfileContainer = ({ postId }) => {
   const [currentTeamInfo, setCurrentTeamInfo] = useState([]);
 
   const userArray = async () => {
-    const data = await get(ApiUrl.MATCHING_POST_INFO, postId);
-    setCurrentPostId(postId);
-    setCurrentTeamInfo(data);
+    try {
+      const data = await get(ApiUrl.RECRUIT_USER_INFO, postId);
+      setCurrentPostId(postId);
+      setCurrentTeamInfo(data);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   useEffect(() => {
@@ -24,7 +28,7 @@ const UserProfileContainer = ({ postId }) => {
 
   return (
     <div>
-      <img className='absolute w-[30px] top-2 left-[40px]' src={crown} alt='' />
+      <img className='absolute w-[30px] top-2 left-[40px] z-20' src={crown} alt='' />
       <div className='mt-8 grid gap-3 grid-cols-3 grid-rows-3'>
         {currentTeamInfo.length > 0 &&
           currentTeamInfo.map((user, index) => (
@@ -35,7 +39,7 @@ const UserProfileContainer = ({ postId }) => {
                   setShowUserProfileModal(!showUserProfileModal);
                 }}
                 className='mx-auto w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-                src={user['profileImg']}
+                src={process.env.REACT_APP_SERVER_URL + user['profileImg']}
                 alt='유저 프로필'
               />
               <span className='text-black text-xs'>{user['nickName']}</span>

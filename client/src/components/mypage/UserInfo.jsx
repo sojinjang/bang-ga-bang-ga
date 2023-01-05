@@ -4,26 +4,23 @@ import tw from 'tailwind-styled-components';
 const UserInfo = ({ userData }) => {
   const { gender, age, mbti, preferenceTheme, nonPreferenceTheme, preferenceLocation } = userData;
   const USER_INFO = [
-    { name: '성별', value: gender },
-    { name: '나이', value: age },
-    { name: 'MBTI', value: mbti },
-    { name: '선호 테마', value: preferenceTheme },
-    { name: '비선호 테마', value: nonPreferenceTheme },
-    { name: '선호 지역', value: preferenceLocation },
+    { name: '성별', value: gender === null ? '없음' : gender },
+    { name: '나이', value: age === null ? '없음' : age },
+    { name: 'MBTI', value: mbti === null ? '없음' : mbti },
+    { name: '선호 테마', value: preferenceTheme === null ? '없음' : preferenceTheme },
+    { name: '비선호 테마', value: nonPreferenceTheme === null ? '없음' : nonPreferenceTheme },
+    { name: '선호 지역', value: preferenceLocation === null ? '없음' : preferenceLocation },
   ];
 
   return (
     <div className='w-[900px] bg-white bg-opacity-50 rounded-[15px] mx-auto flex justify-center items-center '>
       <Container>
-        <thead></thead>
-        <tbody>
-          {USER_INFO.map((info) => (
-            <Information key={info.name}>
-              <Title>{info.name}</Title>
-              <Body>{info.value}</Body>
-            </Information>
-          ))}
-        </tbody>
+        {USER_INFO.map((info) => (
+          <Information key={info.name}>
+            <Title>{info.name}</Title>
+            <Body>{info.value}</Body>
+          </Information>
+        ))}
       </Container>
     </div>
   );

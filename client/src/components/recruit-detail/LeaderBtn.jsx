@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as api from '../../utils/api';
 import { ApiUrl } from '../../constants/ApiUrl';
 
-const LeaderBtn = ({ postId, isRecruitCompleted }) => {
-  // const [isRecruit, setIsRecruit] = useState(true); // 방장 - 모집중인지 확인
+const LeaderBtn = ({ postId, isRecruitCompleted, setIsRecruitCompleted, leaderList, participantList }) => {
   const data = [{ matchStatus: 1 }];
 
   const handleClick = () => {
@@ -11,7 +10,18 @@ const LeaderBtn = ({ postId, isRecruitCompleted }) => {
       await api.patch(ApiUrl.MATCHING_POSTS, postId, data);
     };
     recruitDone();
-    // setIsRecruit(false);
+
+    // 모집 완료 상태 - matchingCount++
+    const members = [leaderList, ...participantList];
+    members.forEach((member) => {
+      const userId = member.userId;
+      const data = async () => {
+        await api.post('/api/user/manner', { userId });
+      };
+      data();
+    });
+
+    setIsRecruitCompleted(true);
   };
 
   return (
@@ -19,7 +29,7 @@ const LeaderBtn = ({ postId, isRecruitCompleted }) => {
       {!isRecruitCompleted && (
         <button
           type='submit'
-          className='font-bold text-6xl font-bold text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] ml-[1100px] px-[30px] py-[10px] rounded-lg'
+          className='font-bold text-6xl text-white border-4 bg-[#5F5FAC] hover:bg-[#E24FA9] mt-[30px] ml-[1100px] px-[30px] py-[10px] rounded-lg'
           onClick={handleClick}>
           모집 완료!
         </button>

@@ -9,6 +9,7 @@ import { Keys } from '../constants/Keys';
 import { setCookie } from '../utils/cookie';
 import { post } from '../utils/api';
 import jwt_decode from 'jwt-decode';
+import { ApiUrl } from '../constants/ApiUrl';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Login = () => {
   };
   const loginRequest = async () => {
     try {
-      const response = await post('/api/user/login', { email, password });
+      const response = await post(ApiUrl.LOGIN, { email, password });
       const accessToken = response.accessToken;
       const userId = jwt_decode(accessToken).userId;
       setCookie(Keys.LOGIN_TOKEN, accessToken);

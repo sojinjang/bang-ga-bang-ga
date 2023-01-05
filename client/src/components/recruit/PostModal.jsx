@@ -12,8 +12,9 @@ const FirstModal = () => {
   const setRecruitPostData = useSetRecoilState(recruitPostDataAtom);
   const setShowRecruitPost = useSetRecoilState(showRecruitPostAtom);
   const setShowRecruitModalPage = useSetRecoilState(showRecruitModalPageAtom);
-
-  const selectedDate = useRef();
+  const [showDateAlert, setShowDateAlert] = useState(false);
+  const [showTitleAlert, setShowTitleAlert] = useState(false);
+  const [selectedDate, selectedTitle, selectedMemberNum] = [useRef(), useRef(), useRef()];
 
   const checkPreviousDate = () => {
     const parsedDate = (dateValue, iso) => {
@@ -29,11 +30,21 @@ const FirstModal = () => {
     const selectedDateValue = selectedDate.current.value;
     const isPrevDate = parsedDate(selectedDateValue) - parsedDate(dateOffset, true) < 0;
 
-    if (isPrevDate) {
-      alert('이전 시간은 불가능합니다.');
+    if (isPrevDate || selectedDateValue == '') {
+      setShowDateAlert(true);
     } else {
       setShowRecruitModalPage(2);
+      setShowTitleAlert(false);
+      setShowDateAlert(false);
     }
+  };
+
+  const checkInputIsEmpty = () => {
+    const selectedTitleValue = selectedTitle.current.value;
+    const selectedMemberNumValue = selectedMemberNum.current.value;
+
+    if (!selectedTitleValue || !selectedMemberNumValue) setShowTitleAlert(true);
+    else checkPreviousDate();
   };
 
   return (
@@ -50,9 +61,11 @@ const FirstModal = () => {
                 };
               })
             }
+            ref={selectedTitle}
             placeholder='제목을 입력하세요'
             className='w-[300px] h-[45px] p-3 border border-solid border-gray-400'
           />
+          <p className={showTitleAlert || 'invisible'}>제목과 인원을 입력해주세요!</p>
         </div>
         <div className='flex flex-col'>
           <span>인원</span>
@@ -65,8 +78,8 @@ const FirstModal = () => {
                 };
               })
             }
+            ref={selectedMemberNum}
             type='number'
-            placeholder='2'
             min={2}
             max={8}
             className='w-[60px] h-[45px] p-3 border border-solid border-gray-400'
@@ -94,6 +107,8 @@ const FirstModal = () => {
           />
         </div>
       </div>
+      {showDateAlert && <div className='ml-1 mt-1'>일자를 선택하지 않았거나, 이전 일자를 선택하였습니다!</div>}
+
       <div>
         <button
           className='w-[60px] h-[35px] right-[100px] bottom-6 bg-gray-400 drop-shadow-lg rounded-lg align-middle absolute '
@@ -103,7 +118,7 @@ const FirstModal = () => {
         <button
           className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
           onClick={() => {
-            checkPreviousDate();
+            checkInputIsEmpty();
           }}>
           다음
         </button>
@@ -123,6 +138,7 @@ const SecondModal = () => {
   const [currentThemeDataArray, setCurrentThemeDataArray] = useState([]);
   const [currentThemeData, setCurrentThemeData] = useState({});
   const [submitStatus, setSubmitStatus] = useState(false);
+  const [showSubmitAlert, setShowSubmitAlert] = useState(false);
 
   const REGION_DATA = ['홍대', '강남', '건대'];
 
@@ -308,6 +324,7 @@ const SecondModal = () => {
             className='w-[60px] h-[35px] right-8 bottom-6 bg-sky-500/50 drop-shadow-lg rounded-lg align-middle absolute'
             onClick={async () => {
               if (submitStatus) {
+                setShowSubmitAlert(true);
                 await submitMatchingPost();
                 setShowRecruitPost(false);
                 window.location.replace('/recruit-list');
@@ -316,6 +333,7 @@ const SecondModal = () => {
             등록
           </button>
         </div>
+        {showSubmitAlert && <span className='absolute right-2'>등록하기 위해 한 번 더 눌러주세요!</span>}
       </div>
       <div className='mt-[126px]'>
         <div className='flex flex-col text-sm'>
@@ -328,17 +346,17 @@ const SecondModal = () => {
       </div>
       <div className='ml-3 mt-[126px]'>
         <div className='flex flex-col text-sm pl-3 border-l border-solid border-gray-500/20'>
-          <span className='text-blue-500 font-bold'>{currentThemeData.genre}</span>
+          <span className='text-blue-500 font-semibold'>{currentThemeData.genre}</span>
           <p>
-            <span className='text-blue-500 font-bold'>{calcDifficulty(currentThemeData.difficulty)}</span>
+            <span className='text-blue-500 font-semibold'>{calcDifficulty(currentThemeData.difficulty)}</span>
           </p>
           <ul className='flex gap-2'>
-            <li className='text-blue-500 font-bold'>{currentThemeData.activity}</li>
+            <li className='text-blue-500 font-semibold'>{currentThemeData.activity}</li>
           </ul>
           <ul className='flex gap-1'>
-            <li className='text-blue-500 font-bold'>{currentThemeData.recommendedNum}</li>
+            <li className='text-blue-500 font-semibold'>{currentThemeData.recommendedNum}</li>
           </ul>
-          <span className='text-blue-500 font-bold'>{currentThemeData.time}분 이내</span>
+          <span className='text-blue-500 font-semibold'>{currentThemeData.time}분 이내</span>
         </div>
       </div>
     </div>
@@ -349,7 +367,7 @@ const PostModal = () => {
   const showRecruitModalPage = useRecoilValue(showRecruitModalPageAtom);
 
   return (
-    <div className='rounded-xl absolute top-[65px] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
+    <div className='rounded-xl absolute top-[30%] w-[600px] h-[350px] bg-slate-100 drop-shadow-lg'>
       <div className={showRecruitModalPage === 1 ? '' : 'hidden'}>
         <FirstModal />
       </div>

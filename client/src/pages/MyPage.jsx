@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as api from '../utils/api';
+import { get } from '../utils/api';
 import { ApiUrl } from '../constants/ApiUrl';
 import Background from '../components/common/Background';
 import Navigators from '../components/common/Navigators';
@@ -16,7 +16,7 @@ const MyPage = () => {
 
   const fetchData = async () => {
     try {
-      const data = await api.get(ApiUrl.USER);
+      const data = await get(ApiUrl.USER);
       setUserData(data);
     } catch (err) {
       console.error(err);
@@ -27,14 +27,8 @@ const MyPage = () => {
 
   // 참가한 모집글 정보
   const recruitData = async () => {
-    try {
-      const data = await api.get(ApiUrl.RECRUIT_INFO);
-      setMatchingList(data);
-    } catch (err) {
-      console.error(err);
-      alert('로그인 후 이용해주세요.');
-      navigate('/');
-    }
+    const data = await get(ApiUrl.RECRUIT_INFO);
+    setMatchingList(data);
   };
 
   useEffect(() => {

@@ -5,8 +5,10 @@ import tw from 'tailwind-styled-components';
 import { Link } from 'react-router-dom';
 import { deleteCookie } from '../../utils/cookie';
 import { MENUS } from '../../constants/dropdownMenus';
-
-export default function DropdownMenu({ imgUrl }) {
+import { useRecoilValue } from 'recoil';
+import { profileImgAtom } from '../../recoil/register';
+export default function DropdownMenu() {
+  const profileImg = useRecoilValue(profileImgAtom);
   const onLogout = () => {
     deleteCookie('token');
     deleteCookie('userId');
@@ -15,10 +17,7 @@ export default function DropdownMenu({ imgUrl }) {
   return (
     <Menu as='div' className='w-1/3 flex justify-end'>
       <Menu.Button className='w-20 h-20'>
-        <ProfileImg
-          src={`http://localhost:5001/server/bangabanga/server/uploads/1672118463447-test.png`}
-          alt='프로필 사진'
-        />
+        <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='프로필 사진' />
       </Menu.Button>
       <Transition
         as={Fragment}
@@ -28,7 +27,7 @@ export default function DropdownMenu({ imgUrl }) {
         leave='transition ease-in duration-75'
         leaveFrom='transform opacity-100 scale-100'
         leaveTo='transform opacity-0 scale-95'>
-        <Menu.Items className='absolute right-0 w-29 mt-20  origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+        <Menu.Items className='z-20 absolute right-0 w-29 mt-20  origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
           <div className='py-1'>
             {MENUS.map((menu) => (
               <Menu.Item key={menu.name}>

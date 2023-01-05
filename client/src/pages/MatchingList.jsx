@@ -25,7 +25,7 @@ const MatchingList = () => {
   const handlePageChange = (page) => {
     setPage(page);
   };
-  
+
   const slicedList = () => {
     setPagePerList(recruitList.slice(5 * (page - 1), page * 5));
   };
@@ -33,24 +33,25 @@ const MatchingList = () => {
     slicedList();
   }, [page, recruitList]);
 
-
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
-    const data = await get(ApiUrl.RECRUIT_USER_INFO);
-    console.log('recruitingData', data);
+    const data = await get(ApiUrl.RECRUIT_USER_INFO_ALL);
     setRecruitList(data.reverse());
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
     const data = await get(ApiUrl.RECRUIT_INFO);
-    console.log('recruitedData', data);
     setRecruitList(data.reverse());
   };
 
   useEffect(() => {
     getRecruitingData();
   }, []);
+
+  useEffect(() => {
+    getRecruitedData();
+  }, [visible]);
 
   return (
     <Background img={'bg3'}>
@@ -139,18 +140,21 @@ const MatchingList = () => {
                         <div>진행 중인 매칭 이력이 없습니다.</div>
                       </tbody>
                     )}
+                  </table>
+                  <div className='h-20 w-full place-content-center'>
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
-                      hideDisabled={true}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
+                      hideDisabled={false}
                       hideFirstLastPages={true}
                       onChange={handlePageChange}
+                      disabledClass={'cursor:not-allowed'}
                     />
-                  </table>
+                  </div>
                 </Container>
               </div>
 
@@ -161,7 +165,7 @@ const MatchingList = () => {
                       <tr className='border-b-2 border-b-gray-300'>
                         <Th>매칭 날짜</Th>
                         <Th>매칭 제목</Th>
-                        <Th>평가하기</Th>
+                        <Th>팀원 평가</Th>
                       </tr>
                     </thead>
 
@@ -172,14 +176,20 @@ const MatchingList = () => {
                             <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
                             <Td>{list.title}</Td>
                             <Td>
-                              {!list.isEvaluated && (
+                              {!list.isEvaluate == 1 ? (
                                 <button
                                   className='text-white bg-blue-500 shadow-lg shadow-blue-500/50 px-[15px] py-[1px] rounded-lg'
                                   onClick={() => {
                                     setVisible(!visible);
                                     setSelectedList(list);
                                   }}>
-                                  팀원
+                                  평가 남기기
+                                </button>
+                              ) : (
+                                <button
+                                  className='text-blue-500 border-bg-blue-500 px-[15px] py-[1px] rounded-lg'
+                                  disabled>
+                                  평가 완료
                                 </button>
                               )}
                             </Td>
@@ -196,26 +206,29 @@ const MatchingList = () => {
                         <div>완료된 매칭 이력이 없습니다.</div>
                       </tbody>
                     )}
-
+                  </table>
+                  <div className='h-20 w-full place-content-center'>
                     <Pagination
                       activePage={page}
                       itemsCountPerPage={5}
                       totalItemsCount={recruitList.length}
                       pageRangeDisplayed={3}
-                      prevPageText={'‹'}
-                      nextPageText={'›'}
-                      hideDisabled={true}
+                      prevPageText={'<'}
+                      nextPageText={'>'}
+                      hideDisabled={false}
                       hideFirstLastPages={true}
                       onChange={handlePageChange}
                     />
-                  </table>
+                  </div>
                 </Container>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {visible && <Evaluation selectedList={selectedList} setVisible={setVisible} />}
+      {visible && (
+        <Evaluation getRecruitedData={getRecruitedData} selectedList={selectedList} setVisible={setVisible} />
+      )}
     </Background>
   );
 };
@@ -233,8 +246,10 @@ const Container = tw.div`
   pt-[40px]
 
   flex
-  justify-center
+  flex-col
+  justify-between
   items-start
+
 `;
 
 const Th = tw.th`

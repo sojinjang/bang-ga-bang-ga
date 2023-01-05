@@ -21,15 +21,15 @@ const Celebrate = () => {
   return (
     <Modal>
       <CelebrateTextBox>
-        <div>방가네 식구가 되신 것을 환영합니다!🎉</div>
-        <div>바로 프로필을 작성하러 가실까요?</div>
+        <div className='mb-4'>가입을 환영합니다!🎉</div>
+        <div>프로필도 바로 작성하실까요?</div>
       </CelebrateTextBox>
       <BtnContainer>
-        <SkipBtn className='bg-gray-200' onClick={onSkipBtn}>
-          나중에 하기
+        <SkipBtn className='bg-[#EAB30A]' onClick={onSkipBtn}>
+          Later
         </SkipBtn>
         <SkipBtn className='bg-[#4A94D7]' onClick={onRegisterProfileBtn}>
-          지금 작성하기
+          Now!
         </SkipBtn>
       </BtnContainer>
     </Modal>
@@ -37,9 +37,10 @@ const Celebrate = () => {
 };
 
 const Modal = tw.div`
-  mx-auto rounded-[60px] h-[40%] w-[110%] border border-[#E24FA9]
+  text-black
+  mx-auto rounded-[10px] h-[40%] w-[120%] border-4 border-[#E24FA9]
   flex flex-col justify-center items-center
-  absolute top-[10%] left-[-5%]
+  absolute top-[30%] left-[-10%]
   bg-white
 `;
 const CelebrateTextBox = tw.div`
@@ -47,10 +48,10 @@ const CelebrateTextBox = tw.div`
   flex flex-col
 `;
 const BtnContainer = tw.div`
-  mt-auto mb-[20px] w-full mx-auto flex justify-center
+  mt-auto mb-[20px] w-full mx-auto flex justify-center font-semibold 
 `;
 const SkipBtn = tw.button`
-  mx-5 p-4 rounded-[10px]
+  mx-5 p-3 rounded-full
 `;
 
 export default Celebrate;
