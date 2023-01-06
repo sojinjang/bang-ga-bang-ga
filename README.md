@@ -34,16 +34,16 @@
 
 </details>
 <details><summary>모집글 리스트로 보기</summary>
-
+<img src="/uploads/c10d50cdc68ecc0dc7e76a66473818f8/모집글_리스트로_보기.gif" width="960">
 </details>
 <details><summary>모집글 지도로 보기</summary>
-
+<img src="/uploads/85de3c8f1b2516bcd9aed3ea90eafa6a/지도로_보기.gif" width="960">
 </details>
 <details><summary>모집글 상세보기 - 방장</summary>
-
+<img src="https://user-images.githubusercontent.com/89888075/210947134-e578aeca-7b7f-43b5-8293-9a22d701a452.gif" width="960">
 </details>
 <details><summary>모집글 상세보기 - 참가자</summary>
-
+<img src="https://user-images.githubusercontent.com/89888075/210947101-5b14b22d-82a2-4668-8209-35f6494ef943.gif" width="960">
 </details>
 <details><summary>카페리스트보기</summary>
 
