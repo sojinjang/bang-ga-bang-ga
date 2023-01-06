@@ -30,8 +30,9 @@
 - 매칭 이후 유저들간의 탈출 레벨, 매너 점수 평가 기능
 - 모집 중인 게시글 리스트, 지도로 확인 가능
 - 방탈출 카페에 대한 정보 지역별 조회 기능
+## 🎨 페이지별 Gif
 <details><summary>홈화면</summary>
-
+<img src="/uploads/ae22f7335b11268a9c998588b2085867/홈화면.gif" width="960">
 </details>
 <details><summary>모집글 리스트로 보기</summary>
 <img src="/uploads/c10d50cdc68ecc0dc7e76a66473818f8/모집글_리스트로_보기.gif" width="960">
@@ -61,13 +62,14 @@
 <img src="/uploads/117d746a59efecc32002371039b58955/team_evaluation.gif" width="960">
 </details>
 <details><summary>마이페이지 - 매칭이력</summary>
-
+<img src="/uploads/70e0c8b10349beab266e8e4b1ca563a8/매칭이력.gif" width="960">
 </details>
+
 ## 🪪 테스트 계정
   ```
   ID: test@elice.com
   PW: qwer1234! 
-  ```
+ ```
 
 ## 👨‍👩‍👦‍👦 Responsibility
 | 담당자명(GitHub) | 담당 파트 |
