@@ -46,12 +46,11 @@
 <img src="https://user-images.githubusercontent.com/89888075/210947101-5b14b22d-82a2-4668-8209-35f6494ef943.gif" width="960">
 </details>
 <details><summary>카페리스트보기</summary>
-
+<img src="/uploads/6ddc4954fb24147187e15cb0a84ff09a/카페리스트.gif" width="960">
 </details>
 <details><summary>회원가입</summary>
-
+<img src="/uploads/499108edfe1d0d47d9ef37b1f7e8a8d8/회원가입.gif" width="960">
 </details>
-
 <details><summary>로그인</summary>
 <img src="/uploads/c96bd89590148944b236ec9e2ec7d34f/로그인.gif" width="960">
 </details>
