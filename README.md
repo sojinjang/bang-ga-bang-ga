@@ -30,7 +30,40 @@
 - 매칭 이후 유저들간의 탈출 레벨, 매너 점수 평가 기능
 - 모집 중인 게시글 리스트, 지도로 확인 가능
 - 방탈출 카페에 대한 정보 지역별 조회 기능
+<details><summary>홈화면</summary>
 
+</details>
+<details><summary>모집글 리스트로 보기</summary>
+
+</details>
+<details><summary>모집글 지도로 보기</summary>
+
+</details>
+<details><summary>모집글 상세보기 - 방장</summary>
+
+</details>
+<details><summary>모집글 상세보기 - 참가자</summary>
+
+</details>
+<details><summary>카페리스트보기</summary>
+
+</details>
+<details><summary>회원가입</summary>
+
+</details>
+
+<details><summary>로그인</summary>
+<img src="/uploads/c96bd89590148944b236ec9e2ec7d34f/로그인.gif" width="960">
+</details>
+<details><summary>마이페이지 - 회원정보수정</summary>
+<img src="/uploads/d236af0a0d6c2e818c22133c4b559af8/회원정보수정.gif" width="960">
+</details>
+<details><summary>마이페이지 - 팀원평가</summary>
+<img src="/uploads/117d746a59efecc32002371039b58955/team_evaluation.gif" width="960">
+</details>
+<details><summary>마이페이지 - 매칭이력</summary>
+
+</details>
 ## 🪪 테스트 계정
   ```
   ID: test@elice.com
