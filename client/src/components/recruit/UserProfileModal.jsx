@@ -13,7 +13,7 @@ import { ApiUrl } from '../../constants/ApiUrl';
 import UserProfileModalInner from './UserProfileModalInner';
 
 const UserProfileModal = () => {
-  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
+  const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
   const currentPostId = useRecoilValue(currentPostIdAtom);
   const currentUserIndex = useRecoilValue(currentUserIndexAtom);
   const [usersData, setUsersData] = useState([]);

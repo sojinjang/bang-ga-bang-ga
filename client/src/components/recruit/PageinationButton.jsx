@@ -1,10 +1,15 @@
-import React from 'react';
-import { currentPageAtom, maxPageNumAtom } from '../../recoil/recruit-list/index';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useEffect } from 'react';
+import { currentPageAtom, maxPageNumAtom, showUserProfileModalAtom } from '../../recoil/recruit-list/index';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 const PaginationButton = () => {
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
   const maxPageNum = useRecoilValue(maxPageNumAtom);
+  const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
+
+  useEffect(() => {
+    setShowUserProfileModal(false);
+  }, [currentPage]);
 
   return (
     <div className='flex justify-center mt-4'>
