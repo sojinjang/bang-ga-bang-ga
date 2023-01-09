@@ -18,6 +18,9 @@
     REACT_APP_KAKAOMAP_API_KEY=<카카오맵 api key>
     REACT_APP_SERVER_URL=<백 서버 url>
     ```
+    ```bash
+    REACT_APP_NODE_ENV=development # 선택, development로 설정시 msw 작동
+    ```
     
 4. express 앱을 실행
    ```
