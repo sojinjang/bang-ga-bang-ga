@@ -33,6 +33,7 @@ export default function RecruitPostList() {
   const filterCafesWithinScope = () => {
     const cafesWithinScopeArr = [];
     cafeInfo[region].forEach((cafe) => {
+      if (Object.keys(scope).length === 0) return;
       if (isCafeWithinScope(scope, cafe.lat, cafe.lng)) {
         cafesWithinScopeArr.push(cafe.cafeId);
       }
@@ -41,6 +42,7 @@ export default function RecruitPostList() {
   };
 
   const addRegionCafePost = async () => {
+    if (Object.keys(cafeInfo).length === 0) return;
     const recruitDataObj = {};
     for await (const cafe of cafeInfo[region]) {
       recruitDataObj[cafe.cafeId] = await getRecruitingInfo(cafe.cafeId);

@@ -120,7 +120,7 @@ const MypageEdit = () => {
   };
 
   return (
-    <BackgroundScroll img={'bg3'} className='relative'>
+    <BackgroundScroll img={'bg3-long'} className='relative'>
       <Navigators />
       <UserProfileContainer>
         <EditProfileIcon showAddProfileIcon={showAddProfileIcon} setShowAddProfileIcon={setShowAddProfileIcon} />

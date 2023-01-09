@@ -40,6 +40,7 @@ const RecuitPostContainer = ({ postData }) => {
 
     if ((loginToken == '') | !loginToken) {
       alert('로그인이 필요한 서비스입니다.');
+      navigate('/login');
     } else {
       try {
         await get(ApiUrl.MATCHING_POST_READ_POST, e.currentTarget.id);
