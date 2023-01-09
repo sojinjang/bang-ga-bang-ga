@@ -10,14 +10,14 @@ const PaginationButton = () => {
 
   const PrevButton = tw.button`
     w-[30px] h-[30px] text-sm mx-1 text-white border-solid border-[0.5px] rounded border-white
-    ${(props) => (props.currentPage === 0 ? 'bg-gray-400' : 'bg-blue-1')}
+    ${(props) => (props.$currentPage === 0 ? 'bg-gray-400' : 'bg-blue-1')}
   `;
   const PageButton = tw.button`
     w-[30px] h-[30px] text-sm mx-1 text-white bg-blue-1 border-solid border-[0.5px] rounded border-white
   `;
   const NextButton = tw.button`
     w-[30px] h-[30px] text-sm mx-1 text-white border-solid border-[0.5px] rounded border-white
-    ${(props) => (props.currentPage + 1 > props.maxPageNum ? 'bg-gray-400' : 'bg-blue-1')}
+    ${(props) => (props.$currentPage + 1 > props.$maxPageNum ? 'bg-gray-400' : 'bg-blue-1')}
   `;
 
   const clickPageButton = (e) => {
@@ -32,7 +32,7 @@ const PaginationButton = () => {
   return (
     <div className='flex justify-center mt-4'>
       <PrevButton
-        currentPage={currentPage}
+        $currentPage={currentPage}
         onClick={() => {
           currentPage > 0 && setCurrentPage(currentPage - 1);
         }}>
@@ -53,8 +53,8 @@ const PaginationButton = () => {
       <PageButton onClick={(e) => clickPageButton(e)}>{currentPage + 1}</PageButton>
       <PageButton onClick={(e) => clickPageButton(e)}>{currentPage + 1 > maxPageNum || currentPage + 2}</PageButton>
       <NextButton
-        currentPage={currentPage}
-        maxPageNum={maxPageNum}
+        $currentPage={currentPage}
+        $maxPageNum={maxPageNum}
         onClick={() => {
           currentPage < maxPageNum && setCurrentPage(currentPage + 1);
         }}>
