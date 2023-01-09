@@ -37,15 +37,17 @@ const Participant = ({ isLeader, isRecruitCompleted, participantList, postId, me
               </button>
             )}
           </div>
-          <ProfileImg
-            onClick={() => {
-              setVisible(true);
-              setUserData(participant);
-            }}
-            src={process.env.REACT_APP_SERVER_URL + participant.profileImg}
-            alt='프로필 이미지'
-            className='cursor-pointer'
-          />
+          {participant.profileImg && (
+            <ProfileImg
+              onClick={() => {
+                setVisible(true);
+                setUserData(participant);
+              }}
+              src={process.env.REACT_APP_SERVER_URL + participant.profileImg}
+              alt='프로필 이미지'
+              className='cursor-pointer'
+            />
+          )}
           <NickName>{participant.nickName}</NickName>
           <div className='flex justify-evenly'>
             <Score>

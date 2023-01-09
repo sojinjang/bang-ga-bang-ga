@@ -33,15 +33,17 @@ const UserProfileContainer = ({ postId }) => {
         {currentTeamInfo.length > 0 &&
           currentTeamInfo.map((user, index) => (
             <div className='flex flex-col text-center' key={index}>
-              <img
-                onClick={() => {
-                  setCurrentUserIndex(index);
-                  setShowUserProfileModal(!showUserProfileModal);
-                }}
-                className='mx-auto w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
-                src={process.env.REACT_APP_SERVER_URL + user['profileImg']}
-                alt='유저 프로필'
-              />
+              {user['profileImg'] && (
+                <img
+                  onClick={() => {
+                    setCurrentUserIndex(index);
+                    setShowUserProfileModal(!showUserProfileModal);
+                  }}
+                  className='mx-auto w-[50px] h-[50px] drop-shadow-xl object-cover rounded-full border-solid border-[0.5px] border-gray-500 cursor-pointer'
+                  src={process.env.REACT_APP_SERVER_URL + user['profileImg']}
+                  alt='유저 프로필'
+                />
+              )}
               <span className='text-black text-xs'>{user['nickName']}</span>
             </div>
           ))}
