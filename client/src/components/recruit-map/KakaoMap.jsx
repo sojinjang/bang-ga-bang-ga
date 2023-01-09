@@ -13,7 +13,7 @@ import clickedMarkerImg from '../../assets/images/icon/marker-clicked.png';
 
 async function getCafeInfo(region) {
   try {
-    const regionCafeInfoArr = await api.get(ApiUrl.CAFE_INFO, region);
+    const regionCafeInfoArr = await api.get(ApiUrl.MAP_MATCHING_POSTS, region);
     return regionCafeInfoArr;
   } catch (err) {
     alert(err.message);
