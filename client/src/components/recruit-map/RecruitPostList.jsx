@@ -9,7 +9,7 @@ import RecuitPostContainer from '../recruit/RecruitPostContainer';
 
 async function getRecruitingInfo(cafeId) {
   try {
-    const cafeRecruitingArr = await api.get(ApiUrl.RECRUITING_INFO, cafeId);
+    const cafeRecruitingArr = await api.get(ApiUrl.MAP_MATCHING_POST_CAFE_INFO, cafeId);
     return cafeRecruitingArr;
   } catch (err) {
     alert(err.message);
