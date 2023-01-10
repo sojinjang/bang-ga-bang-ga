@@ -15,7 +15,9 @@ const MannerImage = ({ score, size }) => {
   } else if (score >= 20) {
     return <img src={manner2} style={{ width: size, height: size, display: 'inline-block' }} alt='이모지' />;
   } else {
-    return <img src={manner1} style={{ width: size, height: size, display: 'inline-block' }} alt='이모지' />;
+    return (
+      <img src={manner1} style={{ minWidth: size, width: size, height: size, display: 'inline-block' }} alt='이모지' />
+    );
   }
 };
 
