@@ -16,7 +16,7 @@ const LeaderBtn = ({ postId, isRecruitCompleted, setIsRecruitCompleted, leaderLi
     members.forEach((member) => {
       const userId = member.userId;
       const data = async () => {
-        await api.post('/api/user/manner', { userId });
+        await api.post(ApiUrl.USER_MANNER, { userId });
       };
       data();
     });
