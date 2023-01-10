@@ -15,7 +15,9 @@ const LevelImage = ({ score, size }) => {
   } else if (score >= 20) {
     return <img src={level2} style={{ width: size, height: size, display: 'inline-block' }} alt='이모지' />;
   } else {
-    return <img src={level1} style={{ width: size, height: size, display: 'inline-block' }} alt='이모지' />;
+    return (
+      <img src={level1} style={{ minWidth: size, width: size, height: size, display: 'inline-block' }} alt='이모지' />
+    );
   }
 };
 

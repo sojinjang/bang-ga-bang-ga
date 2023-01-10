@@ -30,7 +30,7 @@ const UserProfileModalInner = () => {
           <h3>매너점수💖</h3>
           <Wrapper style={{ whiteSpace: 'nowrap' }}>
             <MannerProgress style={{ width: mannerProgressWith }}>
-              <span>{mannerScore}점</span>
+              <span className='mr-1'>{mannerScore}점</span>
               <MannerImage score={mannerScore} size={20} />
             </MannerProgress>
           </Wrapper>
@@ -41,7 +41,7 @@ const UserProfileModalInner = () => {
           <h3>탈출레벨🔑</h3>
           <Wrapper style={{ whiteSpace: 'nowrap' }}>
             <EscapeProgress style={{ width: escapeProgressWith }}>
-              <span>{tier}</span>
+              <span className='mr-1'>{tier}</span>
               <LevelImage score={escapeScore} size={20} />
             </EscapeProgress>
           </Wrapper>
