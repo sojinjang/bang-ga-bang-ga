@@ -261,7 +261,7 @@ const SecondModal = () => {
           <span>방문 테마명</span>
           <select
             onChange={(e) => {
-              const themeId = parseInt(e.target.value) + 1;
+              const themeId = parseInt(e.target.value);
               setCurrentThemeData(currentThemeDataArray[themeId]);
               setSubmitStatus(true);
 
