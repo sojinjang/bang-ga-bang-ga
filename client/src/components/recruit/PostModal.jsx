@@ -146,6 +146,7 @@ const SecondModal = () => {
   const userId = jwt_decode(loginToken).userId;
 
   useEffect(() => {
+    // eslint-disable-next-line
     const getCafeData = (async () => {
       try {
         const cafeData = await get(ApiUrl.MATCHING_POST_CAFE_INFO, recruitPostData.matchingLocation);

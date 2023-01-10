@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import tw from 'tailwind-styled-components';
 import LevelImage from '../common/LevelImage';
 import MannerImage from '../common/MannerImage';

@@ -40,6 +40,7 @@ const RecruitList = () => {
 
   useEffect(() => {
     if (currentRegion === '전체') {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS);
@@ -51,6 +52,7 @@ const RecruitList = () => {
         }
       })();
     } else {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
