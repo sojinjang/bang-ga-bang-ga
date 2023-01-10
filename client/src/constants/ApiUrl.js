@@ -1,6 +1,7 @@
 export const ApiUrl = Object.freeze({
   USER: '/api/user',
   LOGIN: '/api/user/login',
+  USER_MANNER: '/api/user/manner',
 
   MATCHING_POSTS: '/api/matching-posts',
   MATCHING_POST_CAFE_INFO: '/api/matching-posts/cafe-list',
