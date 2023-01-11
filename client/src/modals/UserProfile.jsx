@@ -2,11 +2,11 @@ import React from 'react';
 import UserProfileModalInner from '../components/recruit-detail/UserProfileModalInner';
 import Profile from '../components/common/Profile';
 
-const Review = ({ setVisible, userData }) => {
+const UserProfile = ({ setVisible, userData }) => {
   return (
     <div className='flex p-12 w-[760px] h-[600px] absolute bg-slate-300 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%] z-10'>
       <div className='text-center w-full'>
-        <Profile img={process.env.REACT_APP_SERVER_URL + userData.profileImg} size={250} />
+        {userData.profileImg && <Profile img={process.env.REACT_APP_SERVER_URL + userData.profileImg} size={250} />}
         <p className='text-[35px] font-semibold mt-[10px]'>{userData.nickName}</p>
       </div>
       <div className='h-[480px] ml-5 p-4'>
@@ -29,4 +29,4 @@ const Review = ({ setVisible, userData }) => {
   );
 };
 
-export default Review;
+export default UserProfile;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import tw from 'tailwind-styled-components';
 import DropdownMenu from './DropdownMenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,14 +25,12 @@ const Navigators = () => {
   const setProfileImg = useSetRecoilState(profileImgAtom);
   const [myManner, setMyManner] = useState(null);
   const [myTier, setMyTier] = useState(null);
-  const [imgUrl, setImgUrl] = useState(null);
   const getUserInfo = async () => {
     try {
       const res = await get(ApiUrl.USER);
-      const { mannerScore, tier, escapeScore, profileImg } = res;
+      const { mannerScore, escapeScore, profileImg } = res;
       setMyManner(mannerScore);
       setMyTier(escapeScore);
-      setImgUrl(profileImg);
       setProfileImg(profileImg);
     } catch (err) {
       console.log(err);

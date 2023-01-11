@@ -7,7 +7,7 @@ const UserProfile = ({ userData }) => {
 
   return (
     <div>
-      <ProfileWithHat img={process.env.REACT_APP_SERVER_URL + userData.profileImg} />
+      {userData.profileImg && <ProfileWithHat img={process.env.REACT_APP_SERVER_URL + userData.profileImg} />}
       <div className='pl-[15px]'>
         <h2 className='font-bold text-3xl'>{userData.nickName}</h2>
         <div className='font-medium text-xl mb-[3px]'>{userData.userIntro}</div>

@@ -7,8 +7,7 @@ import {
   currentPageAtom,
   currentRegionAtom,
 } from '../recoil/recruit-list/index';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
-import jwt_decode from 'jwt-decode';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { get } from '../utils/api';
 import { getCookieValue } from '../utils/cookie';
@@ -26,8 +25,8 @@ const RecruitList = () => {
   const [showRecruitPost, setShowRecruitPost] = useRecoilState(showRecruitPostAtom);
   const [currentRegion, setCurrentRegion] = useRecoilState(currentRegionAtom);
   const [currentPage, setCurrentPage] = useRecoilState(currentPageAtom);
+  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
   const setMaxPageNum = useSetRecoilState(maxPageNumAtom);
-  const showUserProfileModal = useRecoilValue(showUserProfileModalAtom);
 
   const [fetchedData, setFetchedData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -41,6 +40,7 @@ const RecruitList = () => {
 
   useEffect(() => {
     if (currentRegion === '전체') {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS);
@@ -52,6 +52,7 @@ const RecruitList = () => {
         }
       })();
     } else {
+      // eslint-disable-next-line
       const fetchRecruitData = (async () => {
         try {
           const data = await get(ApiUrl.MATCHING_POSTS, currentRegion);
@@ -97,6 +98,10 @@ const RecruitList = () => {
       setCurrentPageData(slicedData[0]);
     }
   }, [slicedData, currentPage]);
+
+  useEffect(() => {
+    setShowUserProfileModal(false);
+  }, [currentRegion]);
 
   return (
     <Background img={'bg1'}>

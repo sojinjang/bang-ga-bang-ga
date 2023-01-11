@@ -45,7 +45,7 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
 
   const postEvaluation = async () => {
     try {
-      const res = await post(ApiUrl.TEAM_EVALUATE, evalRes);
+      await post(ApiUrl.TEAM_EVALUATE, evalRes);
     } catch (err) {
       console.log(err);
     }
@@ -82,7 +82,9 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
             {evalRes.map(({ nickName, profileImg }) => (
               <div key={nickName} className='flex justify-between mb-[15px]'>
                 <div className='w-[100px]'>
-                  <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='팀원 프로필 사진' />
+                  {profileImg && (
+                    <ProfileImg src={process.env.REACT_APP_SERVER_URL + profileImg} alt='팀원 프로필 사진' />
+                  )}
                   <div className='text-lg text-center'>{nickName}</div>
                 </div>
                 <div className='flex flex-col'>

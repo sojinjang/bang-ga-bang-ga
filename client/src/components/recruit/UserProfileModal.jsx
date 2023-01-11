@@ -13,7 +13,7 @@ import { ApiUrl } from '../../constants/ApiUrl';
 import UserProfileModalInner from './UserProfileModalInner';
 
 const UserProfileModal = () => {
-  const [showUserProfileModal, setShowUserProfileModal] = useRecoilState(showUserProfileModalAtom);
+  const setShowUserProfileModal = useSetRecoilState(showUserProfileModalAtom);
   const currentPostId = useRecoilValue(currentPostIdAtom);
   const currentUserIndex = useRecoilValue(currentUserIndexAtom);
   const [usersData, setUsersData] = useState([]);
@@ -43,7 +43,7 @@ const UserProfileModal = () => {
   return (
     <div className='flex p-12 w-[760px] h-[600px] absolute bg-slate-300 rounded-2xl top-[33%] left-[50%] translate-x-[-50%] translate-y-[-30%] z-10'>
       <div className='text-center w-full'>
-        <Profile img={process.env.REACT_APP_SERVER_URL + profileImg} size={250} />
+        {profileImg && <Profile img={process.env.REACT_APP_SERVER_URL + profileImg} size={250} />}
         <p className='mt-3'>{role}</p>
         <p className='text-[35px] font-semibold'>{nickName}</p>
       </div>

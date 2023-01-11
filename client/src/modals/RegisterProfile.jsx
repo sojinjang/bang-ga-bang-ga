@@ -56,7 +56,7 @@ const RegisterProfile = ({ userId }) => {
   };
   const addUserAddInfo = async () => {
     try {
-      const res = await patch(ApiUrl.USER, userId, { ...userAddInfo });
+      await patch(ApiUrl.USER, userId, { ...userAddInfo });
       alert('추가정보가 정상적으로 입력되었습니다');
       navigate('/');
     } catch (err) {

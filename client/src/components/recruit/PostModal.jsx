@@ -146,6 +146,7 @@ const SecondModal = () => {
   const userId = jwt_decode(loginToken).userId;
 
   useEffect(() => {
+    // eslint-disable-next-line
     const getCafeData = (async () => {
       try {
         const cafeData = await get(ApiUrl.MATCHING_POST_CAFE_INFO, recruitPostData.matchingLocation);
@@ -261,7 +262,7 @@ const SecondModal = () => {
           <span>방문 테마명</span>
           <select
             onChange={(e) => {
-              const themeId = parseInt(e.target.value) + 1;
+              const themeId = parseInt(e.target.value);
               setCurrentThemeData(currentThemeDataArray[themeId]);
               setSubmitStatus(true);
 
@@ -346,17 +347,21 @@ const SecondModal = () => {
       </div>
       <div className='ml-3 mt-[126px]'>
         <div className='flex flex-col text-sm pl-3 border-l border-solid border-gray-500/20'>
-          <span className='text-blue-500 font-semibold'>{currentThemeData.genre}</span>
+          <span className='text-blue-500 font-semibold'>{currentThemeData.genre && currentThemeData.genre}</span>
           <p>
-            <span className='text-blue-500 font-semibold'>{calcDifficulty(currentThemeData.difficulty)}</span>
+            <span className='text-blue-500 font-semibold'>
+              {currentThemeData.difficulty && calcDifficulty(currentThemeData.difficulty)}
+            </span>
           </p>
           <ul className='flex gap-2'>
-            <li className='text-blue-500 font-semibold'>{currentThemeData.activity}</li>
+            <li className='text-blue-500 font-semibold'>{currentThemeData.activity && currentThemeData.activity}</li>
           </ul>
           <ul className='flex gap-1'>
-            <li className='text-blue-500 font-semibold'>{currentThemeData.recommendedNum}</li>
+            <li className='text-blue-500 font-semibold'>
+              {currentThemeData.recommendedNum && currentThemeData.recommendedNum}
+            </li>
           </ul>
-          <span className='text-blue-500 font-semibold'>{currentThemeData.time}분 이내</span>
+          <span className='text-blue-500 font-semibold'>{currentThemeData.time && currentThemeData.time}분 이내</span>
         </div>
       </div>
     </div>

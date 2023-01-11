@@ -13,8 +13,6 @@ const MatchingList = () => {
   const [visible, setVisible] = useState(false);
   const [selectedList, setSelectedList] = useState([]);
 
-  // const [recruitingList, setRecruitingList] = useState([]);
-  // const [recruitedList, setRecruitedList] = useState([]);
   const [recruitList, setRecruitList] = useState([]);
   const [pagePerList, setPagePerList] = useState([]);
 
@@ -36,13 +34,13 @@ const MatchingList = () => {
   // 진행중:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitingData = async () => {
     const data = await get(ApiUrl.RECRUIT_USER_INFO_ALL);
-    setRecruitList(data.reverse());
+    setRecruitList(data.sort((a,b)=>b.matchingTime-a.matchingTime));
   };
 
   // 매칭완료:참가한 모집글 정보 - 날짜 최신순 정렬
   const getRecruitedData = async () => {
     const data = await get(ApiUrl.RECRUIT_INFO);
-    setRecruitList(data.reverse());
+    setRecruitList(data.sort((a,b)=>b.matchingTime-a.matchingTime));
   };
 
   useEffect(() => {
@@ -95,13 +93,12 @@ const MatchingList = () => {
             </a>
           </li>
         </ul>
-        {/* className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded' */}
         <div>
           <div className='px-4 flex-auto'>
             <div className='tab-content tab-space'>
               <div className={openTab === 1 ? 'block' : 'hidden'} id='link1'>
                 <Container>
-                  <table className='w-[700px] text-xl text-left border-collapse'>
+                  <table className='w-[800px] text-xl text-left border-collapse'>
                     <thead>
                       <tr className='border-b-2 border-b-gray-300'>
                         <Th>매칭 날짜</Th>
@@ -112,9 +109,10 @@ const MatchingList = () => {
 
                     {recruitList.length !== 0 ? (
                       pagePerList.map((list) => (
+                        
                         <tbody key={list.matching_log_id}>
                           <tr>
-                            <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
+                            <Td>{list.matchingTime.toString().slice(0, 2)}.{list.matchingTime.toString().slice(2, 4)}.{list.matchingTime.toString().slice(4, 6)}</Td>
                             <Td>{list.title}</Td>
                             <Td>
                               {!list.isEvaluated && (
@@ -160,7 +158,7 @@ const MatchingList = () => {
 
               <div className={openTab === 2 ? 'block' : 'hidden'} id='link2'>
                 <Container>
-                  <table className='w-[700px] text-xl text-left border-collapse'>
+                  <table className='w-[800px] text-xl text-left border-collapse'>
                     <thead>
                       <tr className='border-b-2 border-b-gray-300'>
                         <Th>매칭 날짜</Th>
@@ -173,7 +171,8 @@ const MatchingList = () => {
                       pagePerList.map((list) => (
                         <tbody key={list.matching_log_id}>
                           <tr>
-                            <Td>{list.createdAt.slice(0, 10).replaceAll('-', '.')}</Td>
+                            <Td>{list.matchingTime.toString().slice(0, 2)}.{list.matchingTime.toString().slice(2, 4)}.{list.matchingTime.toString().slice(4, 6)}</Td>
+                            <Td>{list.title}</Td>
                             <Td>{list.title}</Td>
                             <Td>
                               {!list.isEvaluate == 1 ? (
@@ -236,7 +235,7 @@ const MatchingList = () => {
 export default MatchingList;
 
 const Container = tw.div`
-  w-[800px]
+  w-[900px]
   h-[500px]
   mt-[0.7rem]
   bg-white

@@ -19,15 +19,17 @@ const Leader = ({ leaderList }) => {
         </div>
         <div className='mt-[23px]'>
           <div className='relative w-[210px] h-[210px] mx-auto'>
-            <LeaderProfileImg
-              onClick={() => {
-                setVisible(true);
-                setUserData(leaderList);
-              }}
-              src={process.env.REACT_APP_SERVER_URL + leaderList.profileImg}
-              alt='프로필 이미지'
-              className='cursor-pointer'
-            />
+            {leaderList.profileImg && (
+              <LeaderProfileImg
+                onClick={() => {
+                  setVisible(true);
+                  setUserData(leaderList);
+                }}
+                src={process.env.REACT_APP_SERVER_URL + leaderList.profileImg}
+                alt='프로필 이미지'
+                className='cursor-pointer'
+              />
+            )}
             <Crown src={crown} alt='왕관 이모지' />
           </div>
           <NickName>{leaderList.nickName}</NickName>
