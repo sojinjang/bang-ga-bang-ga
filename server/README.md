@@ -23,7 +23,7 @@
     AWS_MYSQL_DATABASE: <AWS RDB DB_name>
     AWS_MYSQL_PASSWORD: <AWS DB password>
     AWS_MYSQL_PORT:<AWS Port>
-    PORT=<vm port> 
+    PORT=<port number> 
     ```
     
 5. 앱 실행
