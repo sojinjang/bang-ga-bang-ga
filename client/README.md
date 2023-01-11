@@ -3,16 +3,19 @@
 1. 레포지토리 클론
 
    ```bash
-   git clone "https://kdt-gitlab.elice.io/sw_track/class_03/web_project_2/team15/initialization"
+   git clone "https://github.com/sojinjang/bang-ga-bang-ga.git"
    ```
-
-2. 필요한 module 설치
+2. 디렉토리 이동
+   ```bash
+   cd client
+   ```
+3. 필요한 module 설치
 
    ```bash
    yarn install
    ```
 
-3. `.env` 설정
+4. `.env` 설정
 
     ```bash
     REACT_APP_KAKAOMAP_API_KEY=<카카오맵 api key>
@@ -22,7 +25,7 @@
     REACT_APP_NODE_ENV=development # 선택, development로 설정시 msw 작동
     ```
     
-4. express 앱을 실행
+5. 앱 실행
    ```
    yarn start
    ```
