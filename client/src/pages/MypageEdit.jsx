@@ -94,7 +94,7 @@ const MypageEdit = () => {
       return;
     }
     try {
-      const response = await patch(ApiUrl.USER, userId, userBasicData);
+      await patch(ApiUrl.USER, userId, userBasicData);
       alert('기본정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);
@@ -102,7 +102,7 @@ const MypageEdit = () => {
   };
   const editUserAddData = async () => {
     try {
-      const response = await patch(ApiUrl.USER, userId, userAddData);
+      await patch(ApiUrl.USER, userId, userAddData);
       alert('추가정보가 정상적으로 수정되었습니다');
     } catch (err) {
       alert(err);

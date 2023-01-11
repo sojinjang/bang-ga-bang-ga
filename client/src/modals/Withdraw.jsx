@@ -1,10 +1,7 @@
 import React from 'react';
 import tw from 'tailwind-styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 const Withdraw = ({ setShowWithdraw }) => {
-  const [password, setPassword] = useState(null);
-  const [reason, setReason] = useState(null);
   const navigate = useNavigate();
   const onWithdraw = () => {
     const willWithdraw = confirm('정말 탈퇴를 진행하시겠습니까?');
@@ -37,15 +34,11 @@ const Withdraw = ({ setShowWithdraw }) => {
         <form method='patch' action='/api/user'>
           <div>
             <div className='text-lg'>비밀번호 입력</div>
-            <input
-              type='password'
-              className='pl-2 border border-black w-3/5 rounded'
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <input type='password' className='pl-2 border border-black w-3/5 rounded' />
           </div>
           <div>
             <div className='text-lg'>탈퇴 사유(선택)</div>
-            <select className='border border-black w-3/5 rounded' onChange={(e) => setReason(e.target.value)}>
+            <select className='border border-black w-3/5 rounded'>
               <option value='자주 사용하지 않음'>자주 사용하지 않음</option>
               <option value='서비스 장애와 오류 때문에'>서비스 장애와 오류 때문에</option>
               <option value='탈퇴후 신규 가입을 위해'>탈퇴후 신규 가입을 위해</option>

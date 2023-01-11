@@ -155,7 +155,7 @@ const InnerTrapezoid = tw.button`
   hover:border-t-white
   hover:text-[#E150A9]
 `;
-const MatchingBtn = tw.button`
+const MatchingBtn = tw.div`
   absolute top-[-110px] left-[45px]
 `;
 const LoginRegisterContainer = tw.div`
