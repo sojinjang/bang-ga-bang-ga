@@ -45,7 +45,7 @@ const Evaluation = ({ getRecruitedData, selectedList, setVisible }) => {
 
   const postEvaluation = async () => {
     try {
-      const res = await post(ApiUrl.TEAM_EVALUATE, evalRes);
+      await post(ApiUrl.TEAM_EVALUATE, evalRes);
     } catch (err) {
       console.log(err);
     }

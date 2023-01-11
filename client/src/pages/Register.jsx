@@ -14,11 +14,9 @@ import { USER_INPUT_DATA } from '../constants/registerUserInputData';
 import jwt_decode from 'jwt-decode';
 import { Keys } from '../constants/Keys';
 import { setCookie } from '../utils/cookie';
-import { useNavigate } from 'react-router-dom';
 import { ApiUrl } from '../constants/ApiUrl';
 
 const Register = () => {
-  const navigate = useNavigate();
   const [showCelebrate, setShowCelebrate] = useRecoilState(showCelebrateAtom);
   const showRegisterProfile = useRecoilValue(showRegisterProfileAtom);
   const [error, setError] = useState(null);
