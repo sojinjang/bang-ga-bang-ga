@@ -1,12 +1,11 @@
 # 🤗 방가방가 (bang-ga-bang-ga)
-[📎 서비스 링크 이동하기](http://kdt-sw3-team15.elicecoding.com/)
 
 ```
 함께 할 친구가 없거나, 난이도 극악인 테마를 깨고싶은데 주변에 방탈출 고수가 없어서 절망했던 경험 있으신가요? 🤔 
 방가방가에서 손쉽게 프로 방탈출러 멤버를 구해보세요! 🧞‍♂️
 ```
 
-<img src="/uploads/c10d50cdc68ecc0dc7e76a66473818f8/모집글_리스트로_보기.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211723812-8287631d-862c-4109-aa34-76633eb408e4.gif" width="960">
 
 
 ```
@@ -22,7 +21,7 @@
 ```
 
 ## 🛠 기술 스택
-<img src="/uploads/aa0825392f3de4103fccd96869f194cd/방가방가_기술스택.png" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724999-cb545695-63d3-49bb-ab86-6f1ac26f0302.png" width="960">
 
 ## 🤹 서비스 주요 기능
 - 원하는 시간대, 방탈출 카페를 지정해서 멤버 모집하기
@@ -33,13 +32,13 @@
 
 ## 💁 페이지 별 시연 영상
 <details><summary>홈화면</summary>
-<img src="/uploads/ae22f7335b11268a9c998588b2085867/홈화면.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724032-8add13f3-bb57-43db-8215-19251293792d.gif" width="960">
 </details>
 <details><summary>모집글 리스트로 보기</summary>
-<img src="/uploads/c10d50cdc68ecc0dc7e76a66473818f8/모집글_리스트로_보기.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724267-7bdb2308-9b5a-4b3e-af26-e93a058f3967.gif" width="960">
 </details>
 <details><summary>모집글 지도로 보기</summary>
-<img src="/uploads/85de3c8f1b2516bcd9aed3ea90eafa6a/지도로_보기.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724299-611b6d15-bdd5-4e40-9419-d87823642ab0.gif" width="960">
 </details>
 <details><summary>모집글 상세보기 - 방장</summary>
 <img src="https://user-images.githubusercontent.com/89888075/210947134-e578aeca-7b7f-43b5-8293-9a22d701a452.gif" width="960">
@@ -48,22 +47,22 @@
 <img src="https://user-images.githubusercontent.com/89888075/210947101-5b14b22d-82a2-4668-8209-35f6494ef943.gif" width="960">
 </details>
 <details><summary>카페리스트보기</summary>
-<img src="/uploads/6ddc4954fb24147187e15cb0a84ff09a/카페리스트.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724311-ed721659-c302-4c03-979b-e1960aa727dd.gif" width="960">
 </details>
 <details><summary>회원가입</summary>
-<img src="/uploads/499108edfe1d0d47d9ef37b1f7e8a8d8/회원가입.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724323-d18d89b4-8ff7-4e12-9c5c-f04a4a141798.gif" width="960">
 </details>
 <details><summary>로그인</summary>
-<img src="/uploads/c96bd89590148944b236ec9e2ec7d34f/로그인.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724336-7fb5ac59-2d14-4c16-92f1-c4fb88cc0b34.gif" width="960">
 </details>
 <details><summary>마이페이지 - 회원정보수정</summary>
-<img src="/uploads/d236af0a0d6c2e818c22133c4b559af8/회원정보수정.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724349-89a5d985-af72-4698-b47f-a47ab1bd76db.gif" width="960">
 </details>
 <details><summary>마이페이지 - 팀원평가</summary>
-<img src="/uploads/117d746a59efecc32002371039b58955/team_evaluation.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724824-b2dcaa22-39d9-4923-a389-655b1d685c19.gif" width="960">
 </details>
 <details><summary>마이페이지 - 매칭이력</summary>
-<img src="/uploads/70e0c8b10349beab266e8e4b1ca563a8/매칭이력.gif" width="960">
+<img src="https://user-images.githubusercontent.com/62415003/211724857-c18cd285-e698-4c52-9d23-487ff180a04b.gif" width="960">
 </details>
 
 ## 🪪 테스트 계정
