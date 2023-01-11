@@ -119,7 +119,7 @@ const CafeList = () => {
                   <img className='rounded-lg absolute w-full ' src={process.env.PUBLIC_URL + `${cafeImg}`}></img>
                 </div>
                 <div className='ml-3'>
-                  <p className='flex w-full justify-start align-center'>
+                  <div className='flex w-full justify-start align-center'>
                     <p className='font-bold'>{cafeName}</p>
                     <a
                       href={`https://search.naver.com/search.naver?&query=${cafeName}`}
@@ -131,7 +131,7 @@ const CafeList = () => {
                         src={process.env.PUBLIC_URL + '/images/icon/naver-icon.png'}
                       />
                     </a>
-                  </p>
+                  </div>
                   <p className='text-sm'>{address}</p>
                   <a className='text-sm' href={`${homePage}`} target='_blank' rel='noopener noreferrer nofollow'>
                     {homePage}
