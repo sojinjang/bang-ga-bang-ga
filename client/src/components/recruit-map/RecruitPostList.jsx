@@ -5,7 +5,7 @@ import { regionAtom, targetCafeAtom, scopeAtom, cafeInfoAtom } from '../../recoi
 import { ApiUrl } from '../../constants/ApiUrl';
 import * as api from '../../utils/api';
 import { useDidMountEffect } from '../../utils/hooks';
-import RecuitPostContainer from '../recruit/RecruitPostContainer';
+import SingleCafePostList from './SingleCafePostList';
 
 async function getRecruitingInfo(cafeId) {
   try {
@@ -50,47 +50,19 @@ export default function RecruitPostList() {
     setRecruitingInfo({ ...recruitingInfo, ...recruitDataObj });
   };
 
-  const handleScopeChange = () => {
-    if (cafeInfo[region]) filterCafesWithinScope();
-  };
-
   useEffect(() => {
     setCafesWithinScope([]);
   }, [region]);
   useDidMountEffect(addRegionCafePost, [cafeInfo]);
-  useDidMountEffect(handleScopeChange, [scope]);
+  useDidMountEffect(() => {
+    if (cafeInfo[region]) filterCafesWithinScope();
+  }, [scope]);
 
-  const CafeDescription = ({ cafeId }) => {
-    return (
-      recruitingInfo[cafeId] && (
-        <div className='my-3'>
-          <div className='text-lg font-semibold text-blue-4'>
-            {recruitingInfo[cafeId]['recruitingInfo'].length}팀 모집중
-          </div>
-          <div className='text-xl font-medium'>{recruitingInfo[cafeId]['cafeInfo'].cafeName}</div>
-          <div>{recruitingInfo[cafeId]['cafeInfo'].address}</div>
-        </div>
-      )
-    );
-  };
-
-  const SingleCafePostList = ({ cafeId }) => {
-    return (
-      <div>
-        <CafeDescription cafeId={cafeId} />
-        {recruitingInfo[cafeId] &&
-          recruitingInfo[cafeId]['recruitingInfo'].map((recruitPost) => (
-            <RecuitPostContainer key={recruitPost.matchingPostsId} postData={recruitPost} />
-          ))}
-      </div>
-    );
-  };
-
-  if (targetCafe) return <SingleCafePostList cafeId={targetCafe}></SingleCafePostList>;
+  if (targetCafe) return <SingleCafePostList cafeId={targetCafe} recruitingInfo={recruitingInfo} />;
   return (
     <div>
       {cafesWithinScope.map((cafeId) => {
-        return <SingleCafePostList cafeId={cafeId} key={cafeId}></SingleCafePostList>;
+        return <SingleCafePostList cafeId={cafeId} recruitingInfo={recruitingInfo} key={cafeId} />;
       })}
     </div>
   );
