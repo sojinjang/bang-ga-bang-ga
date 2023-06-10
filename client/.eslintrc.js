@@ -10,6 +10,7 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  parser: 'babel-parser',
   plugins: ['react'],
   rules: {
     indent: ['error', 2],
