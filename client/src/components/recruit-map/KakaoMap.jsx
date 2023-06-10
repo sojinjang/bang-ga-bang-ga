@@ -6,7 +6,7 @@ import { regionAtom, targetCafeAtom, scopeAtom, cafeInfoAtom } from '../../recoi
 import { regionCoordinate } from '../../constants/regionCoordinate';
 import { ApiUrl } from '../../constants/ApiUrl';
 import Marker from './Marker';
-import { ResizeButtonContainer } from './ResizeButtonContainer';
+import ResizeButtonContainer from './ResizeButtonContainer';
 import * as api from '../../utils/api';
 
 async function getCafeInfo(region) {
