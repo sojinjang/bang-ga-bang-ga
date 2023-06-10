@@ -14,14 +14,14 @@ const RecruitMap = () => {
       <div className='my-auto h-[88vh]'>
         <UpperPart className='flex flex-col '>
           <RegionButtonsContainer>
-            <RegionButton title={'홍대'}></RegionButton>
-            <RegionButton title={'강남'}></RegionButton>
-            <RegionButton title={'건대'}></RegionButton>
+            <RegionButton title={'홍대'} />
+            <RegionButton title={'강남'} />
+            <RegionButton title={'건대'} />
           </RegionButtonsContainer>
         </UpperPart>
         <LowerPart className='flex flex-col px-[10vw] mt-8'>
           <ViewSection className=' overflow-hidden flex'>
-            <KakaoMap></KakaoMap>
+            <KakaoMap />
             <RecruitListWrapper className='overflow-y-auto overflow-x-hidden scrollbar-hide'>
               <RecruitPostList />
             </RecruitListWrapper>
