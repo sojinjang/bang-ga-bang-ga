@@ -12,11 +12,27 @@ export const MapMarker = Object.freeze({
   강남: [
     {
       recruitingNum: 1,
+      cafeId: 2,
+      cafeName: '넥스트에디션 강남3호점',
+      locationDetail: '강남',
+      lat: '37.50027729',
+      lng: '127.0253276',
+    },
+    {
+      recruitingNum: 1,
       cafeId: 3,
       cafeName: '넥스트에디션 강남5호점',
       locationDetail: '강남',
       lat: '37.49954501',
       lng: '127.0282496',
+    },
+    {
+      recruitingNum: 2,
+      cafeId: 5,
+      cafeName: '황금열쇠 강남점',
+      locationDetail: '강남',
+      lat: '37.50107662',
+      lng: '127.0286573',
     },
     {
       recruitingNum: 1,
@@ -25,6 +41,14 @@ export const MapMarker = Object.freeze({
       locationDetail: '강남',
       lat: '37.50087868',
       lng: '127.0274811',
+    },
+    {
+      recruitingNum: 1,
+      cafeId: 19,
+      cafeName: '마스터키 강남점',
+      locationDetail: '강남',
+      lat: '37.50331147',
+      lng: '127.0271427',
     },
   ],
   건대: [
