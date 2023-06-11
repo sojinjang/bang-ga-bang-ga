@@ -47,6 +47,7 @@ export default function KakaoMap() {
   const handleRegionChange = async () => {
     if (!cafeInfo[region]) await addRegionCafeData();
     setTargetCafe(undefined);
+    setLevel(5);
   };
 
   useEffect(() => {
