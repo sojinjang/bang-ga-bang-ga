@@ -99,7 +99,7 @@ export const MapCafeInfo = Object.freeze({
       },
       {
         matchingSituationUserSum: 1,
-        matchingPostsId: 69,
+        matchingPostsId: 70,
         cafeName: '황금열쇠 강남점',
         title: '매너 좋으신 분들만',
         peopleNum: 3,
