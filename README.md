@@ -40,7 +40,7 @@
 <img src="https://user-images.githubusercontent.com/62415003/211724267-7bdb2308-9b5a-4b3e-af26-e93a058f3967.gif" width="960">
 </details>
 <details><summary>모집글 지도로 보기</summary>
-<img src="https://github.com/sojinjang/bang-ga-bang-ga/assets/111125577/5dee9fd8-d03b-4266-adc2-928f6fae77dd" width="960">
+<img src="https://github.com/sojinjang/bang-ga-bang-ga/assets/111125577/002bb562-6c04-45ff-8b26-c6a51ce71185.gif" width="960">
 </details>
 <details><summary>모집글 상세보기 - 방장</summary>
 <img src="https://user-images.githubusercontent.com/89888075/210947134-e578aeca-7b7f-43b5-8293-9a22d701a452.gif" width="960">
