@@ -1,7 +1,8 @@
 import React from 'react';
 
+const MAX_LEVEL = 6;
+
 const DecreaseButton = ({ level, setLevel, setScope, getMapScreenScope, map }) => {
-  const MAX_LEVEL = 6;
   return (
     <div className='w-[35px] h-[35px] p-1 rounded-lg bg-white border-solid border-2 shadow-xl mr-1'>
       <button
@@ -31,7 +32,7 @@ const IncreaseButton = ({ level, setLevel, setScope, getMapScreenScope, map }) =
   );
 };
 
-export const ResizeButtonContainer = ({ level, setLevel, setScope, getMapScreenScope, map }) => {
+const ResizeButtonContainer = ({ level, setLevel, setScope, getMapScreenScope, map }) => {
   return (
     <div className='flex absolute bottom-2 right-2 z-10'>
       <DecreaseButton
@@ -49,3 +50,5 @@ export const ResizeButtonContainer = ({ level, setLevel, setScope, getMapScreenS
     </div>
   );
 };
+
+export default ResizeButtonContainer;
